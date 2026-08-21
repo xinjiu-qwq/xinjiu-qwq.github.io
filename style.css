@@ -1,0 +1,881 @@
+/* ============================================================================
+ * style.css —— Material You (Material Design 3) 个人博客主页样式
+ * ----------------------------------------------------------------------------
+ * 文件结构(按顺序):
+ *   1. 设计令牌(M3 色彩角色 / 字体 / 形状 / 高度 / 状态层)
+ *   2. 基础重置与全局样式
+ *   3. 顶部应用栏
+ *   4. 按钮 / 图标按钮 / 文字按钮
+ *   5. 圆片 Chips
+ *   6. Hero 区
+ *   7. 卡片与文章区
+ *   8. 关于区
+ *   9. FAB 悬浮按钮
+ *   10. 遮罩(移动端抽屉)
+ *   11. 移动端抽屉 + 页脚
+ *   12. 滚动动画 / 涟漪 / 响应式
+ * ----------------------------------------------------------------------------
+ * 如何修改:
+ *   - 改主题色 / 明暗:不用动这个文件,点页面右上角调色板按钮即可,
+ *     script.js 会把 M3 色彩角色实时写进 :root 的 CSS 变量。
+ *   - 手动固定配色:直接改下面 :root / [data-theme="dark"] 里的
+ *     --md-* 变量(数值来自 Material 3 规范)。
+ *   - 改字体:搜 "字体令牌";改圆角:搜 "形状令牌";改间距:搜 --space-*。
+ * ========================================================================== */
+
+/* ============================================================================
+ * 1. 设计令牌
+ * ========================================================================== */
+
+/* ---------- 字体令牌(改字体在这里) ---------- */
+:root {
+    /* 主字体栈:Material You 官方 Roboto + 中文 Noto Sans SC,离线自动回退系统字体 */
+    --font-sans: 'Roboto', 'Noto Sans SC', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+    /* M3 字体等级(字号/行高/字重) */
+    --type-display: 36px / 1.2 / 700;   /* Hero 大标题 */
+    --type-headline: 26px / 1.35 / 600; /* 区块标题 */
+    --type-title: 21px / 1.4 / 600;     /* 卡片标题 */
+    --type-body: 15px / 1.7 / 400;      /* 正文 */
+    --type-label: 14px / 1.4 / 500;     /* 按钮 / 标签 */
+}
+
+/* ---------- 形状令牌(M3 圆角体系) ---------- */
+:root {
+    --shape-xs: 4px;   /* 极小:徽标等 */
+    --shape-sm: 8px;   /* 小:chips */
+    --shape-md: 12px;  /* 中:按钮 */
+    --shape-lg: 16px;  /* 大:卡片 */
+    --shape-xl: 28px;  /* 特大:Hero / 对话框 */
+    --shape-full: 999px; /* 胶囊:按钮 / chips */
+}
+
+/* ---------- 间距令牌 ---------- */
+:root {
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 24px;
+    --space-6: 32px;
+    --space-7: 48px;
+    --space-8: 64px;
+    --content-width: 1080px; /* 页面内容最大宽度 */
+    --appbar-height: 64px;   /* 顶部栏高度 */
+}
+
+/* ---------- 高度(阴影)令牌(M3 1~5 级) ---------- */
+:root {
+    --elevation-1: 0 1px 2px rgba(0, 0, 0, .30), 0 1px 3px 1px rgba(0, 0, 0, .15);
+    --elevation-2: 0 1px 2px rgba(0, 0, 0, .30), 0 2px 6px 2px rgba(0, 0, 0, .15);
+    --elevation-3: 0 1px 3px rgba(0, 0, 0, .30), 0 4px 8px 3px rgba(0, 0, 0, .15);
+    --elevation-4: 0 2px 3px rgba(0, 0, 0, .30), 0 6px 10px 4px rgba(0, 0, 0, .15);
+    --elevation-5: 0 4px 4px rgba(0, 0, 0, .30), 0 8px 12px 6px rgba(0, 0, 0, .15);
+    --state-hover: .08;   /* M3 状态层:悬停 8% */
+    --state-focus: .10;   /* 聚焦 10% */
+    --state-pressed: .10; /* 按下 10% */
+}
+
+/* ---------- 色彩角色 ----------
+ * 下面两组是 Material 3 官方基准紫 (#6750A4) 的完整配色,
+ * 页面加载后 script.js 会根据用户选择的主题色用 HCT 算法
+ * 重新计算并覆盖这些变量,因此这里只是"默认值"。
+ * 色彩角色命名遵循 M3 规范:
+ *   primary 主色 / secondary 次色 / tertiary 强调色 /
+ *   surface 表面 / container 容器 / on-* 前景色 /
+ *   outline 描边 / inverse 反色 / error 错误
+ * -------------------------------------------------------- */
+:root {
+    --md-primary: #6750a4;
+    --md-on-primary: #ffffff;
+    --md-primary-container: #eaddff;
+    --md-on-primary-container: #21005d;
+
+    --md-secondary: #625b71;
+    --md-on-secondary: #ffffff;
+    --md-secondary-container: #e8def8;
+    --md-on-secondary-container: #1d192b;
+
+    --md-tertiary: #7d5260;
+    --md-on-tertiary: #ffffff;
+    --md-tertiary-container: #ffd8e4;
+    --md-on-tertiary-container: #31111d;
+
+    --md-error: #b3261e;
+    --md-on-error: #ffffff;
+    --md-error-container: #f9dedc;
+    --md-on-error-container: #410e0b;
+
+    --md-surface: #fef7ff;
+    --md-surface-dim: #ded8e1;
+    --md-surface-bright: #fef7ff;
+    --md-on-surface: #1d1b20;
+    --md-on-surface-variant: #49454f;
+
+    --md-surface-container-lowest: #ffffff;
+    --md-surface-container-low: #f7f2fa;
+    --md-surface-container: #f3edf7;
+    --md-surface-container-high: #ece6f0;
+    --md-surface-container-highest: #e6e0e9;
+
+    --md-outline: #79747e;
+    --md-outline-variant: #cac4d0;
+
+    --md-inverse-surface: #322f35;
+    --md-inverse-on-surface: #f5eff7;
+    --md-inverse-primary: #d0bcff;
+
+    --md-shadow: #000000;
+}
+
+/* ---------- 暗色主题令牌 ---------- */
+html[data-theme="dark"] {
+    --md-primary: #d0bcff;
+    --md-on-primary: #381e72;
+    --md-primary-container: #4f378b;
+    --md-on-primary-container: #eaddff;
+
+    --md-secondary: #ccc2dc;
+    --md-on-secondary: #332d41;
+    --md-secondary-container: #4a4458;
+    --md-on-secondary-container: #e8def8;
+
+    --md-tertiary: #efb8c8;
+    --md-on-tertiary: #492532;
+    --md-tertiary-container: #633b48;
+    --md-on-tertiary-container: #ffd8e4;
+
+    --md-error: #f2b8b5;
+    --md-on-error: #601410;
+    --md-error-container: #8c1d18;
+    --md-on-error-container: #f9dedc;
+
+    --md-surface: #141218;
+    --md-surface-dim: #141218;
+    --md-surface-bright: #3b383e;
+    --md-on-surface: #e6e0e9;
+    --md-on-surface-variant: #cac4d0;
+
+    --md-surface-container-lowest: #0f0d13;
+    --md-surface-container-low: #1d1b20;
+    --md-surface-container: #211f26;
+    --md-surface-container-high: #2b2930;
+    --md-surface-container-highest: #36343b;
+
+    --md-outline: #938f99;
+    --md-outline-variant: #49454f;
+
+    --md-inverse-surface: #e6e0e9;
+    --md-inverse-on-surface: #322f35;
+    --md-inverse-primary: #6750a4;
+
+    --md-shadow: #000000;
+}
+
+/* ============================================================================
+ * 2. 基础重置与全局样式
+ * ========================================================================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    /* 锚点平滑滚动;配合各区块的 scroll-margin-top 避开固定顶栏 */
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    font-size: var(--type-body);
+    line-height: 1.7;
+    color: var(--md-on-surface);
+    background-color: var(--md-surface);
+    /* 主题切换时的颜色过渡,让换色更柔和 */
+    transition: background-color .4s ease, color .4s ease;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+/* 锚点目标向下偏移,避免被固定顶栏遮住(数值 = 顶栏高 + 间距) */
+section[id] {
+    scroll-margin-top: calc(var(--appbar-height) + 16px);
+}
+
+/* 键盘焦点可见性(M3 聚焦状态用 outline 表达) */
+:focus-visible {
+    outline: 2px solid var(--md-primary);
+    outline-offset: 2px;
+    border-radius: var(--shape-sm);
+}
+
+/* ============================================================================
+ * 3. 顶部应用栏 (Top App Bar)
+ * ========================================================================== */
+.app-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--appbar-height);
+    background: color-mix(in srgb, var(--md-surface) 90%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    z-index: 100;
+    transition: box-shadow .3s ease;
+}
+
+/* 滚动后加上 M3 高度阴影(scroll 类由 script.js 添加) */
+.app-bar.is-scrolled {
+    box-shadow: var(--elevation-2);
+}
+
+.app-bar__inner {
+    max-width: var(--content-width);
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+/* 品牌区:图标 + 名称 */
+.app-bar__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    color: var(--md-on-surface);
+    margin-right: auto; /* 把导航推到右侧 */
+}
+
+/* 品牌方形图标:底色用主色,文字用 on-primary */
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--md-primary);
+    color: var(--md-on-primary);
+    border-radius: var(--shape-md);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.brand-title {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -.3px;
+}
+
+/* 桌面端导航链接组 */
+.app-bar__nav {
+    display: flex;
+    gap: var(--space-1);
+}
+
+/* 导航链接:胶囊形,选中态 = secondary-container 填充 */
+.nav-link {
+    position: relative;
+    padding: 8px 16px;
+    border-radius: var(--shape-full);
+    text-decoration: none;
+    color: var(--md-on-surface-variant);
+    font-size: var(--type-label);
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.nav-link:hover { background: color-mix(in srgb, var(--md-on-surface) var(--state-hover), transparent); }
+.nav-link.active {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+
+/* 右侧操作按钮组 */
+.app-bar__actions {
+    display: flex;
+    gap: var(--space-1);
+}
+
+/* 移动端菜单按钮:桌面端隐藏
+   选择器写成 .icon-btn.app-bar__menu 提高优先级,
+   避免被后面 .icon-btn 的 display 覆盖(级联顺序问题) */
+.icon-btn.app-bar__menu {
+    display: none;
+}
+
+/* ============================================================================
+ * 4. 按钮体系
+ * ========================================================================== */
+
+/* ---------- 图标按钮(40x40 圆形,用于顶栏 / 社交) ---------- */
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--shape-full);
+    background: transparent;
+    color: var(--md-on-surface-variant);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color .2s ease;
+    flex-shrink: 0;
+}
+
+.icon-btn:hover { background: color-mix(in srgb, var(--md-on-surface-variant) var(--state-hover), transparent); }
+
+.icon-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+/* 顶栏明暗切换按钮:使用 emoji 图标,单独设置字号(emoji 默认字号偏小) */
+#themeBtn {
+    font-size: 20px;
+    line-height: 1;
+    padding-bottom: 2px; /* 微调 emoji 基线,让图标视觉居中 */
+}
+
+/* ---------- 普通按钮(M3:高 40,胶囊圆角) ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    height: 40px;
+    padding: 0 24px;
+    border: none;
+    border-radius: var(--shape-full);
+    font-family: inherit;
+    font-size: var(--type-label);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: box-shadow .2s ease, transform .15s ease;
+    user-select: none;
+}
+
+.btn:active { transform: scale(.98); }
+
+/* 实心按钮:主色底 + on-primary 前景 */
+.btn--filled {
+    background: var(--md-primary);
+    color: var(--md-on-primary);
+    box-shadow: var(--elevation-1);
+}
+
+/* 色调按钮:secondary-container 底,无阴影 */
+.btn--tonal {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+
+/* ---------- 文字按钮(带图标的链接按钮) ---------- */
+.text-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 12px;
+    border-radius: var(--shape-full);
+    text-decoration: none;
+    color: var(--md-primary);
+    font-size: var(--type-label);
+    font-weight: 500;
+    transition: background-color .2s ease;
+}
+
+.text-btn:hover { background: color-mix(in srgb, var(--md-primary) var(--state-hover), transparent); }
+
+.text-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.text-btn--small { padding: 6px 8px; font-size: 13px; }
+
+/* ============================================================================
+ * 5. 圆片 Chips(M3:高 32,小圆角)
+ * ========================================================================== */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    height: 32px;
+    padding: 0 16px;
+    border-radius: var(--shape-sm);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* 实心圆片:Hero 标签用 */
+.chip--filled {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+
+/* 辅助圆片:文章标签用,次级容器色 */
+.chip--assist {
+    background: var(--md-surface-container-high);
+    color: var(--md-on-surface-variant);
+}
+
+/* ============================================================================
+ * 6. Hero 区(首页大卡)
+ * ========================================================================== */
+.hero {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: calc(var(--appbar-height) + var(--space-8)) var(--space-4) var(--space-8);
+    text-align: center;
+}
+
+/* Hero 大卡:表面容器 + 特大圆角 + 1 级阴影 */
+.hero-card {
+    background: var(--md-surface-container-low);
+    border-radius: var(--shape-xl);
+    padding: var(--space-8) var(--space-5);
+    box-shadow: var(--elevation-1);
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* 头像:圆形,图片加载失败时显示占位字 */
+.hero-avatar {
+    width: 112px;
+    height: 112px;
+    margin: 0 auto var(--space-5);
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--md-primary-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--elevation-2);
+}
+
+.hero-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 头像占位字(默认隐藏,img 加载失败时由 onerror 显示) */
+.hero-avatar__fallback {
+    display: none;
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--md-on-primary-container);
+}
+
+.hero-title {
+    font-size: var(--type-display);
+    letter-spacing: -.5px;
+    margin-bottom: var(--space-3);
+}
+
+.hero-desc {
+    max-width: 520px;
+    margin: 0 auto var(--space-5);
+    color: var(--md-on-surface-variant);
+}
+
+.hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+}
+
+/* ============================================================================
+ * 7. 内容区块 / 卡片 / 文章区
+ * ========================================================================== */
+.section {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: var(--space-7) var(--space-4);
+}
+
+/* 区块标题行:标题 + 右侧"查看全部"链接 */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+}
+
+.section-title {
+    font-size: var(--type-headline);
+    position: relative;
+    padding-left: 16px; /* 给左侧装饰条留位置 */
+}
+
+/* 标题左侧的 M3 风格装饰条(主色渐变) */
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    border-radius: 2px;
+    background: var(--md-primary);
+}
+
+/* ---------- 文章卡片网格 ---------- */
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-5);
+}
+
+/* 通用升高卡片:文章 / 关于 共用 */
+.elevated-card {
+    background: var(--md-surface-container-low);
+    border-radius: var(--shape-lg);
+    box-shadow: var(--elevation-1);
+    transition: box-shadow .3s ease, transform .3s ease;
+}
+
+.elevated-card:hover {
+    box-shadow: var(--elevation-2);
+    transform: translateY(-2px);
+}
+
+/* 文章卡片内容布局 */
+.article-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-5);
+}
+
+.card-tags {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+.card-title {
+    font-size: var(--type-title);
+    margin-bottom: var(--space-2);
+    line-height: 1.4;
+}
+
+.card-excerpt {
+    color: var(--md-on-surface-variant);
+    margin-bottom: var(--space-4);
+    flex-grow: 1; /* 摘要占满剩余空间,保证卡片底部对齐 */
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 摘要最多 3 行,超出省略 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+    color: var(--md-on-surface-variant);
+    font-size: 13px;
+}
+
+.meta-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meta-read svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    opacity: .7;
+}
+
+/* ---------- 主题标签区(已移除“探索主题”区块,此处留空备用) ---------- */
+/* .topic-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); } */
+
+/* ============================================================================
+ * 8. 关于区
+ * ========================================================================== */
+.about-card {
+    display: flex;
+    gap: var(--space-6);
+    align-items: center;
+    padding: var(--space-7);
+}
+
+/* 关于头像:大方块,强调色(tertiary)容器 */
+.about-avatar {
+    width: 132px;
+    height: 132px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    border-radius: var(--shape-lg);
+    background: var(--md-tertiary-container);
+    box-shadow: var(--elevation-1);
+}
+
+.about-body { flex: 1; min-width: 260px; }
+
+.about-title {
+    font-size: var(--type-headline);
+    margin-bottom: var(--space-3);
+}
+
+.about-desc {
+    color: var(--md-on-surface-variant);
+    margin-bottom: var(--space-4);
+}
+
+.about-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+}
+
+/* 社交按钮:次级容器色圆形;悬停用 on-secondary-container 状态层 */
+.social-btn {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+
+.social-btn:hover {
+    background: color-mix(in srgb, var(--md-on-secondary-container) var(--state-hover), var(--md-secondary-container));
+}
+
+.social-links { display: flex; gap: var(--space-2); }
+
+/* ============================================================================
+ * 9. FAB 悬浮按钮(回到顶部)
+ * ========================================================================== */
+/* FAB 悬浮按钮(回到顶部)
+   选择器用 button.fab 提高优先级:防止被文件末尾 .ripple 的
+   position: relative 覆盖(否则 fixed 失效,FAB 会掉进文档流) */
+button.fab {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--shape-lg);
+    background: var(--md-primary-container);
+    color: var(--md-on-primary-container);
+    box-shadow: var(--elevation-3);
+    cursor: pointer;
+    z-index: 90;
+    opacity: 0;
+    transform: scale(0);
+    pointer-events: none;
+    transition: opacity .3s ease, transform .3s ease, box-shadow .2s ease;
+}
+
+/* 滚动超过一屏后显示(类由 script.js 添加) */
+.fab.is-visible {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.fab:hover { box-shadow: var(--elevation-4); }
+
+.fab svg { width: 24px; height: 24px; fill: currentColor; }
+
+/* ============================================================================
+ * 10. 遮罩(用于移动端抽屉菜单)
+ * ========================================================================== */
+
+/* 遮罩:覆盖全屏,点击关闭抽屉 */
+.scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .3s ease;
+    z-index: 200;
+}
+
+.scrim.is-visible { opacity: 1; pointer-events: auto; }
+
+/* ============================================================================
+ * 11. 移动端抽屉 + 页脚
+ * ========================================================================== */
+
+/* 抽屉:左侧滑出 */
+.drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(280px, 84vw);
+    background: var(--md-surface-container-low);
+    z-index: 210;
+    transform: translateX(-105%);
+    transition: transform .3s cubic-bezier(.2, 0, 0, 1);
+    display: flex;
+    flex-direction: column;
+    border-radius: 0 var(--shape-lg) var(--shape-lg) 0;
+    box-shadow: var(--elevation-1);
+}
+
+.drawer.is-open { transform: translateX(0); }
+
+.drawer__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-bottom: 1px solid var(--md-outline-variant);
+}
+
+.drawer__title { font-size: 18px; font-weight: 600; }
+
+.drawer__links {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-2);
+    gap: var(--space-1);
+}
+
+.drawer-link {
+    padding: 14px 20px;
+    border-radius: var(--shape-full);
+    text-decoration: none;
+    color: var(--md-on-surface-variant);
+    font-size: 15px;
+    transition: background-color .2s ease, color .2s ease;
+}
+
+.drawer-link.active {
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+}
+
+/* 页脚 */
+.footer {
+    margin-top: var(--space-8);
+    padding: var(--space-6) var(--space-4);
+    text-align: center;
+    border-top: 1px solid var(--md-outline-variant);
+}
+
+.footer-text { color: var(--md-on-surface-variant); font-size: 14px; }
+
+/* ============================================================================
+ * 12. 滚动动画 / 涟漪 / 响应式
+ * ========================================================================== */
+
+/* ---------- 滚动进入动画(reveal 类由 script.js 的 IntersectionObserver 添加) ---------- */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* 卡片逐个错峰入场 */
+.article-card.reveal:nth-child(2) { transition-delay: .08s; }
+.article-card.reveal:nth-child(3) { transition-delay: .16s; }
+
+/* ---------- 涟漪(ripple)效果 ----------
+ * 用法:在元素上同时加 .ripple 类;涟漪颜色取元素的
+ * --ripple-color 变量(通过 data-ripple 属性在 script.js 中设置),
+ * 默认取当前文字颜色。 */
+.ripple {
+    position: relative;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* 涟漪圆点:由 script.js 在点击位置动态创建 */
+.ripple-ink {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--ripple-color, currentColor);
+    opacity: .14;
+    transform: scale(0);
+    animation: ripple-anim .55s ease-out forwards;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes ripple-anim {
+    to {
+        transform: scale(2.2);
+        opacity: 0;
+    }
+}
+
+/* 让涟漪圆点之外的子元素提升一层,避免被涟漪覆盖(内容在上层) */
+.ripple > :not(.ripple-ink) { position: relative; z-index: 1; }
+
+/* ---------- 无障碍:减少动效偏好 ---------- */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .ripple-ink { animation: none; display: none; }
+}
+
+/* ============================================================================
+ * 响应式
+ * ========================================================================== */
+
+/* ---------- 平板及以下 ---------- */
+@media (max-width: 768px) {
+    /* 顶栏:隐藏桌面导航,显示菜单按钮(同样提高优先级覆盖 .icon-btn) */
+    .app-bar__nav { display: none; }
+    .icon-btn.app-bar__menu { display: inline-flex; }
+
+    .hero { padding-top: calc(var(--appbar-height) + var(--space-6)); }
+    .hero-card { padding: var(--space-6) var(--space-4); }
+
+    .about-card {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--space-6) var(--space-5);
+    }
+
+    .about-chips, .social-links { justify-content: center; }
+
+    .article-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- 小屏手机 ---------- */
+@media (max-width: 480px) {
+    .brand-title { font-size: 18px; }
+    .hero-title { font-size: 28px; }
+    .hero-actions .btn { flex: 1; }
+    .fab { right: 16px; bottom: 16px; }
+    .section { padding: var(--space-6) var(--space-3); }
+}
