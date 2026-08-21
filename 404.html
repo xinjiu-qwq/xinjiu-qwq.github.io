@@ -27,6 +27,8 @@
             --md-on-primary: #ffffff;
             --md-primary-container: #ffd7f5;
             --md-on-primary-container: #39003b;
+            --md-secondary-container: #e8def8;
+            --md-tertiary-container: #ffd8e4;
             --md-surface: #fdf8fd;
             --md-on-surface: #1d1b20;
             --md-on-surface-variant: #49454f;
@@ -110,10 +112,72 @@
         /* 无障碍:减少动效偏好时关闭过渡动画 */
         @media (prefers-reduced-motion: reduce) {
             body, .btn { transition: none; }
+            .blob { animation: none; }
         }
+
+        /* ============================================================
+           动态装饰背景:与主页同款柔和色斑,颜色跟随主题变量
+           ============================================================ */
+        .bg-decor {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            background: var(--md-surface);
+            pointer-events: none;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(70px);
+            opacity: .5;
+            will-change: transform;
+        }
+
+        .blob-1 {
+            width: 480px; height: 480px;
+            top: -140px; left: -120px;
+            background: var(--md-primary-container);
+            animation: drift-1 26s ease-in-out infinite alternate;
+        }
+
+        .blob-2 {
+            width: 420px; height: 420px;
+            top: 30%; right: -140px;
+            background: var(--md-secondary-container);
+            animation: drift-2 32s ease-in-out infinite alternate;
+        }
+
+        .blob-3 {
+            width: 380px; height: 380px;
+            bottom: -120px; left: 20%;
+            background: var(--md-tertiary-container);
+            animation: drift-3 30s ease-in-out infinite alternate;
+        }
+
+        .blob-4 {
+            width: 260px; height: 260px;
+            top: 55%; left: 10%;
+            background: var(--md-primary);
+            opacity: .16;
+            animation: drift-4 24s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift-1 { to { transform: translate(90px, 60px) scale(1.12); } }
+        @keyframes drift-2 { to { transform: translate(-70px, 80px) scale(1.08); } }
+        @keyframes drift-3 { to { transform: translate(60px, -70px) scale(1.15); } }
+        @keyframes drift-4 { to { transform: translate(-50px, -40px) scale(1.2); } }
     </style>
 </head>
 <body>
+    <!-- 动态装饰背景(与主页一致,颜色跟随主题) -->
+    <div class="bg-decor" aria-hidden="true">
+        <span class="blob blob-1"></span>
+        <span class="blob blob-2"></span>
+        <span class="blob blob-3"></span>
+        <span class="blob blob-4"></span>
+    </div>
     <main class="notfound">
         <!-- 表情包素材:替换 src 即可换图 -->
         <img class="meme" src="/files/memes/nono-ep10.jpg" alt="404 表情包">
@@ -140,6 +204,8 @@
             var seedHct = MCU.Hct.fromInt(seedArgb);
             var hue = seedHct.hue;
             var primary = MCU.TonalPalette.fromInt(seedArgb);
+            var secondary = MCU.TonalPalette.fromHueAndChroma(hue, 16);
+            var tertiary = MCU.TonalPalette.fromHueAndChroma(hue + 60, 24);
             var neutral = MCU.TonalPalette.fromHueAndChroma(hue, 4);
             var neutralV = MCU.TonalPalette.fromHueAndChroma(hue, 8);
             var t = function (pal, tone) { return MCU.hexFromArgb(pal.tone(tone)); };
@@ -149,6 +215,8 @@
                 '--md-on-primary': t(primary, 100),
                 '--md-primary-container': t(primary, 90),
                 '--md-on-primary-container': t(primary, 10),
+                '--md-secondary-container': t(secondary, 90),
+                '--md-tertiary-container': t(tertiary, 90),
                 '--md-surface': t(neutral, 98),
                 '--md-on-surface': t(neutral, 10),
                 '--md-on-surface-variant': t(neutralV, 30),
@@ -158,6 +226,8 @@
                 '--md-on-primary': t(primary, 20),
                 '--md-primary-container': t(primary, 30),
                 '--md-on-primary-container': t(primary, 90),
+                '--md-secondary-container': t(secondary, 30),
+                '--md-tertiary-container': t(tertiary, 30),
                 '--md-surface': t(neutral, 6),
                 '--md-on-surface': t(neutral, 90),
                 '--md-on-surface-variant': t(neutralV, 80),

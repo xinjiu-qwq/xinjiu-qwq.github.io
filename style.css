@@ -12,8 +12,9 @@
  *   8. 关于区
  *   9. FAB 悬浮按钮
  *   10. 遮罩(移动端抽屉)
- *   11. 移动端抽屉 + 页脚
- *   12. 滚动动画 / 涟漪 / 响应式
+ *   11. 动态装饰背景(色斑,随主题色)
+ *   12. 移动端抽屉 + 页脚
+ *   13. 滚动动画 / 涟漪 / 响应式
  * ----------------------------------------------------------------------------
  * 如何修改:
  *   - 改主题色 / 明暗:不用动这个文件,点页面右上角调色板按钮即可,
@@ -725,7 +726,93 @@ button.fab {
 .scrim.is-visible { opacity: 1; pointer-events: auto; }
 
 /* ============================================================================
- * 11. 移动端抽屉 + 页脚
+ * 11. 动态装饰背景(Material You 色斑)
+ * ----------------------------------------------------------------------------
+ * - 由 script.js 自动注入到每个页面 body 开头(div.bg-decor > 4 个 .blob)
+ * - 颜色全部使用 M3 色彩角色变量,因此自动跟随主题色与明暗模式
+ * - 覆盖层 pointer-events: none,不影响任何点击
+ * ========================================================================== */
+
+/* 背景层:铺满视口、置于内容下方(z-index: -1) */
+.bg-decor {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background: var(--md-surface); /* 与页面底色一致 */
+    pointer-events: none;
+}
+
+/* 色斑:柔和的大圆形,配合模糊形成光晕 */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .5;
+    will-change: transform;
+}
+
+/* 四块色斑:主色 / 次色 / 强调色 / 主色点缀,位置与动效各不相同 */
+.blob-1 {
+    width: 480px;
+    height: 480px;
+    top: -140px;
+    left: -120px;
+    background: var(--md-primary-container);
+    animation: drift-1 26s ease-in-out infinite alternate;
+}
+
+.blob-2 {
+    width: 420px;
+    height: 420px;
+    top: 30%;
+    right: -140px;
+    background: var(--md-secondary-container);
+    animation: drift-2 32s ease-in-out infinite alternate;
+}
+
+.blob-3 {
+    width: 380px;
+    height: 380px;
+    bottom: -120px;
+    left: 20%;
+    background: var(--md-tertiary-container);
+    animation: drift-3 30s ease-in-out infinite alternate;
+}
+
+/* 主色点缀:透明度更低,增加主色存在感 */
+.blob-4 {
+    width: 260px;
+    height: 260px;
+    top: 55%;
+    left: 10%;
+    background: var(--md-primary);
+    opacity: .16;
+    animation: drift-4 24s ease-in-out infinite alternate;
+}
+
+/* 缓慢漂移 + 呼吸缩放 */
+@keyframes drift-1 { to { transform: translate(90px, 60px) scale(1.12); } }
+@keyframes drift-2 { to { transform: translate(-70px, 80px) scale(1.08); } }
+@keyframes drift-3 { to { transform: translate(60px, -70px) scale(1.15); } }
+@keyframes drift-4 { to { transform: translate(-50px, -40px) scale(1.2); } }
+
+/* 移动端:降低模糊与透明度,保证性能与可读性 */
+@media (max-width: 768px) {
+    .blob { filter: blur(50px); opacity: .35; }
+    .blob-1 { width: 320px; height: 320px; }
+    .blob-2 { width: 280px; height: 280px; }
+    .blob-3 { width: 260px; height: 260px; }
+    .blob-4 { width: 180px; height: 180px; opacity: .12; }
+}
+
+/* 无障碍:减少动效偏好时静止显示(保留装饰,去掉动画) */
+@media (prefers-reduced-motion: reduce) {
+    .blob { animation: none; }
+}
+
+/* ============================================================================
+ * 12. 移动端抽屉 + 页脚
  * ========================================================================== */
 
 /* 抽屉:左侧滑出 */
@@ -789,7 +876,7 @@ button.fab {
 .footer-text { color: var(--md-on-surface-variant); font-size: 14px; }
 
 /* ============================================================================
- * 12. 滚动动画 / 涟漪 / 响应式
+ * 13. 滚动动画 / 涟漪 / 响应式
  * ========================================================================== */
 
 /* ---------- 滚动进入动画(reveal 类由 script.js 的 IntersectionObserver 添加) ---------- */

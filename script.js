@@ -241,7 +241,29 @@ function initRipple() {
 }
 
 /* ============================================================================
- * 5. 滚动行为:顶栏投影 / 回到顶部 FAB / 入场动画 / 导航高亮
+ * 5. 动态装饰背景(注入到每个页面)
+ * ========================================================================== */
+
+/**
+ * 在 body 开头注入 .bg-decor 背景层(4 个柔和色斑)。
+ * 颜色取 M3 CSS 变量,自动跟随主题色与明暗模式;
+ * 样式定义在 style.css 第 11 节。所有页面共用 script.js,因此全站自动生效。
+ */
+function initBgDecor() {
+    if (document.querySelector('.bg-decor')) return; // 页面已自带(如 404)则跳过
+    const decor = document.createElement('div');
+    decor.className = 'bg-decor';
+    decor.setAttribute('aria-hidden', 'true');
+    decor.innerHTML =
+        '<span class="blob blob-1"></span>' +
+        '<span class="blob blob-2"></span>' +
+        '<span class="blob blob-3"></span>' +
+        '<span class="blob blob-4"></span>';
+    document.body.insertBefore(decor, document.body.firstChild);
+}
+
+/* ============================================================================
+ * 6. 滚动行为:顶栏投影 / 回到顶部 FAB / 入场动画 / 导航高亮
  * ========================================================================== */
 
 /** 滚动监听:滚动量 > 4px 时顶栏加投影;超过一屏显示 FAB */
@@ -349,6 +371,7 @@ function init() {
 
     applySeed();     // 生成整套配色
     applyTheme();    // 应用明暗
+    initBgDecor();   // 注入动态装饰背景
 
     initRipple();
     initScrollEffects();
