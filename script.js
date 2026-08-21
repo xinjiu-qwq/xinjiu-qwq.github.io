@@ -151,9 +151,6 @@ function applyScheme(light, dark) {
     }
     style.textContent = `:root {\n${toCss(light)}\n}\nhtml[data-theme="dark"] {\n${toCss(dark)}\n}`;
 
-    /* 缓存亮/暗两套表面色,供主题切换扩散动画取色(见 setTheme) */
-    schemeSurface = { light: light.surface, dark: dark.surface };
-
     /* 同步浏览器地址栏颜色(移动端) */
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', resolveTheme() === 'dark' ? dark.surface : light.surface);
@@ -164,9 +161,6 @@ function applyScheme(light, dark) {
  * ========================================================================== */
 let currentTheme = CONFIG.defaultTheme; // 用户选择(首次为 'system' 则跟随系统)
 
-/* 亮/暗两套表面色缓存(applyScheme 时更新,供扩散动画取色) */
-let schemeSurface = { light: '#fdf8fd', dark: '#141218' };
-
 /** 解析出实际生效的明暗:'system' -> 系统偏好 */
 function resolveTheme() {
     if (currentTheme === 'system') return systemPrefersDark() ? 'dark' : 'light';
@@ -175,85 +169,31 @@ function resolveTheme() {
 
 /**
  * 应用主题:设置 <html data-theme> 并刷新按钮 emoji / 地址栏色。
+ * 切换瞬间给 <html> 挂 .theme-transition 类,让所有元素的颜色
+ * 平滑过渡(CSS 见 style.css);约 450ms 后移除,不影响平时交互。
  * 配色变量在 applySeed 时已生成,这里只切换明暗。
  */
 function applyTheme() {
+    const root = document.documentElement;
     const resolved = resolveTheme();
-    document.documentElement.setAttribute('data-theme', resolved);
+
+    /* 开启全局颜色过渡(避免瞬时变色显得生硬) */
+    root.classList.add('theme-transition');
+    clearTimeout(applyTheme._timer);
+    applyTheme._timer = setTimeout(() => root.classList.remove('theme-transition'), 450);
+
+    root.setAttribute('data-theme', resolved);
 
     /* 切换按钮 emoji:当前亮色显示 🌙(点按切暗),当前暗色显示 ☀️(点按切亮) */
     const themeBtn = document.getElementById('themeBtn');
     if (themeBtn) themeBtn.textContent = resolved === 'dark' ? '☀️' : '🌙';
 }
 
-/** 设置明暗模式并记忆(带 Android 风格圆形扩散动画) */
+/** 设置明暗模式并记忆(自然颜色过渡,无展开动画) */
 function setTheme(mode) {
-    const prev = resolveTheme();
-    const next = mode === 'system' ? (systemPrefersDark() ? 'dark' : 'light') : mode;
     currentTheme = mode;
     storageSet(CONFIG.storage.theme, mode);
-
-    /* 实际明暗发生变化且非“减少动效”偏好时,播放扩散动画 */
-    if (prev !== next && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        revealTheme(next);
-    } else {
-        applyTheme();
-    }
-}
-
-/**
- * 主题切换展开动画(Android 风格):
- * 优先用 View Transitions API —— 整个页面的新主题快照从按钮位置
- * 以圆形展开(连内容一起过渡,不遮挡 UI);
- * 不支持时降级为背景层圆形遮罩扩散(只换背景色,内容渐变过渡)。
- * @param {string} next 新主题:'light' | 'dark'
- */
-function revealTheme(next) {
-    const btn = document.getElementById('themeBtn');
-    if (!btn) { applyTheme(); return; }
-
-    /* 以按钮中心为圆心,半径取到屏幕最远角的距离,保证能盖满全屏 */
-    const rect = btn.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
-    const radius = Math.ceil(Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)));
-
-    /* 方案一:View Transitions API(Chrome / Edge 111+)。
-       通过 --reveal-* 变量把圆心/半径传给 CSS 的 clip-path 动画 */
-    if (document.startViewTransition) {
-        const root = document.documentElement;
-        root.style.setProperty('--reveal-x', x + 'px');
-        root.style.setProperty('--reveal-y', y + 'px');
-        root.style.setProperty('--reveal-r', radius + 'px');
-        const vt = document.startViewTransition(() => applyTheme());
-        vt.finished.finally(() => {
-            root.style.removeProperty('--reveal-x');
-            root.style.removeProperty('--reveal-y');
-            root.style.removeProperty('--reveal-r');
-        });
-        return;
-    }
-
-    /* 方案二(降级):背景层圆形遮罩,置于内容之下,不遮挡 UI */
-    const circle = document.createElement('div');
-    circle.className = 'theme-reveal';
-    circle.style.width = circle.style.height = (radius * 2) + 'px';
-    circle.style.left = (x - radius) + 'px';
-    circle.style.top = (y - radius) + 'px';
-    circle.style.background = schemeSurface[next] || (next === 'dark' ? '#141218' : '#fdf8fd');
-    document.body.appendChild(circle);
-
-    /* 双 rAF 确保初始帧渲染后再触发扩散动画 */
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-        circle.classList.add('is-active');
-    }));
-
-    /* 扩散中段切换主题,页面元素颜色随现有 transition 同步过渡 */
-    setTimeout(() => applyTheme(), 120);
-
-    /* 动画结束后移除遮罩(transitionend + 定时器双保险) */
-    circle.addEventListener('transitionend', () => circle.remove(), { once: true });
-    setTimeout(() => circle.remove(), 1000);
+    applyTheme();
 }
 
 /** 顶栏按钮:在亮 / 暗之间切换(退出"跟随系统") */

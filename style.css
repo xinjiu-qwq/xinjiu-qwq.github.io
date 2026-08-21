@@ -934,42 +934,15 @@ button.fab {
     .ripple-ink { animation: none; display: none; }
 }
 
-/* ---------- 主题切换:View Transitions 圆形展开(Chrome / Edge 111+) ----------
- * 点击主题按钮时,整个页面的新主题快照从按钮位置以圆形展开,
- * 连内容一起过渡——比遮罩盖面更自然。
- * 圆心位置 / 半径由 script.js 通过 --reveal-* CSS 变量注入。 */
-::view-transition-old(root),
-::view-transition-new(root) {
-    animation: none;
-    mix-blend-mode: normal; /* 关闭默认叠加混合,避免旧页面透出 */
-}
-
-::view-transition-new(root) {
-    clip-path: circle(var(--reveal-r, 100%) at var(--reveal-x, 50%) var(--reveal-y, 50%));
-    animation: theme-reveal .5s cubic-bezier(.2, 0, 0, 1);
-}
-
-@keyframes theme-reveal {
-    from { clip-path: circle(0 at var(--reveal-x, 50%) var(--reveal-y, 50%)); }
-}
-
-/* 降级方案(不支持 View Transitions 的浏览器):背景层圆形遮罩。
- * z-index 与 .bg-decor 同级(-1),置于内容之下,只扩散背景色,不遮挡 UI */
-.theme-reveal {
-    position: fixed;
-    z-index: -1;
-    border-radius: 50%;
-    pointer-events: none;
-    transform: scale(0);
-    transition: transform .55s cubic-bezier(.2, 0, 0, 1);
-    will-change: transform;
-}
-
-.theme-reveal.is-active { transform: scale(1); }
-
-@media (prefers-reduced-motion: reduce) {
-    .theme-reveal { display: none; }
-    ::view-transition-new(root) { animation: none; }
+/* ---------- 主题切换:自然颜色过渡 ----------
+ * 点击主题按钮时,script.js 给 <html> 挂 .theme-transition 类,
+ * 让所有元素的颜色平滑渐变(约 450ms 后自动移除),不做任何展开动画。 */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+    transition: background-color .35s ease, color .35s ease,
+                border-color .35s ease, fill .35s ease, box-shadow .35s ease !important;
 }
 
 /* ============================================================================
