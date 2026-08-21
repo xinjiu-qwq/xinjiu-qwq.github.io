@@ -934,6 +934,26 @@ button.fab {
     .ripple-ink { animation: none; display: none; }
 }
 
+/* ---------- 主题切换圆形扩散遮罩 ----------
+ * 由 script.js 的 revealTheme() 动态创建:
+ * 点击主题按钮后,新主题表面色(暗=深色,亮=白色)
+ * 从按钮位置以圆形扩散覆盖全屏,营造 Android 风格切换。 */
+.theme-reveal {
+    position: fixed;
+    z-index: 9999; /* 必须高于一切 UI(顶栏100/抽屉210/FAB90),扩散时盖满全屏 */
+    border-radius: 50%;
+    pointer-events: none;   /* 不拦截任何点击 */
+    transform: scale(0);    /* 初始缩成一点,位于按钮处 */
+    transition: transform .55s cubic-bezier(.2, 0, 0, 1);
+    will-change: transform;
+}
+
+.theme-reveal.is-active { transform: scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+    .theme-reveal { display: none; }
+}
+
 /* ============================================================================
  * 响应式
  * ========================================================================== */

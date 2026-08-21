@@ -151,6 +151,9 @@ function applyScheme(light, dark) {
     }
     style.textContent = `:root {\n${toCss(light)}\n}\nhtml[data-theme="dark"] {\n${toCss(dark)}\n}`;
 
+    /* 缓存亮/暗两套表面色,供主题切换扩散动画取色(见 setTheme) */
+    schemeSurface = { light: light.surface, dark: dark.surface };
+
     /* 同步浏览器地址栏颜色(移动端) */
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', resolveTheme() === 'dark' ? dark.surface : light.surface);
@@ -160,6 +163,9 @@ function applyScheme(light, dark) {
  * 2. 主题系统(亮 / 暗 切换)
  * ========================================================================== */
 let currentTheme = CONFIG.defaultTheme; // 用户选择(首次为 'system' 则跟随系统)
+
+/* 亮/暗两套表面色缓存(applyScheme 时更新,供扩散动画取色) */
+let schemeSurface = { light: '#fdf8fd', dark: '#141218' };
 
 /** 解析出实际生效的明暗:'system' -> 系统偏好 */
 function resolveTheme() {
@@ -180,11 +186,60 @@ function applyTheme() {
     if (themeBtn) themeBtn.textContent = resolved === 'dark' ? '☀️' : '🌙';
 }
 
-/** 设置明暗模式并记忆 */
+/** 设置明暗模式并记忆(带 Android 风格圆形扩散动画) */
 function setTheme(mode) {
+    const prev = resolveTheme();
+    const next = mode === 'system' ? (systemPrefersDark() ? 'dark' : 'light') : mode;
     currentTheme = mode;
     storageSet(CONFIG.storage.theme, mode);
-    applyTheme();
+
+    /* 实际明暗发生变化且非“减少动效”偏好时,播放扩散动画 */
+    if (prev !== next && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        revealTheme(next);
+    } else {
+        applyTheme();
+    }
+}
+
+/**
+ * 主题切换扩散动画(Android 风格):
+ * 在顶栏主题按钮位置生成一个圆形遮罩(颜色 = 新主题表面色,
+ * 暗色为深色、亮色为白色),从按钮向外扩散覆盖全屏,
+ * 视觉上就像新主题从按钮“展开”到整个页面。
+ * @param {string} next 新主题:'light' | 'dark'
+ */
+function revealTheme(next) {
+    const btn = document.getElementById('themeBtn');
+    if (!btn) { applyTheme(); return; } // 页面无按钮时直接切换
+
+    /* 以按钮中心为圆心,半径取到屏幕最远角的距离,保证能盖满全屏 */
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const radius = Math.ceil(Math.hypot(Math.max(cx, vw - cx), Math.max(cy, vh - cy)));
+
+    /* 圆形遮罩:初始 scale(0) 缩在按钮处,颜色取新主题表面色 */
+    const circle = document.createElement('div');
+    circle.className = 'theme-reveal';
+    circle.style.width = circle.style.height = (radius * 2) + 'px';
+    circle.style.left = (cx - radius) + 'px';
+    circle.style.top = (cy - radius) + 'px';
+    circle.style.background = schemeSurface[next] || (next === 'dark' ? '#141218' : '#fdf8fd');
+    document.body.appendChild(circle);
+
+    /* 双 rAF 确保初始帧渲染后再触发扩散动画 */
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        circle.classList.add('is-active');
+    }));
+
+    /* 扩散中段切换主题,页面元素颜色随现有 transition 同步过渡 */
+    setTimeout(() => applyTheme(), 120);
+
+    /* 动画结束后移除遮罩(transitionend + 定时器双保险) */
+    circle.addEventListener('transitionend', () => circle.remove(), { once: true });
+    setTimeout(() => circle.remove(), 1000);
 }
 
 /** 顶栏按钮:在亮 / 暗之间切换(退出"跟随系统") */
