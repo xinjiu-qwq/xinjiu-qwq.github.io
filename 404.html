@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- ============================================================
+         404 页面(GitHub Pages 自动使用根目录的 404.html)
+         - 风格与主页一致:Material You 动态取色(种子 #A450A2)
+         - 表情包素材:files/memes/ 目录(可自行替换图片)
+         修改点:
+         - 表情包图片:改下面 <img> 的 src
+         - 文案:改 h1 / p
+         - 配色种子:改底部脚本里的 SEED
+         ============================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 · 页面走丢了 - 歆九的博客</title>
+    <meta name="robots" content="noindex"> <!-- 404 页面不参与搜索索引 -->
+    <!-- 与主页一致的站点图标 -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23A450A2'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E6%AD%86%3C/text%3E%3C/svg%3E">
+
+    <style>
+        /* ============================================================
+           基础样式 + M3 色彩变量(由底部脚本按种子色动态生成)
+           ============================================================ */
+        :root {
+            /* 默认亮色值(脚本加载前的兜底,脚本运行后覆盖) */
+            --md-primary: #8f3e8f;
+            --md-on-primary: #ffffff;
+            --md-primary-container: #ffd7f5;
+            --md-on-primary-container: #39003b;
+            --md-surface: #fdf8fd;
+            --md-on-surface: #1d1b20;
+            --md-on-surface-variant: #49454f;
+            --md-elevation-2: 0 1px 2px rgba(0, 0, 0, .30), 0 2px 6px 2px rgba(0, 0, 0, .15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Roboto', 'Noto Sans SC', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+            background: var(--md-surface);
+            color: var(--md-on-surface);
+            transition: background-color .4s ease, color .4s ease;
+        }
+
+        /* 404 内容卡片:居中布局 */
+        .notfound {
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+        }
+
+        /* 表情包图片:大圆角卡片 + 阴影,完整展示(不裁剪) */
+        .meme {
+            width: auto;
+            max-width: 340px;
+            max-height: 340px;
+            object-fit: contain;
+            border-radius: 28px;
+            box-shadow: var(--md-elevation-2);
+            margin: 0 auto 28px;
+            display: block;
+            background: var(--md-primary-container); /* 图片加载失败时的底色 */
+        }
+
+        .code {
+            font-size: 88px;
+            font-weight: 700;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            color: var(--md-primary);
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 12px 0 8px;
+        }
+
+        .desc {
+            color: var(--md-on-surface-variant);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        /* 返回首页按钮(M3 filled 风格) */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 24px;
+            border-radius: 999px;
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            box-shadow: var(--md-elevation-2);
+            transition: transform .15s ease, box-shadow .2s ease;
+        }
+
+        .btn:hover { transform: translateY(-2px); }
+        .btn:active { transform: scale(.98); }
+
+        /* 无障碍:减少动效偏好时关闭过渡动画 */
+        @media (prefers-reduced-motion: reduce) {
+            body, .btn { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <main class="notfound">
+        <!-- 表情包素材:替换 src 即可换图 -->
+        <img class="meme" src="/files/memes/nono-ep10.jpg" alt="404 表情包">
+        <h1 class="code">404</h1>
+        <p class="title">哎呀,页面走丢了</p>
+        <p class="desc">你访问的地址不存在或已被移除,<br>回到首页继续探索吧～</p>
+        <!-- 返回首页按钮 -->
+        <a class="btn" href="/">🏠 返回首页</a>
+    </main>
+
+    <!-- ============================================================
+         动态取色:与主页一致的种子色 #A450A2,
+         用官方 HCT 算法生成配色并写入 CSS 变量(亮/暗各一套)。
+         引用 vendor/mcu-core.js(官方 material-color-utilities)。
+         ============================================================ -->
+    <script src="/vendor/mcu-core.js"></script>
+    <script>
+        (function () {
+            var MCU = window.MaterialColorUtilities;
+            var SEED = '#a450a2'; // 主题种子色(与主页一致)
+
+            /* 生成配色:取色板固定色相/彩度,按 M3 规范分配明度档位 */
+            var seedArgb = MCU.argbFromHex(SEED);
+            var seedHct = MCU.Hct.fromInt(seedArgb);
+            var hue = seedHct.hue;
+            var primary = MCU.TonalPalette.fromInt(seedArgb);
+            var neutral = MCU.TonalPalette.fromHueAndChroma(hue, 4);
+            var neutralV = MCU.TonalPalette.fromHueAndChroma(hue, 8);
+            var t = function (pal, tone) { return MCU.hexFromArgb(pal.tone(tone)); };
+
+            var light = {
+                '--md-primary': t(primary, 40),
+                '--md-on-primary': t(primary, 100),
+                '--md-primary-container': t(primary, 90),
+                '--md-on-primary-container': t(primary, 10),
+                '--md-surface': t(neutral, 98),
+                '--md-on-surface': t(neutral, 10),
+                '--md-on-surface-variant': t(neutralV, 30),
+            };
+            var dark = {
+                '--md-primary': t(primary, 80),
+                '--md-on-primary': t(primary, 20),
+                '--md-primary-container': t(primary, 30),
+                '--md-on-primary-container': t(primary, 90),
+                '--md-surface': t(neutral, 6),
+                '--md-on-surface': t(neutral, 90),
+                '--md-on-surface-variant': t(neutralV, 80),
+            };
+
+            /* 按系统偏好选择亮/暗,写入 :root 变量 */
+            var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var vars = isDark ? dark : light;
+            Object.keys(vars).forEach(function (k) {
+                document.documentElement.style.setProperty(k, vars[k]);
+            });
+        })();
+    </script>
+</body>
+</html>
