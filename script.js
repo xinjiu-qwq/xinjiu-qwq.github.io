@@ -248,6 +248,8 @@ function initRipple() {
 function initScrollEffects() {
     const appBar = document.getElementById('appBar');
     const fab = document.getElementById('fab');
+    if (!appBar || !fab) return; // 文章页等无顶栏/FAB 的页面直接跳过
+
     const onScroll = () => {
         const y = window.scrollY;
         appBar.classList.toggle('is-scrolled', y > 4);
@@ -310,10 +312,12 @@ function lockScroll(lock) {
     document.body.style.overflow = lock ? 'hidden' : '';
 }
 
-/** 抽屉开关控制 */
+/** 抽屉开关控制(文章页没有抽屉,缺失时跳过) */
 function initOverlays() {
     const drawer = document.getElementById('drawer');
+    const menuBtn = document.getElementById('menuBtn');
     const scrim = document.getElementById('scrim');
+    if (!drawer || !menuBtn || !scrim) return;
 
     document.getElementById('menuBtn').addEventListener('click', () => {
         drawer.classList.add('is-open');
@@ -352,11 +356,13 @@ function init() {
     initScrollSpy();
     initOverlays();
 
-    /* 页脚年份自动更新 */
-    document.getElementById('year').textContent = new Date().getFullYear();
+    /* 页脚年份自动更新(页面无 #year 时跳过) */
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
     /* 顶栏明暗切换按钮 */
-    document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+    const themeBtn = document.getElementById('themeBtn');
+    if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
 
     /* 跟随系统时,系统主题变化自动切换 */
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {

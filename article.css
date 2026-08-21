@@ -1,0 +1,254 @@
+/* ============================================================================
+ * article.css —— 文章页正文排版(与首页共用 style.css 的设计令牌)
+ * ----------------------------------------------------------------------------
+ * 适用页面:/articles/ 下的所有文章页
+ * 依赖:style.css(必须在其之后引入)
+ * 修改正文排版样式(标题/段落/引用/代码/图片)都在这个文件里
+ * ========================================================================== */
+
+/* ============================================================================
+ * 文章页布局
+ * ========================================================================== */
+
+/* 文章主体容器:比首页内容窄,利于阅读 */
+.article-page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: calc(var(--appbar-height) + var(--space-7)) var(--space-4) var(--space-8);
+}
+
+/* 文章卡片:与首页卡片同风格,内边距更大 */
+.article-card--page {
+    background: var(--md-surface-container-low);
+    border-radius: var(--shape-xl);
+    box-shadow: var(--elevation-1);
+    padding: var(--space-7) var(--space-6);
+}
+
+/* ============================================================================
+ * 文章头部
+ * ========================================================================== */
+
+/* 标签行 */
+.article-head__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+}
+
+/* 文章标题 */
+.article-head__title {
+    font-size: 34px;
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -.5px;
+    margin-bottom: var(--space-3);
+}
+
+/* 元信息行(日期 / 阅读时长) */
+.article-head__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    color: var(--md-on-surface-variant);
+    font-size: 14px;
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--md-outline-variant);
+    margin-bottom: var(--space-6);
+}
+
+/* 元信息中的小图标 */
+.article-head__meta svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    vertical-align: -3px;
+    margin-right: 4px;
+    opacity: .7;
+}
+
+/* ============================================================================
+ * 正文排版
+ * ========================================================================== */
+
+/* 段落:行高放宽,阅读更舒适 */
+.article-body p {
+    margin-bottom: var(--space-4);
+    line-height: 1.85;
+}
+
+/* 小节标题 */
+.article-body h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: var(--space-6) 0 var(--space-3);
+    padding-left: 14px;
+    position: relative;
+}
+
+/* 与首页区块标题一致的装饰条 */
+.article-body h2::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    border-radius: 2px;
+    background: var(--md-primary);
+}
+
+.article-body h3 {
+    font-size: 19px;
+    font-weight: 600;
+    margin: var(--space-5) 0 var(--space-2);
+}
+
+/* 列表 */
+.article-body ul,
+.article-body ol {
+    margin: 0 0 var(--space-4) 22px;
+    line-height: 1.85;
+}
+
+.article-body li { margin-bottom: var(--space-1); }
+
+/* 强调引用:左侧主色描边 */
+.article-body blockquote {
+    margin: var(--space-5) 0;
+    padding: var(--space-4) var(--space-5);
+    background: var(--md-secondary-container);
+    color: var(--md-on-secondary-container);
+    border-radius: var(--shape-md) var(--shape-full) var(--shape-full) var(--shape-md);
+}
+
+.article-body blockquote p { margin: 0; }
+
+/* 行内代码 */
+.article-body code {
+    font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+    font-size: .88em;
+    background: var(--md-surface-container-highest);
+    padding: 2px 6px;
+    border-radius: var(--shape-xs);
+}
+
+/* 代码块 */
+.article-body pre {
+    margin: var(--space-5) 0;
+    padding: var(--space-5);
+    background: var(--md-inverse-surface);
+    color: var(--md-inverse-on-surface);
+    border-radius: var(--shape-lg);
+    overflow-x: auto;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.article-body pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* 正文图片:圆角 + 阴影 */
+.article-body img {
+    max-width: 100%;
+    border-radius: var(--shape-lg);
+    box-shadow: var(--elevation-1);
+    margin: var(--space-4) auto;
+    display: block;
+}
+
+/* 正文链接 */
+.article-body a {
+    color: var(--md-primary);
+}
+
+/* 分隔线 */
+.article-body hr {
+    border: none;
+    border-top: 1px solid var(--md-outline-variant);
+    margin: var(--space-6) 0;
+}
+
+/* ============================================================================
+ * 文章底部:上一篇 / 下一篇 + 返回
+ * ========================================================================== */
+.article-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--md-outline-variant);
+    flex-wrap: wrap;
+}
+
+/* 上一篇/下一篇链接卡片 */
+.article-foot__nav {
+    flex: 1;
+    min-width: 160px;
+}
+
+.article-foot__label {
+    display: block;
+    font-size: 12px;
+    color: var(--md-on-surface-variant);
+    margin-bottom: 4px;
+}
+
+.article-foot__link {
+    color: var(--md-on-surface);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.article-foot__link:hover { color: var(--md-primary); }
+
+.article-foot__link--disabled {
+    opacity: .4;
+    pointer-events: none;
+}
+
+/* 返回首页按钮:居中放 */
+.article-foot__home {
+    text-align: center;
+    margin-top: var(--space-5);
+}
+
+/* ============================================================================
+ * 文章列表页(/articles/index.html)
+ * 直接复用 style.css 的 .article-grid / .article-card
+ * 这里只补充列表页标题样式
+ * ========================================================================== */
+.article-list-title {
+    font-size: var(--type-headline);
+    margin-bottom: var(--space-5);
+    position: relative;
+    padding-left: 16px;
+}
+
+.article-list-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    border-radius: 2px;
+    background: var(--md-primary);
+}
+
+/* ============================================================================
+ * 响应式
+ * ========================================================================== */
+@media (max-width: 600px) {
+    .article-page { padding-top: calc(var(--appbar-height) + var(--space-5)); }
+    .article-card--page { padding: var(--space-5) var(--space-4); border-radius: var(--shape-lg); }
+    .article-head__title { font-size: 27px; }
+    .article-foot { flex-direction: column; }
+}
