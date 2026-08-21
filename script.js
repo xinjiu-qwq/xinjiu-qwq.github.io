@@ -202,30 +202,44 @@ function setTheme(mode) {
 }
 
 /**
- * 主题切换扩散动画(Android 风格):
- * 在顶栏主题按钮位置生成一个圆形遮罩(颜色 = 新主题表面色,
- * 暗色为深色、亮色为白色),从按钮向外扩散覆盖全屏,
- * 视觉上就像新主题从按钮“展开”到整个页面。
+ * 主题切换展开动画(Android 风格):
+ * 优先用 View Transitions API —— 整个页面的新主题快照从按钮位置
+ * 以圆形展开(连内容一起过渡,不遮挡 UI);
+ * 不支持时降级为背景层圆形遮罩扩散(只换背景色,内容渐变过渡)。
  * @param {string} next 新主题:'light' | 'dark'
  */
 function revealTheme(next) {
     const btn = document.getElementById('themeBtn');
-    if (!btn) { applyTheme(); return; } // 页面无按钮时直接切换
+    if (!btn) { applyTheme(); return; }
 
     /* 以按钮中心为圆心,半径取到屏幕最远角的距离,保证能盖满全屏 */
     const rect = btn.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const radius = Math.ceil(Math.hypot(Math.max(cx, vw - cx), Math.max(cy, vh - cy)));
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const radius = Math.ceil(Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)));
 
-    /* 圆形遮罩:初始 scale(0) 缩在按钮处,颜色取新主题表面色 */
+    /* 方案一:View Transitions API(Chrome / Edge 111+)。
+       通过 --reveal-* 变量把圆心/半径传给 CSS 的 clip-path 动画 */
+    if (document.startViewTransition) {
+        const root = document.documentElement;
+        root.style.setProperty('--reveal-x', x + 'px');
+        root.style.setProperty('--reveal-y', y + 'px');
+        root.style.setProperty('--reveal-r', radius + 'px');
+        const vt = document.startViewTransition(() => applyTheme());
+        vt.finished.finally(() => {
+            root.style.removeProperty('--reveal-x');
+            root.style.removeProperty('--reveal-y');
+            root.style.removeProperty('--reveal-r');
+        });
+        return;
+    }
+
+    /* 方案二(降级):背景层圆形遮罩,置于内容之下,不遮挡 UI */
     const circle = document.createElement('div');
     circle.className = 'theme-reveal';
     circle.style.width = circle.style.height = (radius * 2) + 'px';
-    circle.style.left = (cx - radius) + 'px';
-    circle.style.top = (cy - radius) + 'px';
+    circle.style.left = (x - radius) + 'px';
+    circle.style.top = (y - radius) + 'px';
     circle.style.background = schemeSurface[next] || (next === 'dark' ? '#141218' : '#fdf8fd');
     document.body.appendChild(circle);
 

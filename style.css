@@ -224,7 +224,7 @@ section[id] {
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     backdrop-filter: blur(20px) saturate(180%);
     z-index: 100;
-    transition: box-shadow .3s ease;
+    transition: box-shadow .3s ease, background-color .4s ease;
 }
 
 /* 滚动后加上 M3 高度阴影(scroll 类由 script.js 添加) */
@@ -934,16 +934,33 @@ button.fab {
     .ripple-ink { animation: none; display: none; }
 }
 
-/* ---------- 主题切换圆形扩散遮罩 ----------
- * 由 script.js 的 revealTheme() 动态创建:
- * 点击主题按钮后,新主题表面色(暗=深色,亮=白色)
- * 从按钮位置以圆形扩散覆盖全屏,营造 Android 风格切换。 */
+/* ---------- 主题切换:View Transitions 圆形展开(Chrome / Edge 111+) ----------
+ * 点击主题按钮时,整个页面的新主题快照从按钮位置以圆形展开,
+ * 连内容一起过渡——比遮罩盖面更自然。
+ * 圆心位置 / 半径由 script.js 通过 --reveal-* CSS 变量注入。 */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal; /* 关闭默认叠加混合,避免旧页面透出 */
+}
+
+::view-transition-new(root) {
+    clip-path: circle(var(--reveal-r, 100%) at var(--reveal-x, 50%) var(--reveal-y, 50%));
+    animation: theme-reveal .5s cubic-bezier(.2, 0, 0, 1);
+}
+
+@keyframes theme-reveal {
+    from { clip-path: circle(0 at var(--reveal-x, 50%) var(--reveal-y, 50%)); }
+}
+
+/* 降级方案(不支持 View Transitions 的浏览器):背景层圆形遮罩。
+ * z-index 与 .bg-decor 同级(-1),置于内容之下,只扩散背景色,不遮挡 UI */
 .theme-reveal {
     position: fixed;
-    z-index: 9999; /* 必须高于一切 UI(顶栏100/抽屉210/FAB90),扩散时盖满全屏 */
+    z-index: -1;
     border-radius: 50%;
-    pointer-events: none;   /* 不拦截任何点击 */
-    transform: scale(0);    /* 初始缩成一点,位于按钮处 */
+    pointer-events: none;
+    transform: scale(0);
     transition: transform .55s cubic-bezier(.2, 0, 0, 1);
     will-change: transform;
 }
@@ -952,6 +969,7 @@ button.fab {
 
 @media (prefers-reduced-motion: reduce) {
     .theme-reveal { display: none; }
+    ::view-transition-new(root) { animation: none; }
 }
 
 /* ============================================================================
