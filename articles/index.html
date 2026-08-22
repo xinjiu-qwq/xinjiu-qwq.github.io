@@ -1,116 +1,86 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
 <head>
-    <!-- ============================================================
-         文章列表页(/articles/)
-         - 列出全部文章,点击进入对应文章页
-         - 新增文章:复制一张 <article class="article-card"> 卡片,
-           改标题/摘要/链接即可(与首页卡片同构)
-         ============================================================ -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>全部文章 - 歆九的博客</title>
-    <meta name="description" content="歆九的博客全部文章列表">
     <meta name="theme-color" content="#A450A2">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23A450A2'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E6%AD%86%3C/text%3E%3C/svg%3E">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../article.css">
 </head>
 <body>
     <header class="app-bar" id="appBar">
         <div class="app-bar__inner">
-            <a class="app-bar__brand" href="/">
-                <span class="brand-icon">歆</span>
-                <span class="brand-title">歆九的博客</span>
-            </a>
-            <nav class="app-bar__nav" id="navLinks" aria-label="主导航">
-                <a href="/" class="nav-link ripple" data-ripple="on-surface">首页</a>
-                <a href="/#about" class="nav-link ripple" data-ripple="on-surface">关于</a>
-                <a href="/articles/" class="nav-link ripple active" data-ripple="on-surface">文章</a>
+            <a class="app-bar__brand" href="/"><span class="brand-icon">歆</span><span class="brand-title">歆九的博客</span></a>
+            <nav class="app-bar__nav" id="navLinks">
+                <a href="/" class="nav-link ripple">首页</a>
+                <a href="/#about" class="nav-link ripple">关于</a>
+                <a href="/articles/" class="nav-link ripple active">文章</a>
             </nav>
-            <div class="app-bar__actions">
-                <button class="icon-btn ripple" id="themeBtn" aria-label="切换明暗主题" data-ripple="on-surface-variant">🌙</button>
-            </div>
+            <div class="app-bar__actions"><button class="icon-btn ripple" id="themeBtn" aria-label="切换明暗主题" data-ripple="on-surface-variant">🌙</button></div>
         </div>
     </header>
 
     <main>
-        <div class="section" style="padding-top: calc(var(--appbar-height) + var(--space-6));">
+        <div class="section" style="padding-top: calc(var(--appbar-height) + 32px);">
             <h1 class="article-list-title reveal">全部文章</h1>
-
             <div class="article-grid">
-                <!-- 文章 1:与首页卡片同构 -->
                 <article class="article-card elevated-card reveal">
                     <div class="card-tags">
-                        <span class="chip chip--assist">技术</span>
-                        <span class="chip chip--assist">前端</span>
+      <span class="chip chip--assist">技术</span>
+      <span class="chip chip--assist">前端</span>
                     </div>
                     <h3 class="card-title">深入理解 Material You 设计系统</h3>
                     <p class="card-excerpt">探索 Google Material Design 3 的设计哲学，从动态取色 HCT 色彩空间、色调色板到状态层，打造自适应主题的现代化界面体验...</p>
                     <div class="card-meta">
                         <span class="meta-date">2024年12月15日</span>
-                        <span class="meta-read">阅读 5 分钟</span>
+                        <span class="meta-read"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg> 阅读 5 分钟</span>
                     </div>
                     <a href="/articles/material-you.html" class="text-btn text-btn--small ripple" data-ripple="primary">阅读全文
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                     </a>
                 </article>
-
-                <!-- 文章 2 -->
                 <article class="article-card elevated-card reveal">
                     <div class="card-tags">
-                        <span class="chip chip--assist">设计</span>
-                        <span class="chip chip--assist">UI</span>
+      <span class="chip chip--assist">设计</span>
+      <span class="chip chip--assist">UI</span>
                     </div>
                     <h3 class="card-title">CSS 实现 Material 3 状态层与涟漪效果</h3>
                     <p class="card-excerpt">使用伪元素状态层和 JavaScript 涟漪动画，还原 Material Design 3 的触摸反馈体系，让网页交互拥有原生质感...</p>
                     <div class="card-meta">
                         <span class="meta-date">2024年12月10日</span>
-                        <span class="meta-read">阅读 8 分钟</span>
+                        <span class="meta-read"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg> 阅读 8 分钟</span>
                     </div>
                     <a href="/articles/css-material3-interactions.html" class="text-btn text-btn--small ripple" data-ripple="primary">阅读全文
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                     </a>
                 </article>
-
-                <!-- 文章 3 -->
                 <article class="article-card elevated-card reveal">
                     <div class="card-tags">
-                        <span class="chip chip--assist">生活</span>
-                        <span class="chip chip--assist">随笔</span>
+      <span class="chip chip--assist">生活</span>
+      <span class="chip chip--assist">随笔</span>
                     </div>
                     <h3 class="card-title">2024 年终总结与展望</h3>
                     <p class="card-excerpt">回顾这一年的成长与收获，分享在技术、设计和个人发展方面的心得体会与未来规划...</p>
                     <div class="card-meta">
-                        <span class="meta-date">2024年12月1日</span>
-                        <span class="meta-read">阅读 6 分钟</span>
+                        <span class="meta-date">2024年12月01日</span>
+                        <span class="meta-read"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg> 阅读 6 分钟</span>
                     </div>
                     <a href="/articles/2024-review.html" class="text-btn text-btn--small ripple" data-ripple="primary">阅读全文
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
                     </a>
                 </article>
             </div>
-
-            <!-- 返回首页 -->
-            <div style="text-align:center; margin-top: var(--space-7);" class="reveal">
-                <a href="/" class="btn btn--tonal ripple" data-ripple="on-secondary-container">🏠 返回首页</a>
-            </div>
+            <div style="text-align:center; margin-top: 48px; margin-bottom: 48px;" class="reveal"><a href="/" class="btn btn--tonal ripple" data-ripple="on-secondary-container">🏠 返回首页</a></div>
         </div>
     </main>
 
-    <button class="fab ripple" id="fab" aria-label="回到顶部" data-ripple="on-primary-container">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
-    </button>
-
-    <footer class="footer">
-        <p class="footer-text">© <span id="year">2026</span> 歆九的博客 · Crafted with 💙 and Material You with deepseek chan~</p>
-    </footer>
-
+    <button class="fab ripple" id="fab" aria-label="回到顶部" data-ripple="on-primary-container"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
+    <footer class="footer"><p class="footer-text">© <span id="year">2026</span> 歆九的博客 · Crafted with 💙 and Material You</p></footer>
     <script src="../vendor/mcu-core.js"></script>
     <script src="../script.js"></script>
 </body>

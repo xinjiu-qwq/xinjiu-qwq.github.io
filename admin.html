@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <!-- ============================================================
+         博客管理后台 (admin.html)
+         - 功能:文章列表 / 新增 / 编辑 / 删除 / 预览 / 保存
+         - 数据:读写 data/articles.json(通过本地服务 admin-server.js)
+         - 启动方式:先运行 `node admin-server.js`,再打开本页
+         - 保存到仓库:点"保存并发布",服务会生成 articles/ 页面、
+           更新首页/列表页,并自动 git commit + push
+         修改点:标题 / 图标 / 配色在此改
+         ============================================================ -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客管理后台 · 歆九</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23A450A2'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E6%AD%87%3C/text%3E%3C/svg%3E">
+    <style>
+        /* ============ 设计令牌(与主站一致的 M3 配色,亮色) ============ */
+        :root {
+            --primary: #8f3e8f;
+            --on-primary: #ffffff;
+            --primary-container: #ffd7f5;
+            --on-primary-container: #39003b;
+            --surface: #fdf8fd;
+            --surface-1: #f7f2fa;
+            --surface-2: #ece6f0;
+            --on-surface: #1d1b20;
+            --on-surface-variant: #49454f;
+            --outline: #79747e;
+            --outline-variant: #cac4d0;
+            --elevation-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 3px 1px rgba(0,0,0,.15);
+            --elevation-2: 0 1px 2px rgba(0,0,0,.30), 0 2px 6px 2px rgba(0,0,0,.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --font: 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font);
+            background: var(--surface);
+            color: var(--on-surface);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ============ 顶栏 ============ */
+        .topbar {
+            position: sticky; top: 0; z-index: 50;
+            background: color-mix(in srgb, var(--surface) 92%, transparent);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--outline-variant);
+            padding: 14px 24px;
+            display: flex; align-items: center; gap: 16px;
+        }
+        .topbar .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+        .topbar .brand .logo {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: var(--primary); color: var(--on-primary);
+            display: flex; align-items: center; justify-content: center; font-size: 17px;
+        }
+        .topbar .status { margin-left: auto; font-size: 13px; color: var(--on-surface-variant); display: flex; align-items: center; gap: 6px; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: #888; display: inline-block; }
+        .dot.ok { background: #4caf50; }
+        .dot.bad { background: #f44336; }
+        .btn-open {
+            margin-left: auto; text-decoration: none; font-size: 13px; padding: 8px 14px;
+            border-radius: 999px; background: var(--surface-2); color: var(--on-surface);
+        }
+
+        /* ============ 布局 ============ */
+        .layout { display: grid; grid-template-columns: 300px 1fr; gap: 20px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+        /* ============ 文章列表(左栏)=  */
+        .panel { background: var(--surface-1); border-radius: var(--radius); padding: 16px; }
+        .panel h2 { font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+        .btn-new {
+            border: none; background: var(--primary); color: var(--on-primary);
+            font: inherit; font-size: 13px; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+        }
+        .btn-new:hover { opacity: .92; }
+        .article-list { display: flex; flex-direction: column; gap: 6px; max-height: 70vh; overflow-y: auto; }
+        .a-item {
+            padding: 10px 12px; border-radius: var(--radius-sm); cursor: pointer;
+            border: 1px solid transparent; background: transparent; text-align: left; font: inherit;
+        }
+        .a-item:hover { background: var(--surface-2); }
+        .a-item.active { background: var(--primary-container); border-color: var(--primary); }
+        .a-item .t { font-weight: 600; font-size: 14px; }
+        .a-item .m { font-size: 12px; color: var(--on-surface-variant); margin-top: 2px; }
+        .empty { color: var(--on-surface-variant); font-size: 13px; padding: 10px; text-align: center; }
+
+        /* ============ 编辑区(右栏)=  */
+        .editor { background: var(--surface-1); border-radius: var(--radius); padding: 24px; }
+        .editor h2 { font-size: 18px; margin-bottom: 16px; }
+        .field { margin-bottom: 14px; }
+        .field label { display: block; font-size: 13px; color: var(--on-surface-variant); margin-bottom: 5px; }
+        input[type=text], input[type=date], select, textarea {
+            width: 100%; padding: 10px 12px; border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-sm); font: inherit; font-size: 14px; background: var(--surface);
+            color: var(--on-surface);
+        }
+        textarea { resize: vertical; }
+        .row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+        @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+        .tags-help { font-size: 12px; color: var(--on-surface-variant); margin-top: 4px; }
+        .md-help { font-size: 12px; color: var(--on-surface-variant); margin-top: 4px; }
+        .body-label { display: flex; justify-content: space-between; align-items: center; }
+        .tabs { display: flex; gap: 4px; }
+        .tab {
+            border: 1px solid var(--outline-variant); background: transparent; color: var(--on-surface);
+            font: inherit; font-size: 13px; padding: 4px 12px; border-radius: 999px; cursor: pointer;
+        }
+        .tab.active { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+        .body-wrap { position: relative; }
+        textarea#bodyEdit { min-height: 380px; font-family: Consolas, 'Courier New', monospace; }
+        .preview {
+            min-height: 380px; background: var(--surface); border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-sm); padding: 16px; overflow-y: auto; font-size: 15px;
+        }
+        .preview h1 { font-size: 24px; margin: 8px 0; }
+        .preview h2 { font-size: 19px; margin: 16px 0 8px; color: var(--primary); }
+        .preview p { margin: 8px 0; }
+        .preview ul, .preview ol { margin: 8px 0 8px 24px; }
+        .preview blockquote { border-left: 4px solid var(--primary); padding: 8px 14px; background: var(--surface-2); border-radius: 6px; margin: 12px 0; }
+        .preview code { background: var(--surface-2); padding: 2px 6px; border-radius: 4px; font-size: .9em; }
+        .preview pre { background: #1d1b20; color: #e6e0e9; padding: 14px; border-radius: 10px; overflow-x: auto; }
+        .preview pre code { background: none; color: inherit; padding: 0; }
+
+        /* ============ 底部操作 ============ */
+        .footer-actions { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+        .btn {
+            border: none; font: inherit; font-size: 14px; padding: 11px 20px; border-radius: 999px; cursor: pointer;
+            transition: opacity .15s, transform .1s;
+        }
+        .btn:active { transform: scale(.98); }
+        .btn:disabled { opacity: .5; cursor: not-allowed; }
+        .btn-primary { background: var(--primary); color: var(--on-primary); }
+        .btn-tonal { background: var(--primary-container); color: var(--on-primary-container); }
+        .btn-danger { background: #fdecea; color: #b3261e; }
+        .btn-ghost { background: transparent; color: var(--on-surface-variant); border: 1px solid var(--outline-variant); }
+
+        /* ============ 提示 ============ */
+        .toast {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: var(--on-surface); color: var(--surface); padding: 12px 22px; border-radius: 10px;
+            font-size: 14px; opacity: 0; pointer-events: none; transition: all .3s; z-index: 100;
+            box-shadow: var(--elevation-2); max-width: 90vw;
+        }
+
+        /* 无障碍:减少动效偏好时关闭过渡 */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; }
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* 表意用色 */
+        #saveStatus.bad { color: #c62828; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand"><span class="logo">皰</span> 博客管理后台</div>
+        <a class="btn-open" href="/" target="_blank">查看网站 ↗</a>
+        <div class="status">
+            <span class="dot" id="connDot"></span>
+            <span id="connText">连接中…</span>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- 左栏:文章列表 -->
+        <aside class="panel">
+            <h2>文章管理 <button class="btn-new" id="btnNew">＋ 新建</button></h2>
+            <div class="article-list" id="articleList"></div>
+        </aside>
+
+        <!-- 右栏:编辑区 -->
+        <section class="editor">
+            <h2 id="editorTitle">编辑文章</h2>
+            <div class="field row">
+                <div><label>标题 *</label><input type="text" id="f_title"></div>
+                <div><label>日期</label><input type="date" id="f_date"></div>
+                <div><label>阅读时长(分钟)</label><input type="text" id="f_read" placeholder="5"></div>
+            </div>
+            <div class="field">
+                <label>标签(用英文逗号或空格分隔)</label>
+                <input type="text" id="f_tags" placeholder="技术, 前端">
+                <div class="tags-help">标签会显示为文章卡片上的小圆片</div>
+            </div>
+            <div class="field">
+                <label>摘要</label>
+                <input type="text" id="f_excerpt" placeholder="会显示在首页 / 列表页卡片上">
+            </div>
+            <div class="field">
+                <div class="body-label">
+                    <label>正文(支持 Markdown)</label>
+                    <div class="tabs">
+                        <button class="tab active" id="tabEdit" type="button">✏️ 编辑</button>
+                        <button class="tab" id="tabPreview" type="button">👁 预览</button>
+                    </div>
+                </div>
+                <div id="bodyEditWrap" class="body-wrap"><textarea id="bodyEdit"></textarea></div>
+                <div id="previewWrap" class="body-wrap" style="display:none"><div class="preview" id="previewBox"></div></div>
+                <div class="md-help">支持 # 标题、**加粗**、- 列表、> 引用、``` 代码块。预览仅为本地效果，实际样式以网站为准。</div>
+            </div>
+
+            <div class="footer-actions">
+                <button class="btn btn-primary" id="btnSave">💾 保存</button>
+                <button class="btn btn-tonal" id="btnPublish">🚀 保存并发布(生成页面 + git 提交推送)</button>
+                <button class="btn btn-danger" id="btnDelete">🗑 删除这篇文章</button>
+            </div>
+        </section>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ================================================================
+        // 管理后台逻辑
+        // 数据模型:一篇文章 = { id, title, date, read_minutes, tags[], excerpt, body }
+        // 通过本地服务 admin-server.js 提供的 /api/... 接口读写与发布
+        // ================================================================
+        const API_BASE = 'http://127.0.0.1:8788';
+        let all = [];        // 全部文章
+        let currentId = null;  // 当前编辑的文章 id
+
+        const $ = id => document.getElementById(id);
+        const els = {
+            list: $('articleList'), title: $('editorTitle'),
+            f_title: $('f_title'), f_date: $('f_date'), f_read: $('f_read'),
+            f_tags: $('f_tags'), f_excerpt: $('f_excerpt'), bodyEdit: $('bodyEdit'),
+            previewBox: $('previewBox'), bodyEditWrap: $('bodyEditWrap'), previewWrap: $('previewWrap'),
+            btnSave: $('btnSave'), btnPublish: $('btnPublish'), btnDelete: $('btnDelete'),
+            connDot: $('connDot'), connText: $('connText'), toast: $('toast'),
+        };
+
+        // ---------- 工具:提示 ----------
+        let toastTimer;
+        function toast(msg, isErr) {
+            els.toast.textContent = msg;
+            els.toast.classList.add('show');
+            els.toast.style.background = isErr ? '#b3261e' : '';
+            els.toast.style.color = isErr ? '#fff' : '';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2200);
+        }
+
+        // ---------- 工具:简单的 Markdown -> HTML(仅用于本页预览,真实站点由服务端渲染) ----------
+        function mdToHtml(md) {
+            if (!md) return '<p style="color:var(--on-surface-variant)">（空）</p>';
+            // 代码块(先抽出占位符,避免内容被后续规则破坏)
+            const blocks = [];
+            md = md.replace(/```([\s\S]*?)```/g, (m, code) => {
+                blocks.push(code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+                return '\u0000C' + (blocks.length - 1) + '\u0000';
+            });
+            // 高亮代码占位换为 pre
+            const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            let html = esc(md)
+                .replace(/###### (.*)/g, '<h3>$1</h3>')
+                .replace(/##### (.*)/g, '<h3>$1</h3>')
+                .replace(/#### (.*)/g, '<h3>$1</h3>')
+                .replace(/### (.*)/g, '<h3>$1</h3>')
+                .replace(/## (.*)/g, '<h2>$1</h2>')
+                .replace(/^# (.*)$/gm, '<h1>$1</h1>')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/`(.+?)`/g, '<code>$1</code>')
+                .replace(/^&gt; (.*)$/gm, '<blockquote>$1</blockquote>')
+                .replace(/\n- (.+)/g, '\n<li>$1</li>')            // 简化列表
+                .replace(/(<li>[\s\S]*?<\/li>)/g, '<ul>$1</ul>')
+                .replace(/^\[(.*?)\]\((.*?)\)$/gm, '<a href="$2" target="_blank">$1</a>')
+                .replace(/\u0000C(\d+)\u0000/g, (m, i) => '<pre><code>' + blocks[i] + '</code></pre>')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+            return '<p>' + html + '</p>';
+        }
+
+        // ---------- 渲染列表 ----------
+        function renderList() {
+            els.list.innerHTML = '';
+            if (!all.length) { els.list.innerHTML = '<div class="empty">还没有文章</div>'; return; }
+            all.forEach(a => {
+                const d = document.createElement('div');
+                // 只显示前 4 个标签
+                const tags = (a.tags || []).slice(0, 4);
+                d.className = 'a-item' + (a.id === currentId ? ' active' : '');
+                d.innerHTML = `<div class="t">${esc(a.title || '未命名')}</div>
+                    <div class="m">${a.date || ''} · ${a.read_minutes || '?'} 分钟${tags.length ? ' · ' + tags.join('/') : ''}</div>`;
+                d.onclick = () => selectArticle(a.id);
+                els.list.appendChild(d);
+            });
+        }
+        function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+        // ---------- 选中 / 清空表单 ----------
+        function selectArticle(id) {
+            const a = all.find(x => x.id === id);
+            if (!a) return;
+            currentId = id;
+            els.f_title.value = a.title || '';
+            els.f_date.value = a.date || '';
+            els.f_read.value = a.read_minutes ?? '';
+            els.f_tags.value = (a.tags || []).join(', ');
+            els.f_excerpt.value = a.excerpt || '';
+            els.bodyEdit.value = a.body || '';
+            els.title.textContent = '编辑文章';
+            els.btnDelete.disabled = false;
+            renderList();
+            runPreview();
+        }
+        function newArticle() {
+            currentId = null;
+            els.f_title.value = ''; els.f_date.value = new Date().toISOString().slice(0,10);
+            els.f_read.value = ''; els.f_tags.value = ''; els.f_excerpt.value = ''; els.bodyEdit.value = '';
+            els.title.textContent = '新建文章';
+            els.btnDelete.disabled = true;
+            renderList();
+            runPreview();
+        }
+        // 收集表单为文章对象(不含 id,由保存时处理)
+        function collect() {
+            return {
+                title: els.f_title.value.trim(),
+                date: els.f_date.value,
+                read_minutes: parseInt(els.f_read.value, 10) || 3,
+                tags: els.f_tags.value.split(/[,，、\s]+/).filter(Boolean),
+                excerpt: els.f_excerpt.value.trim(),
+                body: els.bodyEdit.value,
+            };
+        }
+
+        // ---------- 预览切换 ----------
+        $('tabEdit').onclick = () => { els.previewWrap.style.display='none'; els.bodyEditWrap.style.display='block'; $('tabEdit').classList.add('active'); $('tabPreview').classList.remove('active'); };
+        $('tabPreview').onclick = () => { els.previewWrap.style.display='block'; els.bodyEditWrap.style.display='none'; $('tabEdit').classList.remove('active'); $('tabPreview').classList.add('active'); runPreview(); };
+        function runPreview() { els.previewBox.innerHTML = mdToHtml(els.bodyEdit.value); }
+
+        // ---------- 连接服务并加载 ----------
+        async function api(path, opts) {
+            const r = await fetch(API_BASE + path, Object.assign({ headers: { 'Content-Type': 'application/json' } }, opts));
+            const j = await r.json().catch(() => ({}));
+            if (!r.ok) throw new Error(j.error || ('HTTP ' + r.status));
+            return j;
+        }
+        function setConn(ok, msg) {
+            els.connDot.className = 'dot ' + (ok ? 'ok' : 'bad');
+            els.connText.textContent = msg;
+        }
+        async function loadData() {
+            try {
+                const data = await api('/api/articles');
+                all = data.articles || [];
+                currentId = all.length ? all[0].id : null;
+                renderList();
+                if (currentId) selectArticle(currentId); else newArticle();
+                setConn(true, '已连接服务');
+            } catch (e) {
+                setConn(false, '未连接服务。请先运行: node admin-server.js');
+                els.list.innerHTML = '<div class="empty">服务未启动。<br>请在博客目录运行:<br><code>node admin-server.js</code></div>';
+            }
+        }
+
+        // ---------- 保存 / 发布 / 删除 ----------
+        // 保存当前编辑(新建时自动分配 id)
+        async function saveCurrent() {
+            const data = collect();
+            if (!data.title) { toast('标题不能为空', true); return null; }
+            if (currentId) {
+                await api('/api/articles/' + currentId, { method: 'PUT', body: JSON.stringify(data) });
+                toast('已保存');
+            } else {
+                const r = await api('/api/articles', { method: 'POST', body: JSON.stringify(data) });
+                currentId = r.id;
+                els.title.textContent = '编辑文章';
+                toast('已新建并保存');
+            }
+            await loadData();
+            if (currentId) selectArticle(currentId);
+            return currentId;
+        }
+        els.btnSave.onclick = async () => { try { await saveCurrent(); } catch (e) { toast('保存失败: ' + e.message, true); } };
+        els.btnPublish.onclick = async () => {
+            try {
+                const id = await saveCurrent();
+                if (!id) return;
+                els.btnPublish.disabled = true; els.btnPublish.textContent = '生成中…';
+                const r = await api('/api/publish', { method: 'POST', body: JSON.stringify({}) });
+                els.btnPublish.disabled = false; els.btnPublish.textContent = '🚀 保存并发布(生成页面 + git 提交推送)';
+                toast(r.message || '已发布 ✓');
+                if (r.detail) console.log('发布详情:', r.detail);
+            } catch (e) {
+                els.btnPublish.disabled = false; els.btnPublish.textContent = '🚀 保存并发布(生成页面 + git 提交推送)';
+                toast('发布失败: ' + e.message, true);
+            }
+        };
+        els.btnDelete.onclick = async () => {
+            if (!currentId) return;
+            if (!confirm('确定删除「' + (all.find(a => a.id === currentId)?.title || '') + '」？此操作也会同步到网站。')) return;
+            try {
+                await api('/api/articles/' + currentId, { method: 'DELETE' });
+                toast('已删除');
+                currentId = null;
+                await loadData();
+                newArticle();
+            } catch (e) { toast('删除失败: ' + e.message, true); }
+        };
+
+        // 启动
+        loadData();
+    </script>
+</body>
+</html>

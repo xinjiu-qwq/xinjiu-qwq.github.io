@@ -1,39 +1,28 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
 <head>
-    <!-- ============================================================
-         文章页:2024 年终总结与展望
-         结构同前两篇(顶栏 / 文章卡片 / FAB / 页脚)
-         ============================================================ -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2024 年终总结与展望 - 歆九的博客</title>
-    <meta name="description" content="回顾这一年的成长与收获,分享在技术、设计和个人发展方面的心得体会与未来规划。">
+    <meta name="description" content="回顾这一年的成长与收获，分享在技术、设计和个人发展方面的心得体会与未来规划...">
     <meta name="theme-color" content="#A450A2">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23A450A2'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle' fill='white' font-family='sans-serif'%3E%E6%AD%86%3C/text%3E%3C/svg%3E">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../article.css">
 </head>
 <body>
     <header class="app-bar" id="appBar">
         <div class="app-bar__inner">
-            <a class="app-bar__brand" href="/">
-                <span class="brand-icon">歆</span>
-                <span class="brand-title">歆九的博客</span>
-            </a>
-            <nav class="app-bar__nav" id="navLinks" aria-label="主导航">
-                <a href="/" class="nav-link ripple" data-ripple="on-surface">首页</a>
-                <a href="/#about" class="nav-link ripple" data-ripple="on-surface">关于</a>
-                <a href="/articles/" class="nav-link ripple active" data-ripple="on-surface">文章</a>
+            <a class="app-bar__brand" href="/"><span class="brand-icon">歆</span><span class="brand-title">歆九的博客</span></a>
+            <nav class="app-bar__nav" id="navLinks">
+                <a href="/" class="nav-link ripple">首页</a>
+                <a href="/#about" class="nav-link ripple">关于</a>
+                <a href="/articles/" class="nav-link ripple active">文章</a>
             </nav>
-            <div class="app-bar__actions">
-                <button class="icon-btn ripple" id="themeBtn" aria-label="切换明暗主题" data-ripple="on-surface-variant">🌙</button>
-            </div>
+            <div class="app-bar__actions"><button class="icon-btn ripple" id="themeBtn" aria-label="切换明暗主题" data-ripple="on-surface-variant">🌙</button></div>
         </div>
     </header>
 
@@ -42,72 +31,45 @@
             <div class="article-card--page reveal">
                 <header class="article-head">
                     <div class="article-head__tags">
-                        <span class="chip chip--assist">生活</span>
-                        <span class="chip chip--assist">随笔</span>
+      <span class="chip chip--assist">生活</span>
+      <span class="chip chip--assist">随笔</span>
                     </div>
                     <h1 class="article-head__title">2024 年终总结与展望</h1>
                     <div class="article-head__meta">
-                        <span>
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                            2024年12月1日
-                        </span>
-                        <span>
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                            阅读 6 分钟
-                        </span>
+                        <span>2024年12月01日</span>
+                        <span>阅读 6 分钟</span>
                     </div>
                 </header>
-
                 <div class="article-body">
-                    <p>转眼又到了年末。写这篇总结,既是给自己的交代,也是给未来的自己留一份坐标。</p>
-
-                    <h2>关于学习</h2>
-                    <p>这一年最大的变化,是从"看教程"变成了"做东西"。开始接触 Windows 与 Linux 双系统下的日常开发,也第一次完整地把一个网页项目从设计、编码到部署走通——也就是你现在正在看的这个博客。</p>
-                    <p>过程中踩了不少坑:样式表级联顺序、TLS 证书吊销检查、GitHub Pages 的仓库命名规则……每一个坑都让我对"工程"这件事多了一分敬畏。</p>
-
-                    <h2>关于设计与审美</h2>
-                    <p>被 Material You 的设计哲学吸引:颜色不应该是拍脑袋定的,而应该是一套可计算的系统。从 HCT 色彩空间到状态层,这套设计语言让我重新理解了"好看"背后的秩序。</p>
-                    <blockquote>
-                        <p>好的设计不是视觉上的美感,而是功能与形式的完美统一。</p>
-                    </blockquote>
-
-                    <h2>关于生活</h2>
-                    <p>学习之余,依旧热爱音乐与游戏。BanG Dream 的曲子陪我度过了很多个写代码的夜晚,键盘敲击声与吉他扫弦声,大概是这一年最熟悉的背景音。</p>
-
-                    <h2>展望 2025</h2>
-                    <ul>
-                        <li>把博客做成真正的"作品":更多文章、更完整的交互</li>
-                        <li>深入 Web 开发,尝试更多框架与工具链</li>
-                        <li>保持好奇,保持创作,保持热爱</li>
-                    </ul>
-                    <p>新的一年,继续加油。✨</p>
+<h1>2024 年终总结与展望</h1>
+<p>转眼又到了年末。写这篇总结，既是给自己的交代，也是给未来的自己留一份坐标。</p>
+<h2>关于学习</h2>
+<p>这一年最大的变化，是从看教程变成了做东西。开始接触 Windows 与 Linux 双系统下的日常开发，也第一次完整地把一个网页项目从设计、编码到部署走通——也就是你现在正在看的这个博客。</p>
+<p>过程中踩了不少坑：样式表级联顺序、TLS 证书吊销检查、GitHub Pages 的仓库命名规则……每一个都让我对工程这件事多了一分敬畏。</p>
+<h2>关于设计与审美</h2>
+<p>被 Material You 的设计哲学吸引：颜色不应该是拍脑袋定的，而应该是一套可计算的系统。</p>
+<blockquote><p>好的设计不是视觉上的美感，而是功能与形式的完美统一。</p></blockquote>
+<h2>关于生活</h2>
+<p>学习之余，依旧热爱音乐与游戏。BanG Dream 的曲子陪我度过了很多个写代码的夜晚。</p>
+<h2>展望 2025</h2>
+<ul>
+<li>把博客做成真正的作品：更多文章、更完整的交互</li>
+<li>深入 Web 开发，尝试更多框架与工具链</li>
+<li>保持好奇，保持创作，保持热爱</li>
+</ul>
+<p>新的一年，继续加油。✨</p>
                 </div>
-
                 <footer class="article-foot">
-                    <div class="article-foot__nav">
-                        <span class="article-foot__label">← 上一篇</span>
-                        <a class="article-foot__link" href="/articles/css-material3-interactions.html">CSS 实现 Material 3 状态层与涟漪效果</a>
-                    </div>
-                    <div class="article-foot__nav" style="text-align:right">
-                        <span class="article-foot__label">下一篇 →</span>
-                        <span class="article-foot__link article-foot__link--disabled">没有更新的文章了</span>
-                    </div>
+                    <div class="article-foot__nav"><span class="article-foot__label">← 上一篇</span><a class="article-foot__link" href="css-material3-interactions.html">CSS 实现 Material 3 状态层与涟漪效果</a></div>
+                    <div class="article-foot__nav" style="text-align:right"><span class="article-foot__label">下一篇 →</span><span class="article-foot__link article-foot__link--disabled">没有更新的文章了</span></div>
                 </footer>
-                <div class="article-foot__home">
-                    <a href="/" class="btn btn--filled ripple" data-ripple="on-primary">🏠 返回首页</a>
-                </div>
+                <div class="article-foot__home"><a href="/" class="btn btn--filled ripple" data-ripple="on-primary">🏠 返回首页</a></div>
             </div>
         </article>
     </main>
 
-    <button class="fab ripple" id="fab" aria-label="回到顶部" data-ripple="on-primary-container">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
-    </button>
-
-    <footer class="footer">
-        <p class="footer-text">© <span id="year">2026</span> 歆九的博客 · Crafted with 💙 and Material You with deepseek chan~</p>
-    </footer>
-
+    <button class="fab ripple" id="fab" aria-label="回到顶部" data-ripple="on-primary-container"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></button>
+    <footer class="footer"><p class="footer-text">© <span id="year">2026</span> 歆九的博客 · Crafted with 💙 and Material You</p></footer>
     <script src="../vendor/mcu-core.js"></script>
     <script src="../script.js"></script>
 </body>

@@ -1,0 +1,47 @@
+{
+  "_comment": "博客文章数据源。管理后台(admin.html + admin-server.js)读写此文件,并在保存时自动生成 articles/ 页面与更新首页/列表页卡片。新增文章请优先使用管理后台。",
+  "site": {
+    "title": "歆九的博客",
+    "description": "基于 Material You 动态取色设计的个人博客",
+    "seed_color": "#A450A2",
+    "author": "皰九"
+  },
+  "articles": [
+    {
+      "id": "material-you",
+      "title": "深入理解 Material You 设计系统",
+      "date": "2024-12-15",
+      "read_minutes": 5,
+      "tags": [
+        "技术",
+        "前端"
+      ],
+      "excerpt": "探索 Google Material Design 3 的设计哲学，从动态取色 HCT 色彩空间、色调色板到状态层，打造自适应主题的现代化界面体验...",
+      "body": "# 深入理解 Material You 设计系统\n\nMaterial You 是 Google 在 Android 12 上推出的设计语言，也是 Material Design 的第 3 个大版本。它与前两代最大的不同，在于把**个性化**提到了核心位置：界面配色不再由设计师拍板，而是从你的壁纸中自动提取。\n\n## 什么是动态取色\n\n动态取色（Dynamic Color）会从一张图片中提取出主题色（种子色），再根据它生成整套界面的配色。关键在第二步：如何根据一个颜色生成一整套路易配色。Material You 的回答是全新的 **HCT 色彩空间**。\n\n## HCT：色相、彩度与明度\n\n传统色彩空间（RGB / HSL / Lab）在亮度变化是否均匀这个问题上都不够理想。HCT 由三个维度组成：\n\n- **Hue（色相）**：0~360°，颜色在色环上的位置\n- **Chroma（彩度）**：颜色的鲜艳程度\n- **Tone（明度）**：0~100，感知均匀的亮度\n\nTone 是基于 L*a*b* 的 L*，它最大的优点是感知线性：Tone 差 40 就能保证对比度 ≥ 3:1，差 50 就能保证 ≥ 4.5:1。这让设计师可以像查表一样可靠地搭配深浅色。\n\n## 色调色板与色彩角色\n\n固定色相与彩度、只改变明度，就能得到一条**色调色板（Tonal Palette）**。Material 3 用 5 条色板和 30+ 个**色彩角色**（primary、on-primary、surface-container、outline……）来组成一套完整方案。\n\n> 深色主题里主色取 tone 80，浅色取 tone 40；表面则取 tone 6 与 tone 98。这就是同一个种子色在亮暗两种模式下观感不同的原因。\n\n## 状态层与高度\n\nM3 的交互反馈也做了系统化：任何可点击组件都有 8% 悬停、10% 聚焦/按下的**状态层**，配合 0~5 级的**高度（阴影）**体系，让整个界面质感统一。\n\n## 小结\n\nMaterial You 把美观变成了一套可计算的系统，本博客正是基于这套实现构建。"
+    },
+    {
+      "id": "css-material3-interactions",
+      "title": "CSS 实现 Material 3 状态层与涟漪效果",
+      "date": "2024-12-10",
+      "read_minutes": 8,
+      "tags": [
+        "设计",
+        "UI"
+      ],
+      "excerpt": "使用伪元素状态层和 JavaScript 涟漪动画，还原 Material Design 3 的触摸反馈体系，让网页交互拥有原生质感...",
+      "body": "# CSS 实现 Material 3 状态层与涟漪效果\n\nMaterial 3 的交互反馈由两部分组成：**状态层**（悬停 / 聚焦 / 按下的半透明遮罩）和**涟漪**（点击扩散的水波）。这篇文章用纯 CSS + 少量 JavaScript 把它们还原到网页上。\n\n## 状态层：半透明遮罩\n\nM3 规定状态层是组件前景色（on-surface / on-primary 等）的透明叠加：悬停 8%、聚焦 10%、按下 10%。用 `color-mix()` 可以非常优雅地实现：\n\n```css\n.btn { position: relative; transition: background-color .2s ease; }\n.btn:hover {\n  background: color-mix(in srgb, var(--md-on-primary) 8%, var(--md-primary));\n}\n.btn:active {\n  background: color-mix(in srgb, var(--md-on-primary) 10%, var(--md-primary));\n}\n```\n\n关键在于把颜色都抽成 CSS 变量，这样无论主题怎么变，状态层永远是正确的。\n\n## 涟漪：点击扩散的圆\n\n涟漪的本质：在点击坐标生成一个圆形，然后放大并淡出。用事件委托监听 `pointerdown`，为每个带 `.ripple` 的元素动态插入圆点。\n\n## 别忘了无障碍\n\n动画对部分用户是干扰，务必提供关闭入口 `@media (prefers-reduced-motion: reduce)`。\n\n> 状态层解决看得见，涟漪解决摸得着。两者结合，网页交互才有接近原生的质感。"
+    },
+    {
+      "id": "2024-review",
+      "title": "2024 年终总结与展望",
+      "date": "2024-12-01",
+      "read_minutes": 6,
+      "tags": [
+        "生活",
+        "随笔"
+      ],
+      "excerpt": "回顾这一年的成长与收获，分享在技术、设计和个人发展方面的心得体会与未来规划...",
+      "body": "# 2024 年终总结与展望\n\n转眼又到了年末。写这篇总结，既是给自己的交代，也是给未来的自己留一份坐标。\n\n## 关于学习\n\n这一年最大的变化，是从看教程变成了做东西。开始接触 Windows 与 Linux 双系统下的日常开发，也第一次完整地把一个网页项目从设计、编码到部署走通——也就是你现在正在看的这个博客。\n\n过程中踩了不少坑：样式表级联顺序、TLS 证书吊销检查、GitHub Pages 的仓库命名规则……每一个都让我对工程这件事多了一分敬畏。\n\n## 关于设计与审美\n\n被 Material You 的设计哲学吸引：颜色不应该是拍脑袋定的，而应该是一套可计算的系统。\n\n> 好的设计不是视觉上的美感，而是功能与形式的完美统一。\n\n## 关于生活\n\n学习之余，依旧热爱音乐与游戏。BanG Dream 的曲子陪我度过了很多个写代码的夜晚。\n\n## 展望 2025\n\n- 把博客做成真正的作品：更多文章、更完整的交互\n- 深入 Web 开发，尝试更多框架与工具链\n- 保持好奇，保持创作，保持热爱\n\n新的一年，继续加油。✨"
+    }
+  ]
+}
