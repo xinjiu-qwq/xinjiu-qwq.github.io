@@ -476,11 +476,18 @@ async function gitCommitPush(msg) {
         committed = true;
     }
 
-    // 推送(加上 --no-revoke 以绕过 Windows 证书吊销检查问题)
+    // 推送前先同步远端(解决 rejected / fetch first)
+    const G = ['-c', 'http.schannelCheckRevoke=false'];
+    const pull = await run('git', G.concat(['pull', '--rebase', '--autostash', 'origin', 'main']));
+    if (pull.code !== 0 && !/Already up to date|up to date/.test(pull.stdout)) {
+        return { ok: false, error: 'git pull 失败(可能需要处理冲突): ' + pull.stderr + pull.stdout };
+    }
+
+    // 推送
     const push = await run('git', ['-c', 'http.schannelCheckRevoke=false', 'push']);
     if (push.code !== 0) return { ok: false, error: 'git push 失败: ' + push.stderr };
 
-    return { ok: true, committed: committed, message: committed ? msg : '无改动可提交' };
+    return { ok: true, committed: committed, message: committed ? msg : (diff.code !== 0 ? '已更新' : '无改动可提交') };
 }
 
 /* 单次提交推送(供手动触发) */
