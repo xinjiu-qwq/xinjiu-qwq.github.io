@@ -218,10 +218,11 @@
     <script>
         // ================================================================
         // 管理后台逻辑
-        // 数据模型:一篇文章 = { id, title, date, read_minutes, tags[], excerpt, body }
+                // 数据模型:一篇文章 = { id, title, date, read_minutes, tags[], excerpt, body }
         // 通过本地服务 admin-server.js 提供的 /api/... 接口读写与发布
         // ================================================================
-        const API_BASE = 'http://127.0.0.1:8788';
+        // API 地址自动取当前页面所在的主机+端口(服务与后台同源,改端口也无需改这里)
+        const API_BASE = window.location.origin;
         let all = [];        // 全部文章
         let currentId = null;  // 当前编辑的文章 id
 
