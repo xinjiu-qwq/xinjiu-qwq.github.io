@@ -8,12 +8,12 @@
 
 ## 第 1 步：部署 OAuth Worker（一次性，约 10 分钟）
 
-准备工作已替你完成（仓库已克隆到 `C:\Users\ADMIN\Desktop\decap-proxy`，`wrangler.toml` 已生成）。
+准备工作已替你完成（仓库已克隆到 `C:\Users\ADMIN\Desktop\1\decap-proxy`，`wrangler.toml` 已生成）。
 
 在 PowerShell 中执行：
 
 ```powershell
-cd C:\Users\ADMIN\Desktop\decap-proxy
+cd C:\Users\ADMIN\Desktop\1\decap-proxy
 npx wrangler login          # 会打开浏览器，登录你的 Cloudflare 账号授权
 npx wrangler secret put GITHUB_OAUTH_ID       # 提示输入时粘贴 OAuth App 的 Client ID（第 2 步创建）
 npx wrangler secret put GITHUB_OAUTH_SECRET   # 粘贴 Client Secret
@@ -77,4 +77,4 @@ git push
 - **登录后报错 / 一直转圈**：确认 OAuth App 的回调地址与 Worker 的 `/callback` 完全一致（无多余斜杠）。
 - **想用自定义域名**：Cloudflare 控制台 → Workers → 你的 Worker → Settings → Domains & Routes → Add 绑定 `auth.你的域名.com`，并把 OAuth App 回调地址和 config.yml 的 base_url 同步改为 `https://auth.你的域名.com`。
 - **后台能登录但保存失败**：确认 GitHub 账号对该仓库有写权限（OAuth 登录用户必须是仓库成员/owner）。
-- **不再需要本地方案**：`C:\Users\ADMIN\Desktop\1\oauth-server` 目录可以删除。
+- **不再需要本地方案**：`C:\Users\ADMIN\Desktop\1\blog\oauth-server` 目录可以删除。

@@ -35,7 +35,7 @@
 - `source` 分支：Hexo 源码（后台编辑的对象）
 - `main` 分支：构建后的静态网站（GitHub Pages 服务）
 - `.github/workflows/deploy.yml`：自动构建部署工作流
-- Cloudflare Worker：OAuth 认证代理（源码在 `C:\Users\ADMIN\Desktop\decap-proxy`，用 wrangler 管理）
+- Cloudflare Worker：OAuth 认证代理（源码在 `C:\Users\ADMIN\Desktop\1\decap-proxy`，用 wrangler 管理）
 - 旧的本地方案目录 `oauth-server/` 已不再需要，可删除
 
 ## 可选：绑定自定义域名给 Worker
