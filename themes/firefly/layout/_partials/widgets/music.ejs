@@ -24,7 +24,10 @@
     <% } else if (theme.music.mode === 'local' && theme.music.local && theme.music.local.playlist) { %>
       <div id="aplayer-local" class="aplayer"></div>
       <script>
-        window.__LOCAL_PLAYLIST = <%- JSON.stringify(theme.music.local.playlist) %>;
+        window.__LOCAL_PLAYLIST = <%- JSON.stringify(theme.music.local.playlist.map(function(item) {
+          var copy = { name: item.name, artist: item.artist, url: url_for(item.url), cover: item.cover ? url_for(item.cover) : '', lrc: item.lrc || '' };
+          return copy;
+        })) %>;
       </script>
     <% } %>
   </div>
