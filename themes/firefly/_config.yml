@@ -555,8 +555,8 @@ music:
   show_in_navbar: true
   # MetingJS 在线音乐设置
   meting:
-    # 自定义 API 地址（留空使用默认）
-    api: ""
+    # 自定义 API 地址（留空使用默认；默认 api.i-meto.com 常被 403，改用 injahow）
+    api: "https://api.injahow.cn/meting/"
     # 音乐平台，可选：netease（网易云）, tencent（QQ音乐）, kugou（酷狗）, xiami, baidu
     server: "netease"
     # 类型，可选：playlist（歌单）, album（专辑）, artist（歌手）, song（单曲）
