@@ -596,50 +596,9 @@ var busuanziEnable = themeConfig.analytics && themeConfig.analytics.busuanzi !==
       }
     }
 
-    // 2. Busuanzi fallback for visitor / pageview stats
-    setTimeout(function() {
-      var uvEl = document.getElementById('busuanzi_value_site_uv');
-      var pvEl = document.getElementById('busuanzi_value_site_pv');
-      
-      var isLocal = window.location.hostname === 'localhost' || 
-                     window.location.hostname === '127.0.0.1' || 
-                     window.location.protocol === 'file:';
-      
-      // UV fallback
-      if (uvEl && (uvEl.textContent === '-' || uvEl.textContent === '' || isLocal)) {
-        var localUv = localStorage.getItem('site_uv');
-        if (!localUv) {
-          localUv = Math.floor(Math.random() * 500) + 1200; // Realistic starting number
-        } else {
-          localUv = parseInt(localUv, 10);
-        }
-        // Increment UV once per session
-        if (!sessionStorage.getItem('uv_session_counted')) {
-          localUv += 1;
-          sessionStorage.setItem('uv_session_counted', 'true');
-          localStorage.setItem('site_uv', localUv);
-        }
-        uvEl.textContent = localUv;
-        var uvContainer = document.getElementById('busuanzi_container_site_uv');
-        if (uvContainer) uvContainer.style.display = 'inline';
-      }
-      
-      // PV fallback
-      if (pvEl && (pvEl.textContent === '-' || pvEl.textContent === '' || isLocal)) {
-        var localPv = localStorage.getItem('site_pv');
-        if (!localPv) {
-          localPv = Math.floor(Math.random() * 2000) + 3800; // Realistic starting number
-        } else {
-          localPv = parseInt(localPv, 10);
-        }
-        // Increment PV on every load
-        localPv += 1;
-        localStorage.setItem('site_pv', localPv);
-        pvEl.textContent = localPv;
-        var pvContainer = document.getElementById('busuanzi_container_site_pv');
-        if (pvContainer) pvContainer.style.display = 'inline';
-      }
-    }, 1500);
+    // 2. Busuanzi real visitor / pageview stats.
+    //    The localStorage fake-number fallback has been disabled — only the
+    //    real busuanzi counts are shown (stays '-' if busuanzi is unavailable).
   });
 </script>
 
