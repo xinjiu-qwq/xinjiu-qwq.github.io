@@ -13,6 +13,7 @@ const cardTransparentOpacity = theme.wallpaper.overlay && theme.wallpaper.overla
   <%- partial('_partials/head') %>
 </head>
 <body class="min-h-screen <%- is_home() ? 'is-home' : '' %> <%- theme.nav && theme.nav.sticky !== false ? 'sticky-navbar' : '' %> <%- theme.cards && theme.cards.border !== false ? 'enable-card-border' : '' %> <%- theme.cards && theme.cards.follow_theme_hue ? 'card-follow-theme-hue' : '' %>" style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: <%= configHue %>; --page-width: <%= PAGE_WIDTH %>rem;">
+  <%- partial('_partials/preloader') %>
   <script>
     (function() {
       var BANNER_HEIGHT_EXTEND = <%- BANNER_HEIGHT_EXTEND %>;

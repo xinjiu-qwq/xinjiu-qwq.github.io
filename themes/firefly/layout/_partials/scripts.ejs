@@ -643,4 +643,26 @@ var busuanziEnable = themeConfig.analytics && themeConfig.analytics.busuanzi !==
   });
 </script>
 
+<!-- Site Preloader: reveal page once fonts/icons are ready (or after a safety delay) -->
+<script>
+  (function() {
+    var pre = document.getElementById('site-preloader');
+    if (!pre) return;
+    var revealed = false;
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      pre.classList.add('hide');
+      document.body.style.overflow = '';
+    }
+    document.body.style.overflow = 'hidden';
+    var safety = setTimeout(reveal, 6000);
+    function done() { clearTimeout(safety); setTimeout(reveal, 80); }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(done);
+    }
+    window.addEventListener('load', done);
+  })();
+</script>
+
 
