@@ -203,14 +203,14 @@ post_list_layout:
 # ============================================================
 social:
   - name: "GitHub"
-    icon: "gite"
+    icon: "github"
     url: "https://github.com/xinjiu-qwq"
   - name: "Email"
     icon: "mail"
-    url: "mailto:example@email.com"
-  - name: "RSS"
-    icon: "rss_feed"
-    url: "/rss/"
+    url: "mailto:zznx2020@outlook.com"
+  - name: "QQ"
+    icon: "qq"
+    url: "https://wpa.qq.com/msgrd?v=3&uin=3334701802&site=qq&menu=yes"
 
 # ============================================================
 #  导航栏 Logo (对应模板中 theme.logo.*)
