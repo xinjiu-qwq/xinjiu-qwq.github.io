@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>[軟體推薦]Fluxdown</title>
+      <link href="/2026/08/26/%E8%BB%9F%E9%AB%94%E6%8E%A8%E8%96%A6-fluxdown/"/>
+      <url>/2026/08/26/%E8%BB%9F%E9%AB%94%E6%8E%A8%E8%96%A6-fluxdown/</url>
+      
+        <content type="html"><![CDATA[<h2 id="如題及其名字，今天推薦的是一款下載器。"><a href="#如題及其名字，今天推薦的是一款下載器。" class="headerlink" title="如題及其名字，今天推薦的是一款下載器。"></a>如題及其名字，今天推薦的是一款下載器。</h2><p><a href="https://fluxdown.zerx.dev/">🔗鏈接 </a> 這個鏈接可以直達他的官網，并且這個項目在GitHub上開源，收穫了2.6K⭐。</p><p><img src="/img/1-1.png" title="fluxdown軟體截圖"></p><ul><li>這個軟件最强大的地方在於 大部分下載鏈接都可直接解析下載，并且效率高，拆分下載媲美IDM，Rust語言編寫，輕量占用低，支持斷點續傳等。</li><li>當然，開源項目，插件必然也是一大亮點。可以通過安裝插件實現使用<a href="https://gh-proxy.org/">gh-proxy</a>給下載項加速,百度網盤解析……等等</li><li>最近推出了部分雲端相關的收費服務，有興趣的也可以嘗試（還有贊助挂名字的環節等等） 軟體本身也是足夠用了</li><li>在使用之餘 也可以給作者⭐表示支持</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> Tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 軟體推薦 </tag>
+            
+            <tag> 技術 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>欢迎来到歆九的博客</title>
       <link href="/2026/08/26/welcome/"/>
       <url>/2026/08/26/welcome/</url>
