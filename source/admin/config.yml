@@ -6,9 +6,9 @@ backend:
   name: github
   repo: xinjiu-qwq/xinjiu-qwq.github.io
   branch: source
-  # 本地认证服务地址 (运行 npx netlify-cms-oauth-provider-node 后生效)
+  # 本地认证服务地址 (运行 npm start 于 oauth-server 目录后生效)
   base_url: http://localhost:8080
-  auth_endpoint: oauth/authorize
+  auth_endpoint: auth
 
 locale: zh_Hans
 

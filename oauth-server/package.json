@@ -1,0 +1,12 @@
+{
+  "name": "decap-oauth-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Decap CMS 本地 OAuth 认证服务 (用于 GitHub Pages 上的 /admin/ 后台登录)",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "netlify-cms-oauth-provider-node": "^2.0.0"
+  }
+}
