@@ -1,0 +1,113 @@
+<h1 id="Spine-看板娘功能使用指南"><a href="#Spine-看板娘功能使用指南" class="headerlink" title="Spine 看板娘功能使用指南"></a>Spine 看板娘功能使用指南</h1><h2 id="功能说明"><a href="#功能说明" class="headerlink" title="功能说明"></a>功能说明</h2><p>此功能为博客添加了一个可配置的 Spine 动画看板娘，可以显示在页面的角落位置。</p>
+<h2 id="配置选项"><a href="#配置选项" class="headerlink" title="配置选项"></a>配置选项</h2><p>在 <code>src/config.ts</code> 文件中的 <code>spineModelConfig</code> 对象包含以下配置选项：</p>
+<pre><code class="language-typescript">export const spineModelConfig: SpineModelConfig = {
+  enable: false, // 是否启用看板娘（默认关闭）
+  model: {
+    path: &quot;/pio/models/shizuku/shizuku.model.json&quot;, // 模型文件路径
+    scale: 1.0, // 模型缩放比例
+    x: 0, // X轴偏移
+    y: 0, // Y轴偏移
+  },
+  position: {
+    corner: &quot;bottom-right&quot;, // 显示位置: &quot;bottom-left&quot; | &quot;bottom-right&quot; | &quot;top-left&quot; | &quot;top-right&quot;
+    offsetX: 20, // 距离边缘的X轴偏移（像素）
+    offsetY: 20, // 距离边缘的Y轴偏移（像素）
+  },
+  size: {
+    width: 280, // 容器宽度（像素）
+    height: 400, // 容器高度（像素）
+  },
+  interactive: {
+    enabled: true, // 是否启用交互功能
+    clickAnimation: &quot;tap_body&quot;, // 点击时播放的动画名称
+    idleAnimations: [&quot;idle&quot;], // 待机动画列表
+    idleInterval: 10000, // 待机动画切换间隔（毫秒）
+  },
+  responsive: {
+    hideOnMobile: true, // 是否在移动端隐藏
+    mobileBreakpoint: 768, // 移动端断点（像素）
+  },
+  zIndex: 1000, // CSS 层级
+  opacity: 1.0, // 透明度（0.0-1.0）
+};
+</code></pre>
+<h2 id="文件结构要求"><a href="#文件结构要求" class="headerlink" title="文件结构要求"></a>文件结构要求</h2><p>要使用此功能，您需要准备以下文件：</p>
+<h3 id="1-Spine-运行时库"><a href="#1-Spine-运行时库" class="headerlink" title="1. Spine 运行时库"></a>1. Spine 运行时库</h3><p>将 Spine 运行时 JavaScript 文件放置在：</p>
+<ul>
+<li><code>public/pio/static/spine-player.js</code></li>
+</ul>
+<p>您可以从以下来源获取：</p>
+<ul>
+<li><a href="http://esotericsoftware.com/spine-runtimes">Spine官方运行时</a></li>
+<li><a href="https://github.com/EsotericSoftware/spine-runtimes/tree/4.1/spine-ts">spine-ts运行时</a></li>
+</ul>
+<h3 id="2-Spine-模型文件"><a href="#2-Spine-模型文件" class="headerlink" title="2. Spine 模型文件"></a>2. Spine 模型文件</h3><p>将您的 Spine 模型文件放置在：</p>
+<ul>
+<li><code>public/pio/models/[模型名称]/</code></li>
+</ul>
+<p>每个模型需要包含以下文件：</p>
+<ul>
+<li><code>[模型名称].json</code> - Spine 骨骼数据文件</li>
+<li><code>[模型名称].atlas</code> - 纹理图集文件  </li>
+<li><code>[模型名称].png</code> - 纹理图像文件</li>
+</ul>
+<p>例如，对于默认的 shizuku 模型：</p>
+<ul>
+<li><code>public/pio/models/shizuku/shizuku.json</code></li>
+<li><code>public/pio/models/shizuku/shizuku.atlas</code></li>
+<li><code>public/pio/models/shizuku/shizuku.png</code></li>
+</ul>
+<h2 id="启用步骤"><a href="#启用步骤" class="headerlink" title="启用步骤"></a>启用步骤</h2><ol>
+<li><p><strong>准备 Spine 文件</strong>：将必要的文件按照上述结构放置在 <code>public/pio/</code> 目录中</p>
+</li>
+<li><p><strong>修改配置</strong>：在 <code>src/config.ts</code> 中将 <code>spineModelConfig.enable</code> 设置为 <code>true</code></p>
+</li>
+<li><p><strong>自定义设置</strong>：根据您的需求调整其他配置选项</p>
+</li>
+<li><p><strong>测试功能</strong>：重新构建并启动项目，查看看板娘是否正常显示</p>
+</li>
+</ol>
+<h2 id="动画配置"><a href="#动画配置" class="headerlink" title="动画配置"></a>动画配置</h2><h3 id="点击动画"><a href="#点击动画" class="headerlink" title="点击动画"></a>点击动画</h3><p>设置 <code>clickAnimation</code> 为您模型中存在的动画名称，用户点击看板娘时会播放此动画。</p>
+<h3 id="待机动画"><a href="#待机动画" class="headerlink" title="待机动画"></a>待机动画</h3><p>在 <code>idleAnimations</code> 数组中添加多个动画名称，系统会按照设定的间隔随机播放这些动画。</p>
+<h3 id="常见动画名称参考"><a href="#常见动画名称参考" class="headerlink" title="常见动画名称参考"></a>常见动画名称参考</h3><ul>
+<li><code>idle</code> - 待机动画</li>
+<li><code>tap_body</code> - 点击身体</li>
+<li><code>tap_head</code> - 点击头部  </li>
+<li><code>shake</code> - 摇摆动画</li>
+<li><code>flick_head</code> - 轻拍头部</li>
+</ul>
+<p>（具体动画名称取决于您的 Spine 模型文件）</p>
+<h2 id="响应式设计"><a href="#响应式设计" class="headerlink" title="响应式设计"></a>响应式设计</h2><ul>
+<li>默认在移动端隐藏看板娘以提高性能</li>
+<li>可以通过 <code>hideOnMobile</code> 和 <code>mobileBreakpoint</code> 配置响应式行为</li>
+<li>支持窗口大小变化时的动态显示&#x2F;隐藏</li>
+</ul>
+<h2 id="故障排除"><a href="#故障排除" class="headerlink" title="故障排除"></a>故障排除</h2><h3 id="看板娘不显示"><a href="#看板娘不显示" class="headerlink" title="看板娘不显示"></a>看板娘不显示</h3><ol>
+<li>检查 <code>enable</code> 是否设置为 <code>true</code></li>
+<li>确认模型文件路径是否正确</li>
+<li>检查浏览器控制台是否有错误信息</li>
+<li>验证 Spine 运行时文件是否正确加载</li>
+</ol>
+<h3 id="动画不播放"><a href="#动画不播放" class="headerlink" title="动画不播放"></a>动画不播放</h3><ol>
+<li>检查动画名称是否与模型文件中的动画匹配</li>
+<li>确认模型文件是否包含所需的动画数据</li>
+<li>查看浏览器控制台的错误信息</li>
+</ol>
+<h3 id="位置或大小问题"><a href="#位置或大小问题" class="headerlink" title="位置或大小问题"></a>位置或大小问题</h3><ol>
+<li>调整 <code>position.offsetX</code> 和 <code>position.offsetY</code> 来微调位置</li>
+<li>修改 <code>size.width</code> 和 <code>size.height</code> 来调整容器大小</li>
+<li>使用 <code>model.scale</code> 来缩放模型本身</li>
+</ol>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>Spine 模型文件可能较大，建议优化文件大小以提高加载速度</li>
+<li>在移动端默认隐藏以节省带宽和提高性能</li>
+<li>确保您有使用 Spine 模型的适当许可证</li>
+<li>某些浏览器可能需要用户交互后才能播放动画</li>
+</ul>
+<h2 id="获取-Spine-模型"><a href="#获取-Spine-模型" class="headerlink" title="获取 Spine 模型"></a>获取 Spine 模型</h2><p>您可以从以下渠道获取或制作 Spine 模型：</p>
+<ul>
+<li><a href="http://esotericsoftware.com/">Spine官方网站</a></li>
+<li>各种开源 Live2D&#x2F;Spine 模型资源</li>
+<li>自制或委托制作</li>
+</ul>
+<p>请确保您有合法使用权限的模型文件。</p>

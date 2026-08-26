@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>欢迎来到歆九的博客</title>
+      <link href="/2026/08/26/welcome/"/>
+      <url>/2026/08/26/welcome/</url>
+      
+        <content type="html"><![CDATA[<p>🎉 欢迎来到 <strong>歆九的博客</strong>！</p><p>这个博客使用 <a href="https://hexo.io/">Hexo</a> 构建，采用了 <a href="https://github.com/LKDenchin/hexo-theme-firefly">Firefly</a> 主题，部署在 GitHub Pages 上。</p><h2 id="关于这个博客"><a href="#关于这个博客" class="headerlink" title="关于这个博客"></a>关于这个博客</h2><p>这里会记录：</p><ul><li>💻 技术学习笔记与踩坑记录</li><li>📖 读书笔记与思考</li><li>🎬 动漫、音乐与生活的碎碎念</li></ul><h2 id="如何发布新文章"><a href="#如何发布新文章" class="headerlink" title="如何发布新文章"></a>如何发布新文章</h2><p>在博客目录下执行：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx hexo new <span class="string">&quot;文章标题&quot;</span></span><br></pre></td></tr></table></figure><p>编写完成后：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx hexo clean &amp;&amp; npx hexo generate &amp;&amp; npx hexo deploy</span><br></pre></td></tr></table></figure><p>一切就绪，开始写作吧！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+            <tag> 博客 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>

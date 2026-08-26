@@ -1,0 +1,532 @@
+/* ============================================================
+   code.css
+   Code highlighting and code block UI for Firefly Hexo theme
+   ============================================================ */
+
+/* Enforce monospace font stack on all code elements */
+pre, code, 
+.code-block-wrapper, 
+.code-block-wrapper pre, 
+.code-block-wrapper code, 
+.hljs,
+.hljs-ln, 
+.hljs-ln td,
+.hljs-ln-numbers, 
+.hljs-ln-code, 
+.hljs-ln-line,
+figure.highlight,
+figure.highlight pre,
+figure.highlight code,
+figure.highlight td {
+  font-family: var(--font-mono) !important;
+}
+
+/* Hexo figure.highlight wrapper */
+figure.highlight {
+  margin: 1rem 0;
+  border-left: 3px solid var(--primary);
+  background: var(--btn-regular-bg);
+  position: relative;
+}
+figure.highlight table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+figure.highlight .gutter {
+  width: 2.5rem;
+  text-align: right;
+  padding: 0 0.75rem 0 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
+}
+figure.highlight .gutter pre {
+  padding: 1.25rem 0;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.3);
+  background: transparent;
+  margin: 0;
+}
+figure.highlight .code {
+  padding: 0;
+}
+figure.highlight .code pre {
+  padding: 1.25rem 0 1.25rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #abb2bf;
+  background: transparent;
+  margin: 0;
+  overflow-x: auto;
+}
+
+/* Code block wrapper (for our JS-injected wrapper) */
+.code-block-wrapper {
+  position: relative;
+  margin: 1.5rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line-divider);
+  background: oklch(0.18 0.015 var(--hue)); /* Premium dark slate background */
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-medium);
+}
+.code-block-wrapper pre {
+  margin: 0;
+  padding: 1.25rem 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #abb2bf; /* Monokai/OneDark style code color */
+}
+.code-block-wrapper figure.highlight {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Language badge */
+.code-language-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  background: oklch(0.22 0.08 var(--hue) / 0.5);
+  border: 1px solid oklch(0.65 0.18 var(--hue) / 0.3);
+  border-radius: 6px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: oklch(0.70 0.18 var(--hue));
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+  z-index: 4;
+}
+
+/* Copy button */
+.code-copy-btn {
+  position: absolute;
+  top: 0.65rem;
+  right: 0.75rem; /* Matches the position of the language badge */
+  padding: 0.25rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid oklch(0.65 0.18 var(--hue) / 0.3);
+  border-radius: 6px;
+  background: oklch(0.22 0.08 var(--hue) / 0.8);
+  color: oklch(0.70 0.18 var(--hue));
+  cursor: pointer;
+  transition: all var(--duration-fast);
+  opacity: 0;
+  z-index: 5;
+}
+.code-copy-btn .material-symbols-outlined {
+  font-size: 1rem;
+}
+.code-block-wrapper:hover .code-copy-btn { opacity: 1; }
+.code-block-wrapper:hover .code-language-badge { opacity: 0; pointer-events: none; }
+.code-copy-btn:hover { color: #fff; border-color: var(--primary); background: var(--primary); }
+.code-copy-btn.copied { color: oklch(0.65 0.15 140); border-color: oklch(0.65 0.15 140 / 0.6); }
+
+/* Header styling for file titles & terminal dots */
+.code-block-header {
+  height: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+.code-header-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: 100%;
+  border-bottom: 2px solid var(--primary);
+  box-sizing: border-box;
+  padding: 0 0.25rem;
+}
+.code-header-tab-title {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: #fff;
+  font-family: var(--font-mono);
+}
+.code-header-tab-icon {
+  font-size: 1rem;
+  color: var(--primary);
+}
+.code-header-terminal {
+  display: flex;
+  gap: 0.375rem;
+}
+.terminal-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+}
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.code-header-actions {
+  display: flex;
+  align-items: center;
+}
+.code-header-expand-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: color var(--duration-fast);
+}
+.code-header-expand-btn:hover {
+  color: var(--primary);
+}
+.code-header-expand-btn .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+/* Collapsible Code Blocks */
+.code-collapsible.collapsed {
+  max-height: 260px;
+}
+.code-collapsible.collapsed table.hljs-ln {
+  max-height: 200px;
+  overflow: hidden;
+  display: block;
+}
+.code-expand-pill-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4.5rem;
+  background: linear-gradient(to bottom, transparent, oklch(0.18 0.015 var(--hue)));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.50rem;
+  z-index: 3;
+  box-sizing: border-box;
+}
+.code-collapsible.expanded .code-expand-pill-wrapper {
+  position: relative;
+  height: 3.5rem;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+.code-expand-pill-btn {
+  background: oklch(0.22 0.08 var(--hue));
+  border: 1px solid oklch(0.65 0.18 var(--hue) / 0.3);
+  color: oklch(0.70 0.18 var(--hue));
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all var(--duration-fast);
+}
+.code-expand-pill-btn:hover {
+  background: oklch(0.65 0.18 var(--hue) / 0.2);
+  transform: scale(1.05);
+}
+.code-expand-pill-btn .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+/* Line Markers / Annotations & Diff Styles */
+.code-line-ins {
+  background: rgba(76, 175, 80, 0.15) !important;
+  border-left: 3px solid #4caf50;
+}
+.code-line-ins .hljs-ln-numbers {
+  color: #4caf50 !important;
+}
+.code-line-del {
+  background: rgba(244, 67, 54, 0.15) !important;
+  border-left: 3px solid #f44336;
+}
+.code-line-del .hljs-ln-numbers {
+  color: #f44336 !important;
+}
+.code-line-mark {
+  background: rgba(33, 150, 243, 0.15) !important;
+  border-left: 3px solid #2196f3;
+}
+.code-line-mark .hljs-ln-numbers {
+  color: #2196f3 !important;
+}
+
+.hljs-ln-numbers {
+  position: relative;
+}
+.hljs-ln-numbers[data-marker]::after {
+  content: attr(data-marker);
+  position: absolute;
+  right: 0.25rem;
+  font-weight: bold;
+  font-size: 0.8125rem;
+}
+
+/* Banner Labels (// 1. Label) */
+.code-line-label {
+  background: var(--banner-bg) !important;
+  border-left: 3px solid var(--banner-border);
+}
+.code-line-label.label-blue {
+  --banner-bg: rgba(33, 150, 243, 0.2);
+  --banner-border: #2196f3;
+}
+.code-line-label.label-red {
+  --banner-bg: rgba(244, 67, 54, 0.2);
+  --banner-border: #f44336;
+}
+.code-line-label.label-green {
+  --banner-bg: rgba(76, 175, 80, 0.2);
+  --banner-border: #4caf50;
+}
+.code-line-label .hljs-ln-line {
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.5rem !important;
+}
+.code-line-label .hljs-ln-numbers {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Highlight.js themes integration */
+pre code.hljs { display: block; overflow-x: auto; padding: 1rem; }
+
+/* Reset markdown table styling on highlight.js line numbers tables */
+.markdown-body table.hljs-ln {
+  border: none !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  margin: 0 !important;
+  width: 100% !important;
+  box-shadow: none !important;
+}
+.markdown-body table.hljs-ln tr {
+  border: none !important;
+  background: transparent !important;
+}
+.markdown-body table.hljs-ln td {
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Diff / line numbers */
+/* Diff / line numbers */
+.hljs-ln {
+  width: 100%;
+  border-collapse: collapse;
+}
+.hljs-ln td {
+  padding: 0;
+  vertical-align: top;
+}
+.hljs-ln-numbers {
+  text-align: right;
+  color: rgba(255, 255, 255, 0.3) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding-right: 0.75rem !important;
+  width: 2.25rem;
+  user-select: none;
+  border-radius: 0 !important;
+  border: none !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.hljs-ln-code {
+  padding-left: 1rem !important;
+}
+
+/* ============================================================
+   Syntax Highlighting Colors (OKLCH-based)
+   Supports Hexo server-side highlight and Highlight.js classes
+   ============================================================ */
+
+/* Comments & punctuation */
+figure.highlight .comment,
+.hljs-comment,
+figure.highlight .quote,
+.hljs-quote {
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+/* Keywords */
+figure.highlight .keyword,
+.hljs-keyword,
+figure.highlight .selector-tag,
+.hljs-selector-tag,
+figure.highlight .addition,
+.hljs-addition {
+  color: oklch(0.55 0.18 10); /* rich red/pink */
+  font-weight: 600;
+}
+.dark figure.highlight .keyword,
+.dark .hljs-keyword,
+.dark figure.highlight .selector-tag,
+.dark .hljs-selector-tag,
+.dark figure.highlight .addition,
+.dark .hljs-addition {
+  color: oklch(0.70 0.16 10); /* bright red/pink */
+}
+
+/* Strings */
+figure.highlight .string,
+.hljs-string,
+figure.highlight .meta .string,
+.hljs-meta .string,
+figure.highlight .doctag,
+.hljs-doctag {
+  color: oklch(0.48 0.14 140); /* rich green */
+}
+.dark figure.highlight .string,
+.dark .hljs-string,
+.dark figure.highlight .meta .string,
+.dark .hljs-meta .string,
+.dark figure.highlight .doctag,
+.dark .hljs-doctag {
+  color: oklch(0.75 0.14 140); /* bright green */
+}
+
+/* Numbers & Literals */
+figure.highlight .number,
+.hljs-number,
+figure.highlight .literal,
+.hljs-literal,
+figure.highlight .variable,
+.hljs-variable,
+figure.highlight .template-variable,
+.hljs-template-variable {
+  color: oklch(0.50 0.15 65); /* rich orange/yellow */
+}
+.dark figure.highlight .number,
+.dark .hljs-number,
+.dark figure.highlight .literal,
+.dark .hljs-literal,
+.dark figure.highlight .variable,
+.dark .hljs-variable,
+.dark figure.highlight .template-variable,
+.dark .hljs-template-variable {
+  color: oklch(0.72 0.15 65); /* bright orange */
+}
+
+/* Titles, Function Names, Classes */
+figure.highlight .title,
+.hljs-title,
+figure.highlight .attr,
+.hljs-attr,
+figure.highlight .attribute,
+.hljs-attribute,
+figure.highlight .section,
+.hljs-section,
+figure.highlight .name,
+.hljs-name {
+  color: oklch(0.48 0.16 260); /* rich blue */
+}
+.dark figure.highlight .title,
+.dark .hljs-title,
+.dark figure.highlight .attr,
+.dark .hljs-attr,
+.dark figure.highlight .attribute,
+.dark .hljs-attribute,
+.dark figure.highlight .section,
+.dark .hljs-section,
+.dark figure.highlight .name,
+.dark .hljs-name {
+  color: oklch(0.72 0.14 260); /* bright blue */
+}
+
+/* Built-ins, Types */
+figure.highlight .built_in,
+.hljs-built_in,
+figure.highlight .type,
+.hljs-type,
+figure.highlight .class,
+.hljs-class,
+figure.highlight .selector-class,
+.hljs-selector-class,
+figure.highlight .selector-id,
+.hljs-selector-id {
+  color: oklch(0.46 0.15 200); /* rich teal/cyan */
+}
+.dark figure.highlight .built_in,
+.dark .hljs-built_in,
+.dark figure.highlight .type,
+.dark .hljs-type,
+.dark figure.highlight .class,
+.dark .hljs-class,
+.dark figure.highlight .selector-class,
+.dark .hljs-selector-class,
+.dark figure.highlight .selector-id,
+.dark .hljs-selector-id {
+  color: oklch(0.70 0.15 200); /* bright teal */
+}
+
+/* Regexp & Special Characters */
+figure.highlight .regexp,
+.hljs-regexp,
+figure.highlight .link,
+.hljs-link,
+figure.highlight .meta,
+.hljs-meta,
+figure.highlight .symbol,
+.hljs-symbol,
+figure.highlight .bullet,
+.hljs-bullet {
+  color: oklch(0.48 0.16 330); /* rich magenta */
+}
+.dark figure.highlight .regexp,
+.dark .hljs-regexp,
+.dark figure.highlight .link,
+.dark .hljs-link,
+.dark figure.highlight .meta,
+.dark .hljs-meta,
+.dark figure.highlight .symbol,
+.dark .hljs-symbol,
+.dark figure.highlight .bullet,
+.dark .hljs-bullet {
+  color: oklch(0.72 0.16 330); /* bright magenta */
+}
+
+/* Deletions (diff blocks) */
+figure.highlight .deletion,
+.hljs-deletion {
+  color: oklch(0.50 0.18 20); /* rich dark red */
+  background: oklch(0.50 0.18 20 / 0.1);
+  display: inline-block;
+  width: 100%;
+}
+.dark figure.highlight .deletion,
+.dark .hljs-deletion {
+  color: oklch(0.70 0.16 20); /* bright red */
+  background: oklch(0.70 0.16 20 / 0.15);
+}

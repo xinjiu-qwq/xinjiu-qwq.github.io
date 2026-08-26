@@ -1,0 +1,1367 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-wallpaper-mode="banner" style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: 165; --page-width: 100rem;">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+
+<title>歆九的博客</title>
+
+
+<meta name="description" content="歆九的个人博客，分享技术、生活与思考">
+
+
+<meta name="keywords" content="Hexo,Blog,Firefly,歆九">
+
+
+<meta name="author" content="歆九">
+
+
+<!-- Open Graph -->
+<meta property="og:title" content="歆九的博客">
+<meta property="og:description" content="歆九的个人博客，分享技术、生活与思考">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://xinjiu-qwq.github.io">
+<meta property="og:site_name" content="歆九的博客">
+
+<meta property="og:image" content="/img/favicon.ico">
+
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="歆九的博客">
+<meta name="twitter:description" content="歆九的个人博客，分享技术、生活与思考">
+
+<meta name="twitter:image" content="/img/favicon.ico">
+
+
+<!-- Favicon -->
+
+  
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon.ico">
+  
+  
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon.ico">
+  
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico">
+  
+  
+  
+  
+
+
+<!-- Local Fonts Preload -->
+<link rel="preload" href="/fonts/JetBrainsMono-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/JetBrainsMono-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Quicksand-Bold.woff2" as="font" type="font/woff2" crossorigin>
+
+<!-- CSS -->
+
+<link rel="stylesheet" href="/css/main.css?v=2026061801">
+<link rel="stylesheet" href="/css/layout.css?v=2026061801">
+<link rel="stylesheet" href="/css/navbar.css?v=2026061801">
+<link rel="stylesheet" href="/css/banner.css?v=2026061801">
+<link rel="stylesheet" href="/css/cards.css?v=2026061801">
+<link rel="stylesheet" href="/css/post.css?v=2026061801">
+<link rel="stylesheet" href="/css/markdown.css?v=2026061801">
+<link rel="stylesheet" href="/css/code.css?v=2026061801">
+<link rel="stylesheet" href="/css/widgets.css?v=2026061801">
+<link rel="stylesheet" href="/css/toc.css?v=2026061801">
+<link rel="stylesheet" href="/css/search.css?v=2026061801">
+<link rel="stylesheet" href="/css/comments.css?v=2026061801">
+<link rel="stylesheet" href="/css/effects.css?v=2026061801">
+<link rel="stylesheet" href="/css/scrollbar.css?v=2026061801">
+<link rel="stylesheet" href="/css/display-settings.css?v=2026061801">
+<link rel="stylesheet" href="/css/dynamic.css?v=2026061801">
+<link rel="stylesheet" href="/css/water-waves.css?v=2026061801">
+<link rel="stylesheet" href="/css/responsive.css?v=2026061801">
+
+
+<!-- Font Awesome 6 (Brand Icons for social media) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
+
+<!-- Analytics -->
+
+
+
+
+
+
+
+
+<!-- RSS -->
+
+<link rel="alternate" href="/atom.xml" title="歆九的博客" type="application/atom+xml">
+
+
+<!-- Typewriter CSS -->
+
+
+<!-- Material Symbols Font Preloading -->
+<link rel="preload" href="/fonts/MaterialSymbolsOutlined.woff2" as="font" type="font/woff2" crossorigin>
+
+<!-- Additional Font Preloading -->
+
+
+<!-- Canonical URL -->
+<link rel="canonical" href="https://xinjiu-qwq.github.io">
+
+<!-- No-Referrer Domain Script -->
+
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+<body class="min-h-screen  sticky-navbar enable-card-border " style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: 165; --page-width: 100rem;">
+  <script>
+    (function() {
+      var BANNER_HEIGHT_EXTEND = 6;
+      var configHue = 165;
+      var defaultMode = 'system';
+      var defaultWallpaperMode = 'banner';
+      var wallSwitchable = false;
+      var cardTransparentOpacity = 0.5;
+
+      // 1. Set theme
+      var storedTheme = localStorage.getItem('theme');
+      var themeToApply = storedTheme || defaultMode;
+      if (themeToApply === 'system') {
+        themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      if (themeToApply === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      document.documentElement.setAttribute('data-theme', themeToApply);
+
+      // 2. Set hue
+      var storedHue = localStorage.getItem('hue');
+      var hueToApply = storedHue !== null ? storedHue : configHue;
+      document.documentElement.style.setProperty('--hue', hueToApply);
+
+      // 3. Set wallpaper mode from localStorage or default
+      var storedWallpaper = localStorage.getItem('wallpaperMode');
+      var validModes = ['banner', 'fullscreen', 'overlay', 'none'];
+      var wallpaperModeToApply = validModes.indexOf(storedWallpaper) !== -1 ? storedWallpaper : 'banner';
+      document.documentElement.setAttribute('data-wallpaper-mode', wallpaperModeToApply);
+
+      // 4. Calculate --banner-height-extend
+      var vh = window.innerHeight;
+      var extend = BANNER_HEIGHT_EXTEND * 4;
+      var bannerHeightExtend = extend > vh ? Math.floor(vh / 4) * 4 : extend;
+      if (bannerHeightExtend === 0) bannerHeightExtend = 4;
+      document.documentElement.style.setProperty('--banner-height-extend', bannerHeightExtend + 'px');
+
+      // 5. Apply wallpaper positioning immediately
+      (function applyPos() {
+        var body = document.body;
+        var wrapper = document.getElementById('wallpaper-wrapper');
+        var mainContentWrapper = document.getElementById('main-content-wrapper');
+        var overlayContainer = document.getElementById('banner-overlay-container');
+
+        body.classList.remove('enable-banner', 'no-banner-layout', 'wallpaper-transparent');
+        if (wrapper) wrapper.classList.remove('wallpaper-overlay', 'wallpaper-fullscreen');
+        if (mainContentWrapper) mainContentWrapper.classList.remove('mobile-main-no-banner');
+
+        switch (wallpaperModeToApply) {
+          case 'banner':
+            body.classList.add('enable-banner');
+            if (wrapper) wrapper.style.display = 'block';
+            if (overlayContainer) overlayContainer.style.display = '';
+            if (mainContentWrapper) mainContentWrapper.style.removeProperty('top');
+            break;
+          case 'fullscreen':
+            body.classList.add('enable-banner');
+            if (wrapper) { wrapper.style.display = 'block'; wrapper.classList.add('wallpaper-fullscreen'); }
+            if (overlayContainer) overlayContainer.style.display = '';
+            if (mainContentWrapper) mainContentWrapper.style.removeProperty('top');
+            break;
+          case 'overlay':
+            body.classList.add('wallpaper-transparent');
+            if (wrapper) { wrapper.style.display = 'block'; wrapper.classList.add('wallpaper-overlay'); }
+            if (overlayContainer) overlayContainer.style.display = 'none';
+            if (mainContentWrapper) {
+              mainContentWrapper.style.setProperty('top', '5.5rem', 'important');
+              mainContentWrapper.style.position = '';
+            }
+            break;
+          case 'none':
+            body.classList.add('no-banner-layout');
+            if (wrapper) wrapper.style.display = 'none';
+            if (overlayContainer) overlayContainer.style.display = 'none';
+            if (mainContentWrapper) {
+              mainContentWrapper.style.setProperty('top', '5.5rem', 'important');
+              mainContentWrapper.style.position = '';
+            }
+            break;
+        }
+        if (mainContentWrapper) mainContentWrapper.style.visibility = 'visible';
+      })();
+
+      // 7. Set additional data attributes from localStorage
+      if (localStorage.getItem('wavesEnabled') !== null) {
+        document.documentElement.setAttribute('data-waves-enabled', localStorage.getItem('wavesEnabled'));
+      }
+      if (localStorage.getItem('gradientEnabled') !== null) {
+        document.documentElement.setAttribute('data-gradient-enabled', localStorage.getItem('gradientEnabled'));
+      }
+      if (localStorage.getItem('bannerTitleEnabled') !== null) {
+        document.documentElement.setAttribute('data-banner-title-enabled', localStorage.getItem('bannerTitleEnabled'));
+      }
+      if (localStorage.getItem('sakuraEnabled') !== null) {
+        document.documentElement.setAttribute('data-sakura-enabled', localStorage.getItem('sakuraEnabled'));
+      }
+    })();
+  </script>
+
+  <!-- Navbar -->
+  <div id="top-row" class="z-50 pointer-events-none relative mx-auto w-full xl:w-[92vw] max-w-[var(--page-width)] px-3 md:px-4">
+    <div id="navbar-wrapper" class="pointer-events-auto">
+      
+
+<nav id="navbar"
+     class="navbar sticky transparent"
+     data-transparent="true"
+     role="navigation"
+     aria-label="主导航">
+
+  <div>
+    <div class="navbar-inner">
+    <!-- Left: Logo + Site Title -->
+    <div class="navbar-brand">
+      <a href="/" class="navbar-logo-link" aria-label="歆九的博客 - 首页">
+        
+        <span class="navbar-logo-icon">🍀</span>
+        
+        <span class="navbar-title">歆九的博客</span>
+      </a>
+    </div>
+
+    <!-- Center: Menu Links -->
+    <div class="navbar-menu" id="navbar-menu" role="menubar">
+      <ul class="navbar-links">
+        <!-- Home (LinkPreset.Home) -->
+        <li class="navbar-link-item" role="none">
+          <a href="/" class="navbar-link" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">home</span>
+              <span>首页</span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+
+        <!-- Archive (LinkPreset.Archive) -->
+        <li class="navbar-link-item" role="none">
+          <a href="/archives" class="navbar-link" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">archive</span>
+              <span>归档</span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+
+        <!-- Categories -->
+        <li class="navbar-link-item" role="none">
+          <a href="/categories" class="navbar-link" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">folder</span>
+              <span>分类</span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+
+        <!-- Tags -->
+        <li class="navbar-link-item" role="none">
+          <a href="/tags" class="navbar-link" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">sell</span>
+              <span>标签</span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+
+        <!-- About -->
+        
+        
+        <li class="navbar-link-item" role="none">
+          <a href="/about" class="navbar-link" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">person</span>
+              <span>关于</span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+        
+
+        <!-- Friends -->
+        
+        <li class="navbar-link-item" role="none">
+          <a href="/friends" class="navbar-link" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">group</span>
+              <span>友链</span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+        
+
+        <!-- Custom Nav Links / Dropdown Groups -->
+        
+      </ul>
+    </div>
+
+    <!-- Right Side Buttons -->
+    <div class="navbar-actions" style="position: relative;">
+      <!-- Search Toggle -->
+      <button id="search-toggle" class="navbar-action-btn search-toggle-btn" aria-label="搜索" title="搜索">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+
+      <!-- Music Toggle -->
+      <button id="nav-music-btn" class="navbar-action-btn music-toggle-btn" aria-label="音乐" title="音乐">
+        <span class="material-symbols-outlined">music_note</span>
+      </button>
+
+      <!-- Play / Wallpaper Toggle -->
+      <button id="nav-play-btn" class="navbar-action-btn play-toggle-btn" aria-label="壁纸" title="壁纸">
+        <span class="material-symbols-outlined">play_arrow</span>
+      </button>
+
+      <!-- Display Settings Toggle (Palette Icon) -->
+      <button id="display-settings-toggle" class="navbar-action-btn display-settings-toggle" aria-label="显示设置" title="显示设置">
+        <span class="material-symbols-outlined">palette</span>
+      </button>
+
+      <!-- Theme Toggle (Light/Dark/System) -->
+      <button id="theme-toggle" class="navbar-action-btn theme-switch-btn" aria-label="切换主题" title="切换主题">
+        <span class="material-symbols-outlined theme-icon-light sun-icon">light_mode</span>
+        <span class="material-symbols-outlined theme-icon-dark moon-icon">dark_mode</span>
+      </button>
+
+      <!-- Theme Popover Modal -->
+      <div id="theme-popover" class="theme-popover float-panel closed">
+        <button class="theme-popover-item" data-theme-mode="light">
+          <span class="material-symbols-outlined">light_mode</span>
+          <span>亮色</span>
+        </button>
+        <button class="theme-popover-item" data-theme-mode="dark">
+          <span class="material-symbols-outlined">dark_mode</span>
+          <span>暗色</span>
+        </button>
+        <button class="theme-popover-item" data-theme-mode="system">
+          <span class="material-symbols-outlined">brightness_auto</span>
+          <span>跟随系统</span>
+        </button>
+      </div>
+
+      <!-- Mobile Hamburger Menu -->
+      <button id="mobile-menu-toggle" class="navbar-action-btn mobile-menu-btn" aria-label="切换菜单" aria-expanded="false" aria-controls="navbar-menu">
+        <span class="material-symbols-outlined hamburger-icon">menu</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+</nav>
+
+    </div>
+  </div>
+
+  <!-- Wallpaper / Banner -->
+  
+
+<div id="wallpaper-wrapper">
+  
+  <!-- Banner Mode: Image slides with Ken Burns effect -->
+  <div id="banner-images" class="banner-images-container" data-interval="5000">
+    
+      
+      <div class="banner-image-slide active" data-index="0">
+        
+        <picture>
+          
+          <source media="(max-width: 768px)" srcset="/img/MobileWallpaper/m1.avif">
+          
+          <img src="/img/DesktopWallpaper/d1.avif" alt="Banner 1"
+               class="banner-img banner-img-desktop"
+               data-object-position="center center"
+               loading="eager">
+        </picture>
+        
+      </div>
+      
+      <div class="banner-image-slide" data-index="1">
+        
+        <picture>
+          
+          <source media="(max-width: 768px)" srcset="/img/MobileWallpaper/m2.avif">
+          
+          <img src="/img/DesktopWallpaper/d2.avif" alt="Banner 2"
+               class="banner-img banner-img-desktop"
+               data-object-position="center center"
+               loading="lazy">
+        </picture>
+        
+      </div>
+      
+      <div class="banner-image-slide" data-index="2">
+        
+        <picture>
+          
+          <source media="(max-width: 768px)" srcset="/img/MobileWallpaper/m3.avif">
+          
+          <img src="/img/DesktopWallpaper/d3.avif" alt="Banner 3"
+               class="banner-img banner-img-desktop"
+               data-object-position="center center"
+               loading="lazy">
+        </picture>
+        
+      </div>
+      
+      <div class="banner-image-slide" data-index="3">
+        
+        <picture>
+          
+          <source media="(max-width: 768px)" srcset="/img/MobileWallpaper/m4.avif">
+          
+          <img src="/img/DesktopWallpaper/d4.avif" alt="Banner 4"
+               class="banner-img banner-img-desktop"
+               data-object-position="center center"
+               loading="lazy">
+        </picture>
+        
+      </div>
+      
+      <div class="banner-image-slide" data-index="4">
+        
+        <picture>
+          
+          <source media="(max-width: 768px)" srcset="/img/MobileWallpaper/m5.avif">
+          
+          <img src="/img/DesktopWallpaper/d5.avif" alt="Banner 5"
+               class="banner-img banner-img-desktop"
+               data-object-position="center center"
+               loading="lazy">
+        </picture>
+        
+      </div>
+      
+      <div class="banner-image-slide" data-index="5">
+        
+        <picture>
+          
+          <source media="(max-width: 768px)" srcset="/img/MobileWallpaper/m6.avif">
+          
+          <img src="/img/DesktopWallpaper/d6.avif" alt="Banner 6"
+               class="banner-img banner-img-desktop"
+               data-object-position="center center"
+               loading="lazy">
+        </picture>
+        
+      </div>
+      
+    
+  </div>
+  
+
+  
+
+  
+
+  
+
+  <!-- Banner Dim Overlay -->
+  <div id="banner-dim-container" style="opacity: 0.45;"></div>
+
+  <!-- Carousel Preload Images (hidden) -->
+  
+
+  <!-- Banner Overlay Container -->
+  <div id="banner-overlay-container">
+    
+
+    
+
+    
+    <!-- Page Title Overlay -->
+    <div class="page-title-overlay">
+      
+      <h1 class="page-title">随笔</h1>
+      
+      <div class="page-subtitle">1 篇文章</div>
+      
+    </div>
+    
+  </div>
+
+  <!-- Water Waves SVG (4 layers) -->
+  <svg class="water-waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none">
+    <defs>
+      <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"/>
+    </defs>
+    <g>
+      <use href="#wave-path" x="50" y="0" class="wave-1"/>
+      <use href="#wave-path" x="50" y="4" class="wave-2"/>
+      <use href="#wave-path" x="50" y="7" class="wave-3"/>
+      <use href="#wave-path" x="50" y="10" class="wave-4"/>
+    </g>
+  </svg>
+
+  <!-- Gradient Transition -->
+  <div id="banner-gradient" class="banner-gradient"></div>
+
+  <!-- Scroll Down Indicator (fullscreen mode, homepage only) -->
+  
+</div>
+
+
+  <!-- Main Content Area with grid wrappers -->
+  <div id="main-content-wrapper" class="absolute w-full z-30 pointer-events-none mobile-main-no-banner">
+    <div class="relative w-full xl:w-[92vw] max-w-[var(--page-width)] mx-auto pointer-events-auto">
+      
+
+<div id="main-grid" class="main-grid-layout has-no-sidebar">
+  <main id="main-content" class="post-list-container category-container full-width" data-layout="list">
+    
+<div class="content-nav-bar card-base">
+  <!-- Home button -->
+  <a href="/" class="content-nav-item content-nav-home" aria-label="Home" title="首页">
+    <span class="material-symbols-outlined">home</span>
+  </a>
+  
+  <!-- Archive button -->
+  <a href="/archives" class="content-nav-item">
+    <span class="nav-item-label">归档</span>
+    <span class="nav-item-count">1</span>
+  </a>
+
+  <!-- Dynamic Categories -->
+  
+    <a href="/categories/%E9%9A%8F%E7%AC%94/" class="content-nav-item active">
+      <span class="nav-item-label">随笔</span>
+      <span class="nav-item-count">1</span>
+    </a>
+  
+
+  <!-- Layout Toggle (right-aligned spacer + buttons) -->
+  
+  <span class="content-nav-spacer"></span>
+  <div class="layout-buttons" style="display:flex;gap:0.25rem;">
+    <button data-layout="list" class="active" title="列表">
+      <span class="material-symbols-outlined">view_list</span>
+    </button>
+    <button data-layout="grid" class="" title="网格">
+      <span class="material-symbols-outlined">grid_view</span>
+    </button>
+  </div>
+  
+</div>
+
+
+    <div class="post-list" data-mode="list">
+      
+        
+          
+
+<article class="post-card-item card-base" data-pinned="false" data-has-cover="false">
+  <!-- Cover image area -->
+  
+
+  <!-- Content area -->
+  <div class="post-card-content">
+    <!-- Title -->
+    <h2 class="post-card-title">
+      <a href="/2026/08/26/welcome/">欢迎来到歆九的博客</a>
+    </h2>
+
+    <!-- Meta line: date, category -->
+    <div class="post-card-meta">
+      
+      
+      <time datetime="2026-08-26" pubdate>
+        <span class="material-symbols-outlined md-18">calendar_today</span>
+        <span>2026-08-26</span>
+      </time>
+      
+      
+        
+        <a class="category-badge" href="/categories/%E9%9A%8F%E7%AC%94/">
+          <span class="material-symbols-outlined md-18">folder</span>
+          <span>随笔</span>
+        </a>
+      
+    </div>
+
+    <!-- Description / excerpt -->
+    
+    <p class="post-card-excerpt">博客搭建完成的第一篇文章</p>
+    
+
+    <!-- Footer: tags & reading time -->
+    <div class="post-card-footer">
+      
+      <div class="post-card-tags">
+        
+          <a href="/tags/Hexo/" class="post-tag-item">
+            #Hexo
+          </a>
+        
+          <a href="/tags/%E5%8D%9A%E5%AE%A2/" class="post-tag-item">
+            #博客
+          </a>
+        
+      </div>
+      
+      
+      <span class="post-card-reading-time">
+        1 min
+      </span>
+      
+    </div>
+  </div>
+
+  <!-- Right side chevron panel for coverless cards -->
+  
+  <div class="post-card-arrow">
+    <a href="/2026/08/26/welcome/" aria-hidden="true" tabindex="-1">
+      <span class="material-symbols-outlined">chevron_right</span>
+    </a>
+  </div>
+  
+</article>
+
+        
+      
+    </div>
+
+    
+
+
+
+  </main>
+
+  
+
+<footer id="site-footer" class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+
+    
+    <div class="footer-license">
+      <span class="footer-license-icons">
+        <span class="material-symbols-outlined md-18">copyright</span>
+        <span class="material-symbols-outlined md-18">person</span>
+        <span class="material-symbols-outlined md-18">money_off</span>
+        <span class="material-symbols-outlined md-18">share</span>
+      </span>
+      <span class="license-text">
+        
+        本作品采用 CC BY-NC-SA 4.0 许可协议
+        
+      </span>
+    </div>
+    
+
+    <div class="footer-copyright">
+      <span>&copy; 2026 歆九的博客</span>
+      
+      <span class="footer-author">由 歆九</span>
+      
+    </div>
+
+    
+
+    
+    <div class="footer-powered-by">
+      <span>技术支持 <a href="https://hexo.io/" target="_blank" rel="noopener noreferrer">Hexo</a></span>
+      <span class="footer-separator">|</span>
+      <span>theme <a href="https://github.com/LKDenchin/hexo-theme-firefly" target="_blank" rel="noopener noreferrer">Firefly</a></span>
+    </div>
+    
+
+    
+    <div class="footer-visitor-counter">
+      <span id="busuanzi_container_site_uv" class="visitor-count-item">
+        <span class="material-symbols-outlined md-18">person</span>
+        <span id="busuanzi_value_site_uv">-</span> 访客
+      </span>
+      <span class="footer-separator">|</span>
+      <span id="busuanzi_container_site_pv" class="visitor-count-item">
+        <span class="material-symbols-outlined md-18">visibility</span>
+        <span id="busuanzi_value_site_pv">-</span> 浏览
+      </span>
+    </div>
+    
+
+  </div>
+</footer>
+
+</div>
+
+    </div>
+  </div>
+
+  <!-- Search Modal -->
+  <div id="search-modal" class="search-modal" role="dialog" aria-label="搜索" aria-hidden="true">
+    <div class="search-modal-backdrop search-backdrop"></div>
+    <div class="search-modal-content">
+      <div class="search-input-wrapper">
+        <span class="material-symbols-outlined search-input-icon">search</span>
+        <input type="text" id="search-input" class="search-input" placeholder="搜索文章..." autocomplete="off">
+        <button id="search-close" class="search-close-btn close-btn" aria-label="关闭">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div id="search-results" class="search-results">
+        <div class="search-hints">
+          <span>输入关键词搜索</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="display-settings-panel" class="display-settings-panel float-panel closed">
+  <!-- Tabs Header -->
+  <div class="settings-tabs">
+    <button class="settings-tab-btn active" data-tab="appearance">
+      <span class="material-symbols-outlined">palette</span>外观
+    </button>
+    <button class="settings-tab-btn" data-tab="wallpaper">
+      <span class="material-symbols-outlined">wallpaper</span>壁纸
+    </button>
+    <button class="settings-tab-btn" data-tab="effects">
+      <span class="material-symbols-outlined">filter_vintage</span>特效
+    </button>
+  </div>
+
+  <!-- Tab Content: Appearance -->
+  <div class="settings-tab-content active" id="tab-appearance">
+    <!-- Theme Color Section -->
+    <div class="settings-section">
+      <div class="settings-section-title">主题色</div>
+      <div class="settings-label">
+        <span>色相</span>
+        <button class="settings-reset-btn" data-reset-section="theme">重置</button>
+      </div>
+      <input type="range" class="hue-slider" min="0" max="360" value="165">
+    </div>
+
+    <!-- Post List Layout Section -->
+    <div class="settings-section">
+      <div class="settings-section-title">文章布局</div>
+      <div class="layout-buttons" style="display:flex;gap:0.5rem;">
+        <button data-layout="list" class="active">列表</button>
+        <button data-layout="grid">网格</button>
+      </div>
+    </div>
+
+    <!-- Card Style Section -->
+    <div class="settings-section">
+      <div class="settings-section-title">卡片样式</div>
+      <div class="settings-label">
+        <span>卡片边框和阴影</span>
+        <label class="settings-toggle">
+          <input type="checkbox" id="toggle-card-border" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-label">
+        <span>卡片跟随主题色</span>
+        <label class="settings-toggle">
+          <input type="checkbox" id="toggle-card-follow-hue">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Content: Wallpaper -->
+  <div class="settings-tab-content" id="tab-wallpaper" style="display: none;">
+    <!-- Wallpaper Mode Section -->
+    <div class="settings-section">
+      <div class="settings-section-title">壁纸模式</div>
+      <div class="wallpaper-mode-buttons">
+        <button data-wallpaper="banner" class="active">横幅模式</button>
+        <button data-wallpaper="fullscreen">全屏模式</button>
+        <button data-wallpaper="overlay">透明模式</button>
+        <button data-wallpaper="none">纯色模式</button>
+      </div>
+    </div>
+
+    <!-- Transparency Section (shown only in overlay mode) -->
+    <div class="settings-section transparency-section">
+      <div class="settings-section-title">透明度</div>
+      <div class="settings-label">
+        <span>壁纸透明度</span>
+        <span class="range-value" id="val-wallpaper-opacity">80%</span>
+      </div>
+      <input type="range" id="slider-wallpaper-opacity" min="10" max="100" value="80" step="5" class="rounded-range">
+      <div class="settings-label">
+        <span>背景模糊</span>
+        <span class="range-value" id="val-background-blur">10px</span>
+      </div>
+      <input type="range" id="slider-background-blur" min="0" max="30" value="10" step="1" class="rounded-range">
+      <div class="settings-label">
+        <span>卡片透明度</span>
+        <span class="range-value" id="val-card-transparency">50%</span>
+      </div>
+      <input type="range" id="slider-card-transparency" min="10" max="100" value="50" step="5" class="rounded-range">
+    </div>
+  </div>
+
+  <!-- Tab Content: Effects -->
+  <div class="settings-tab-content" id="tab-effects" style="display: none;">
+    <!-- Feature Toggles Section -->
+    <div class="settings-section">
+      <div class="settings-section-title">功能开关</div>
+      <div class="settings-label">
+        <span>水波纹动画</span>
+        <label class="settings-toggle">
+          <input type="checkbox" id="toggle-waves" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-label">
+        <span>渐变过渡</span>
+        <label class="settings-toggle">
+          <input type="checkbox" id="toggle-gradient" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-label">
+        <span>横幅标题</span>
+        <label class="settings-toggle">
+          <input type="checkbox" id="toggle-banner-title" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-label">
+        <span>樱花特效</span>
+        <label class="settings-toggle">
+          <input type="checkbox" id="toggle-sakura" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="settings-label">
+        <span>横幅轮播</span>
+        <label class="settings-toggle">
+          <input type="checkbox" id="toggle-banner-carousel">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<!-- Core Scripts -->
+<script src="/js/core/theme.js"></script>
+<script src="/js/core/wallpaper.js"></script>
+<script src="/js/core/settings.js"></script>
+<script src="/js/core/icons.js"></script>
+
+<!-- Effect Scripts -->
+<script src="/js/effects/typewriter.js"></script>
+
+<script src="/js/effects/sakura.js"></script>
+
+
+<script src="/js/effects/water-waves.js"></script>
+
+<!-- UI Scripts -->
+<script src="/js/ui/display-settings.js"></script>
+<script>
+  window.__SEARCH_PATH__ = '/local-search.xml';
+</script>
+<script src="/js/ui/search.js"></script>
+<script src="/js/ui/toc.js"></script>
+<script src="/js/ui/scroll.js"></script>
+<script src="/js/ui/back-to-top.js"></script>
+<script src="/js/ui/post-layout.js"></script>
+
+<!-- Feature Scripts -->
+
+<script src="/js/features/music-player.js"></script>
+
+
+
+<script src="/js/features/fancybox.js"></script>
+
+
+
+<!-- Boot Script -->
+<script src="/js/boot.js"></script>
+
+<!-- ==================== CDN Dependencies ==================== -->
+
+<!-- Highlight.js - Code Syntax Highlighting -->
+
+
+<!-- KaTeX / MathJax - Math Rendering -->
+
+
+<!-- Mermaid - Diagram Rendering -->
+
+
+<!-- Fancybox - Image Lightbox -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    Fancybox.bind('[data-fancybox]', {
+      // Fancybox options
+    });
+  });
+</script>
+
+
+<!-- Character Models - Live2D / Spine -->
+
+
+<!-- APlayer / Meting - Music Player -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+
+<!-- Busuanzi - Visitor Counter -->
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<!-- Code Copy, Language Badges & Advanced Annotations -->
+<script>
+  (function() {
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function get8BitColor(idx) {
+      var standard = [
+        '#000000', '#c00000', '#00c000', '#c0c000', '#0000c0', '#c000c0', '#00c0c0', '#c0c0c0',
+        '#808080', '#ff0000', '#00ff00', '#ffff00', '#0000ff', '#ff00ff', '#00ffff', '#ffffff'
+      ];
+      if (idx < 16) return standard[idx];
+      if (idx >= 16 && idx <= 231) {
+        idx -= 16;
+        var r = Math.floor(idx / 36) * 51;
+        var g = Math.floor((idx % 36) / 6) * 51;
+        var b = (idx % 6) * 51;
+        return 'rgb(' + r + ',' + g + ',' + b + ')';
+      }
+      var val = 8 + (idx - 232) * 10;
+      return 'rgb(' + val + ',' + val + ',' + val + ')';
+    }
+
+    function ansiToHtml(text) {
+      var ansiRegex = /\x1B\[([0-9;]*)[mK]/g;
+      var html = '';
+      var openSpans = 0;
+      
+      var styles = {
+        30: 'color: #1e1e1e',
+        31: 'color: #f44336',
+        32: 'color: #4caf50',
+        33: 'color: #ffeb3b',
+        34: 'color: #2196f3',
+        35: 'color: #9c27b0',
+        36: 'color: #00bcd4',
+        37: 'color: #ffffff',
+        40: 'background-color: #1e1e1e',
+        41: 'background-color: #f44336',
+        42: 'background-color: #4caf50',
+        43: 'background-color: #ffeb3b',
+        44: 'background-color: #2196f3',
+        45: 'background-color: #9c27b0',
+        46: 'background-color: #00bcd4',
+        47: 'background-color: #ffffff',
+        1: 'font-weight: bold',
+        2: 'opacity: 0.6',
+        3: 'font-style: italic',
+        4: 'text-decoration: underline',
+        7: 'filter: invert(100%)',
+        9: 'text-decoration: line-through'
+      };
+
+      var lastIndex = 0;
+      var match;
+      
+      while ((match = ansiRegex.exec(text)) !== null) {
+        html += escapeHtml(text.substring(lastIndex, match.index));
+        lastIndex = ansiRegex.lastIndex;
+        
+        var codes = match[1].split(';');
+        if (codes.includes('0') || match[1] === '') {
+          while (openSpans > 0) {
+            html += '</span>';
+            openSpans--;
+          }
+        }
+        
+        var styleStr = '';
+        var i = 0;
+        while (i < codes.length) {
+          var code = parseInt(codes[i], 10);
+          if (code === 38 || code === 48) {
+            var isBG = (code === 48);
+            var type = parseInt(codes[i+1], 10);
+            if (type === 5) {
+              var colorIdx = parseInt(codes[i+2], 10);
+              var hexColor = get8BitColor(colorIdx);
+              styleStr += (isBG ? 'background-color' : 'color') + ': ' + hexColor + ';';
+              i += 3;
+            } else if (type === 2) {
+              var r = parseInt(codes[i+2], 10);
+              var g = parseInt(codes[i+3], 10);
+              var b = parseInt(codes[i+4], 10);
+              styleStr += (isBG ? 'background-color' : 'color') + ': rgb(' + r + ',' + g + ',' + b + ');';
+              i += 5;
+            } else {
+              i++;
+            }
+          } else {
+            if (styles[code]) {
+              styleStr += styles[code] + ';';
+            }
+            i++;
+          }
+        }
+        
+        if (styleStr) {
+          html += '<span style="' + styleStr + '">';
+          openSpans++;
+        }
+      }
+      
+      html += escapeHtml(text.substring(lastIndex));
+      while (openSpans > 0) {
+        html += '</span>';
+        openSpans--;
+      }
+      
+      return html;
+    }
+
+    function parseHighlightRanges(rangeStr) {
+      if (!rangeStr) return [];
+      var lines = [];
+      var parts = rangeStr.split(',');
+      parts.forEach(function(part) {
+        part = part.trim();
+        if (part.indexOf('-') !== -1) {
+          var bounds = part.split('-');
+          var start = parseInt(bounds[0], 10);
+          var end = parseInt(bounds[1], 10);
+          for (var i = start; i <= end; i++) {
+            lines.push(i);
+          }
+        } else {
+          lines.push(parseInt(part, 10));
+        }
+      });
+      return lines;
+    }
+
+    function processCodeBlocks() {
+      // 1. Wrap plain pre blocks
+      document.querySelectorAll('.post-content pre:not(figure.highlight pre)').forEach(function(pre) {
+        if (pre.closest('.code-block-wrapper')) return;
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+      });
+
+      // 2. Wrap Hexo's figure.highlight code blocks
+      document.querySelectorAll('.post-content figure.highlight').forEach(function(fig) {
+        if (fig.parentNode.classList.contains('code-block-wrapper')) return;
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        fig.parentNode.insertBefore(wrapper, fig);
+        wrapper.appendChild(fig);
+      });
+
+      // 3. Process each code block wrapper
+      document.querySelectorAll('.code-block-wrapper').forEach(function(wrapper) {
+        if (wrapper.querySelector('.code-block-header')) return; // Avoid double processing
+        
+        var fig = wrapper.querySelector('figure.highlight');
+        var pre = wrapper.querySelector('pre');
+        var code = wrapper.querySelector('code');
+        
+        var langClass = '';
+        if (fig) {
+          langClass = Array.from(fig.classList).find(function(c) { return c !== 'highlight'; }) || '';
+        } else if (code) {
+          langClass = Array.from(code.classList).find(function(c) { return c.startsWith('language-'); }) || '';
+          langClass = langClass.replace('language-', '');
+        }
+        
+        var langName = '';
+        var fileName = '';
+        var highlightRangeStr = '';
+        
+        if (langClass) {
+          var fileMatch = langClass.match(/:([^\s{]+)/);
+          if (fileMatch) {
+            fileName = fileMatch[1];
+          }
+          
+          var rangeMatch = langClass.match(/\{([^}]+)\}/);
+          if (rangeMatch) {
+            highlightRangeStr = rangeMatch[1];
+          }
+          
+          langName = langClass.split(/[:{\s]/)[0].toUpperCase();
+        }
+        
+        if (langName === 'ANSI') {
+          wrapper.classList.add('is-ansi-block');
+        }
+        
+        // Generate Header
+        var header = document.createElement('div');
+        header.className = 'code-block-header';
+        
+        if (fileName) {
+          header.innerHTML = '<div class="code-header-tab"><span class="material-symbols-outlined code-header-tab-icon">description</span><span class="code-header-tab-title">' + fileName + '</span></div>';
+          wrapper.classList.add('has-filename');
+        } else {
+          header.innerHTML = '<div class="code-header-terminal"><span class="terminal-dot dot-red"></span><span class="terminal-dot dot-yellow"></span><span class="terminal-dot dot-green"></span></div>';
+        }
+        
+        var headerActions = document.createElement('div');
+        headerActions.className = 'code-header-actions';
+        header.appendChild(headerActions);
+        
+        wrapper.insertBefore(header, wrapper.firstChild);
+        
+        // Inject Copy Button
+        var btn = document.createElement('button');
+        btn.className = 'code-copy-btn';
+        btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
+        btn.title = '复制代码';
+        wrapper.appendChild(btn);
+        
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var codeEl = wrapper.querySelector('.code pre code') || wrapper.querySelector('pre code') || wrapper.querySelector('pre');
+          var text = codeEl ? codeEl.textContent : '';
+          
+          // Clean up plus/minus markers if copying diff-like codes
+          if (wrapper.querySelector('.code-line-ins') || wrapper.querySelector('.code-line-del')) {
+            var lines = text.split('\n');
+            var cleanedLines = lines.map(function(line) {
+              if (line.startsWith('+ ') || line.startsWith('- ')) {
+                return line.substring(2);
+              }
+              return line;
+            });
+            text = cleanedLines.join('\n');
+          }
+          
+          navigator.clipboard.writeText(text).then(function() {
+            btn.innerHTML = '<span class="material-symbols-outlined">check</span>';
+            btn.classList.add('copied');
+            setTimeout(function() {
+              btn.innerHTML = '<span class="material-symbols-outlined">content_copy</span>';
+              btn.classList.remove('copied');
+            }, 2000);
+          });
+        });
+        
+        // Inject Language Badge
+        if (langName) {
+          var badge = document.createElement('span');
+          badge.className = 'code-language-badge';
+          badge.textContent = langName;
+          wrapper.appendChild(badge);
+        }
+        
+        var highlightLines = parseHighlightRanges(highlightRangeStr);
+        
+        // Process Table Rows (Lines)
+        var rows = wrapper.querySelectorAll('table.hljs-ln tr');
+        rows.forEach(function(row) {
+          var numTd = row.querySelector('.hljs-ln-numbers');
+          var codeTd = row.querySelector('.hljs-ln-code');
+          if (!numTd || !codeTd) return;
+          
+          var lineNum = parseInt(numTd.getAttribute('data-line-number'), 10);
+          var lineEl = codeTd.querySelector('.hljs-ln-line');
+          if (!lineEl) return;
+          
+          var text = lineEl.textContent;
+          
+          if (langName === 'ANSI') {
+            lineEl.innerHTML = ansiToHtml(text);
+          }
+          
+          // Check for Labels (e.g. // 1. ... or // 2. ...)
+          var labelMatch = text.match(/^\s*(?:\/\/\s*|#\s*)([0-9]+\.\s+.*)$/);
+          if (labelMatch) {
+            var labelText = labelMatch[1];
+            lineEl.textContent = labelText;
+            row.className = 'code-line-label';
+            if (labelText.indexOf('1.') === 0 || labelText.indexOf(' 1.') !== -1) row.classList.add('label-blue');
+            else if (labelText.indexOf('2.') === 0 || labelText.indexOf(' 2.') !== -1) row.classList.add('label-red');
+            else if (labelText.indexOf('3.') === 0 || labelText.indexOf(' 3.') !== -1) row.classList.add('label-green');
+          }
+          // Check for Ins/Del Markers
+          else if (text.indexOf('+ ') === 0) {
+            lineEl.textContent = text.substring(2);
+            row.className = 'code-line-ins';
+            numTd.setAttribute('data-marker', '+');
+          }
+          else if (text.indexOf('- ') === 0) {
+            lineEl.textContent = text.substring(2);
+            row.className = 'code-line-del';
+            numTd.setAttribute('data-marker', '-');
+          }
+          // Check for standard line marking
+          else if (highlightLines.includes(lineNum)) {
+            row.className = 'code-line-mark';
+          }
+        });
+        
+        // Collapsible check
+        var lineCount = rows.length;
+        if (lineCount > 10) {
+          wrapper.classList.add('code-collapsible', 'collapsed');
+          
+          var topExpandBtn = document.createElement('button');
+          topExpandBtn.className = 'code-header-expand-btn';
+          topExpandBtn.innerHTML = '<span>展开</span><span class="material-symbols-outlined">expand_more</span>';
+          headerActions.appendChild(topExpandBtn);
+          
+          var bottomPill = document.createElement('div');
+          bottomPill.className = 'code-expand-pill-wrapper';
+          bottomPill.innerHTML = '<button class="code-expand-pill-btn"><span>展开</span><span class="material-symbols-outlined">expand_more</span></button>';
+          wrapper.appendChild(bottomPill);
+          
+          var toggleCollapse = function() {
+            var isCollapsed = wrapper.classList.contains('collapsed');
+            if (isCollapsed) {
+              wrapper.classList.remove('collapsed');
+              wrapper.classList.add('expanded');
+              topExpandBtn.innerHTML = '<span>收起</span><span class="material-symbols-outlined">expand_less</span>';
+              bottomPill.innerHTML = '<button class="code-expand-pill-btn"><span>收起</span><span class="material-symbols-outlined">expand_less</span></button>';
+            } else {
+              wrapper.classList.remove('expanded');
+              wrapper.classList.add('collapsed');
+              topExpandBtn.innerHTML = '<span>展开</span><span class="material-symbols-outlined">expand_more</span>';
+              bottomPill.innerHTML = '<button class="code-expand-pill-btn"><span>展开</span><span class="material-symbols-outlined">expand_more</span></button>';
+              wrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          };
+          
+          topExpandBtn.addEventListener('click', toggleCollapse);
+          bottomPill.addEventListener('click', toggleCollapse);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.hljs) {
+        if (typeof hljs.initLineNumbersOnLoad === 'function') {
+          hljs.initLineNumbersOnLoad();
+        }
+      }
+      setTimeout(processCodeBlocks, 50);
+    });
+  })();
+</script>
+
+<!-- Site Stats Fallback & Running Days Calculation -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Site running days calculation (use theme site start date first)
+    var runningDaysEl = document.getElementById('site-running-days');
+    if (runningDaysEl) {
+      var startDateStr = '2025-01-01';
+      if (startDateStr) {
+        var diff = Date.now() - new Date(startDateStr).getTime();
+        var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        runningDaysEl.textContent = days > 0 ? days : 1;
+      }
+    }
+
+    // 1b. Last active calculation
+    var lastActiveEl = document.getElementById('site-last-active');
+    if (lastActiveEl) {
+      var latestDateStr = lastActiveEl.getAttribute('data-latest-date');
+      if (latestDateStr) {
+        var diffActive = Date.now() - new Date(latestDateStr).getTime();
+        var daysActive = Math.floor(diffActive / (1000 * 60 * 60 * 24));
+        if (daysActive <= 0) {
+          lastActiveEl.textContent = 'today';
+        } else {
+          lastActiveEl.textContent = daysActive + ' ' + '天' + '前';
+        }
+      }
+    }
+
+    // 2. Busuanzi fallback for visitor / pageview stats
+    setTimeout(function() {
+      var uvEl = document.getElementById('busuanzi_value_site_uv');
+      var pvEl = document.getElementById('busuanzi_value_site_pv');
+      
+      var isLocal = window.location.hostname === 'localhost' || 
+                     window.location.hostname === '127.0.0.1' || 
+                     window.location.protocol === 'file:';
+      
+      // UV fallback
+      if (uvEl && (uvEl.textContent === '-' || uvEl.textContent === '' || isLocal)) {
+        var localUv = localStorage.getItem('site_uv');
+        if (!localUv) {
+          localUv = Math.floor(Math.random() * 500) + 1200; // Realistic starting number
+        } else {
+          localUv = parseInt(localUv, 10);
+        }
+        // Increment UV once per session
+        if (!sessionStorage.getItem('uv_session_counted')) {
+          localUv += 1;
+          sessionStorage.setItem('uv_session_counted', 'true');
+          localStorage.setItem('site_uv', localUv);
+        }
+        uvEl.textContent = localUv;
+        var uvContainer = document.getElementById('busuanzi_container_site_uv');
+        if (uvContainer) uvContainer.style.display = 'inline';
+      }
+      
+      // PV fallback
+      if (pvEl && (pvEl.textContent === '-' || pvEl.textContent === '' || isLocal)) {
+        var localPv = localStorage.getItem('site_pv');
+        if (!localPv) {
+          localPv = Math.floor(Math.random() * 2000) + 3800; // Realistic starting number
+        } else {
+          localPv = parseInt(localPv, 10);
+        }
+        // Increment PV on every load
+        localPv += 1;
+        localStorage.setItem('site_pv', localPv);
+        pvEl.textContent = localPv;
+        var pvContainer = document.getElementById('busuanzi_container_site_pv');
+        if (pvContainer) pvContainer.style.display = 'inline';
+      }
+    }, 1500);
+  });
+</script>
+
+
+
+</body>
+</html>

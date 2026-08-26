@@ -1,0 +1,848 @@
+/* ==========================================================================
+   Firefly Hexo Theme - navbar.css
+   Navigation bar styles (ported from Firefly's navbar.css).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Navbar Wrapper — always fixed at top
+   -------------------------------------------------------------------------- */
+
+#navbar-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  pointer-events: none;
+  padding: 0 1rem;
+}
+
+#navbar-wrapper > * {
+  pointer-events: auto;
+}
+
+#top-row {
+  margin-bottom: calc(var(--navbar-height) + 1rem);
+}
+
+/* --------------------------------------------------------------------------
+   Navbar Container
+   -------------------------------------------------------------------------- */
+
+#navbar {
+  position: relative;
+  width: 100%;
+  height: var(--navbar-height);
+  z-index: 90;
+  transition: all var(--duration-medium);
+  pointer-events: auto;
+  margin-top: 0;
+}
+
+#navbar > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 1.25rem;
+  margin: 0 0.5rem;
+  background: oklch(0.99 0.005 var(--hue) / 0.45) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  transition: all var(--duration-medium);
+  border-radius: 0 0 var(--md-shape-corner-large, 16px) var(--md-shape-corner-large, 16px) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+.dark #navbar > div,
+:root.dark #navbar > div,
+html.dark #navbar > div {
+  background: oklch(0.20 0.01 var(--hue) / 0.45) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Transparent Modes
+   -------------------------------------------------------------------------- */
+
+/* Full transparent: navbar is see-through with subtle blur */
+#navbar[data-transparent-mode="full"] > div {
+  background: transparent !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom-color: transparent;
+}
+
+/* Semi transparent: frosted glass effect */
+#navbar[data-transparent-mode="semi"] > div {
+  background: oklch(0.99 0.005 var(--hue) / 0.85);
+  backdrop-filter: blur(var(--navbar-glass-blur));
+  -webkit-backdrop-filter: blur(var(--navbar-glass-blur));
+  border-bottom-color: var(--line-divider);
+}
+
+.dark #navbar[data-transparent-mode="semi"] > div,
+:root.dark #navbar[data-transparent-mode="semi"] > div,
+html.dark #navbar[data-transparent-mode="semi"] > div {
+  background: oklch(0.20 0.01 var(--hue) / 0.85);
+}
+
+/* --------------------------------------------------------------------------
+   Scrolled State
+   -------------------------------------------------------------------------- */
+
+#navbar.scrolled > div {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: var(--line-divider);
+}
+
+/* --------------------------------------------------------------------------
+   Banner mode: navbar is transparent when at top of page
+   -------------------------------------------------------------------------- */
+
+.enable-banner #navbar:not(.scrolled) > div {
+  border-bottom-color: transparent;
+}
+
+/* Light mode transparent navbar defaults */
+.enable-banner #navbar:not(.scrolled) .navbar-links a {
+  color: var(--text-secondary);
+}
+
+.enable-banner #navbar:not(.scrolled) .navbar-links a:hover,
+.enable-banner #navbar:not(.scrolled) .navbar-links a.active {
+  color: var(--primary);
+  background: var(--btn-plain-bg-hover);
+}
+
+.enable-banner #navbar:not(.scrolled) .btn-plain,
+.enable-banner #navbar:not(.scrolled) .navbar-action-btn {
+  color: var(--text-secondary);
+}
+
+.enable-banner #navbar:not(.scrolled) .btn-plain:hover,
+.enable-banner #navbar:not(.scrolled) .navbar-action-btn:hover {
+  color: var(--primary);
+  background: var(--btn-plain-bg-hover);
+}
+
+.enable-banner #navbar:not(.scrolled) .navbar-brand {
+  color: var(--text-primary);
+}
+
+/* Dark mode transparent navbar overrides */
+.dark .enable-banner #navbar:not(.scrolled) .navbar-links a,
+html.dark .enable-banner #navbar:not(.scrolled) .navbar-links a {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dark .enable-banner #navbar:not(.scrolled) .navbar-links a:hover,
+.dark .enable-banner #navbar:not(.scrolled) .navbar-links a.active,
+html.dark .enable-banner #navbar:not(.scrolled) .navbar-links a:hover,
+html.dark .enable-banner #navbar:not(.scrolled) .navbar-links a.active {
+  color: white;
+}
+
+.dark .enable-banner #navbar:not(.scrolled) .btn-plain,
+.dark .enable-banner #navbar:not(.scrolled) .navbar-action-btn,
+html.dark .enable-banner #navbar:not(.scrolled) .btn-plain,
+html.dark .enable-banner #navbar:not(.scrolled) .navbar-action-btn {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dark .enable-banner #navbar:not(.scrolled) .btn-plain:hover,
+.dark .enable-banner #navbar:not(.scrolled) .navbar-action-btn:hover,
+html.dark .enable-banner #navbar:not(.scrolled) .btn-plain:hover,
+html.dark .enable-banner #navbar:not(.scrolled) .navbar-action-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.dark .enable-banner #navbar:not(.scrolled) .navbar-brand,
+html.dark .enable-banner #navbar:not(.scrolled) .navbar-brand {
+  color: white;
+}
+
+/* --------------------------------------------------------------------------
+   Brand / Logo
+   -------------------------------------------------------------------------- */
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.navbar-brand:hover {
+  color: var(--primary);
+}
+
+.navbar-brand img,
+.navbar-brand-logo {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-small);
+  object-fit: cover;
+}
+
+.navbar-brand-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Nav Links
+   -------------------------------------------------------------------------- */
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--md-shape-corner-full);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition:
+    background-color var(--md-motion-duration-medium) var(--md-motion-easing-emphasized),
+    color var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.navbar-link-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  line-height: 1;
+}
+
+.navbar-link-content .material-symbols-outlined {
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.navbar-link-content span:not(.material-symbols-outlined) {
+  display: inline-block;
+  line-height: 1;
+}
+
+.navbar-links a:hover {
+  color: var(--primary);
+  background: oklch(0.65 0.18 var(--hue) / 0.08);
+}
+
+/* Active state — M3 filled primary container (pill-shaped) */
+.navbar-links a.active {
+  color: var(--md-sys-color-on-primary-container);
+  background: var(--md-sys-color-primary-container);
+}
+.navbar-links a.active:hover {
+  background: oklch(0.82 0.10 var(--hue));
+}
+.navbar-links a.active .material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Dropdown arrow icon inside nav links */
+.navbar-links a.has-dropdown::after {
+  content: '';
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-left: 0.125rem;
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  transition: transform var(--duration-fast);
+}
+
+/* --------------------------------------------------------------------------
+   Right Actions Area
+   -------------------------------------------------------------------------- */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Icon-only buttons inside navbar actions — M3 standard icon button */
+.navbar-actions .btn-plain,
+.navbar-action-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: var(--md-shape-corner-full);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    background-color var(--md-motion-duration-medium) var(--md-motion-easing-emphasized),
+    color var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
+  font-size: inherit;
+  line-height: 1;
+}
+
+.navbar-actions .btn-plain:hover,
+.navbar-action-btn:hover {
+  background: oklch(0.65 0.18 var(--hue) / 0.08);
+  color: var(--primary);
+}
+
+.navbar-actions .btn-plain svg,
+.navbar-actions .btn-plain i,
+.navbar-action-btn svg,
+.navbar-action-btn i {
+  width: 1.25rem;
+  height: 1.25rem;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Theme Switch Icon
+   -------------------------------------------------------------------------- */
+
+.theme-switch-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.25rem;
+  border-radius: var(--md-shape-corner-full);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    background-color var(--md-motion-duration-medium) var(--md-motion-easing-emphasized),
+    color var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
+}
+
+.theme-switch-btn:hover {
+  background: oklch(0.65 0.18 var(--hue) / 0.08);
+  color: var(--primary);
+}
+
+.theme-switch-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform 0.5s ease;
+}
+
+.dark .theme-switch-btn svg {
+  transform: rotate(180deg);
+}
+
+/* Sun/moon icon swap */
+.theme-switch-btn .sun-icon,
+.theme-switch-btn .moon-icon {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Light mode default: show moon (dark_mode icon → switch to dark), hide sun */
+.theme-switch-btn .sun-icon {
+  opacity: 0;
+  transform: scale(0.5) rotate(90deg);
+  position: absolute;
+}
+
+.theme-switch-btn .moon-icon {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+/* Dark mode: show sun (light_mode icon → switch to light), hide moon */
+.dark .theme-switch-btn .sun-icon {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.dark .theme-switch-btn .moon-icon {
+  opacity: 0;
+  transform: scale(0.5) rotate(-90deg);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Menu Toggle
+   -------------------------------------------------------------------------- */
+
+.mobile-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--md-shape-corner-full);
+  color: var(--md-sys-color-on-surface-variant);
+  transition:
+    background-color var(--md-motion-duration-medium) var(--md-motion-easing-emphasized),
+    color var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
+}
+
+.mobile-menu-btn.visible {
+  display: flex;
+}
+
+.mobile-menu-btn:hover {
+  background: oklch(0.65 0.18 var(--hue) / 0.08);
+  color: var(--primary);
+}
+
+.mobile-menu-btn .hamburger-icon {
+  font-size: 1.2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Menu — Top-Right Floating Card Modal
+   -------------------------------------------------------------------------- */
+
+@media (min-width: 769px) {
+  .dropdown-arrow.mobile-arrow {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #navbar {
+    margin-top: 0;
+    padding: 0 0.25rem;
+  }
+  #navbar > div {
+    padding: 0 0.5rem 0 0.75rem;
+    margin: 0;
+  }
+  .navbar-actions {
+    gap: 0.125rem;
+  }
+  .navbar-actions .btn-plain,
+  .navbar-action-btn {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0.2rem;
+  }
+  .navbar-links {
+    display: none;
+  }
+
+  /* Top-Right Floating Card Popup Modal */
+  .navbar-links.open {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: calc(var(--navbar-height) + 0.5rem);
+    right: 0.75rem;
+    width: min(85vw, 280px);
+    max-height: calc(100dvh - var(--navbar-height) - 1.5rem);
+    background: oklch(0.99 0.005 var(--hue) / 0.88) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    padding: 0.75rem;
+    border-radius: var(--md-shape-corner-large, 20px) !important;
+    border: 1px solid var(--line-divider) !important;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15) !important;
+    overflow-y: auto;
+    z-index: 100 !important;
+    animation: popupInRight var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
+  }
+
+  .dark .navbar-links.open,
+  :root.dark .navbar-links.open,
+  html.dark .navbar-links.open {
+    background: oklch(0.20 0.01 var(--hue) / 0.88) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  .navbar-links.open .navbar-link-item {
+    width: 100%;
+    margin-bottom: 0.25rem;
+  }
+
+  .navbar-links.open .navbar-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    border-radius: var(--md-shape-corner-full);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background-color var(--duration-fast), color var(--duration-fast);
+  }
+
+  .navbar-links.open .navbar-link-content {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .navbar-links.open .navbar-link:hover {
+    background: var(--md-sys-color-surface-variant);
+  }
+
+  .navbar-links.open .navbar-link.active {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    font-weight: 600;
+  }
+
+  .navbar-links.open .dropdown-arrow {
+    margin-left: auto;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    transition: transform var(--md-motion-duration-short) var(--md-motion-easing-standard);
+  }
+
+  /* Backdrop overlay behind menu */
+  .mobile-menu-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: 40 !important;
+    animation: fadeIn var(--md-motion-duration-medium) var(--md-motion-easing-standard);
+  }
+  .mobile-menu-backdrop.open {
+    display: block;
+  }
+}
+
+@keyframes popupInRight {
+  from { opacity: 0; transform: translateY(-0.75rem) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+#navbar.mobile-nav .navbar-links {
+  display: none;
+}
+
+#navbar.mobile-nav .navbar-links.open {
+  display: flex !important;
+  flex-direction: column;
+  position: fixed;
+  top: calc(var(--navbar-height) + 0.5rem);
+  right: 0.75rem;
+  width: min(85vw, 280px);
+  max-height: calc(100dvh - var(--navbar-height) - 1.5rem);
+  background: oklch(0.99 0.005 var(--hue) / 0.88) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  padding: 0.75rem;
+  border-radius: var(--md-shape-corner-large, 20px) !important;
+  border: 1px solid var(--line-divider) !important;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15) !important;
+  overflow-y: auto;
+  z-index: 100 !important;
+  animation: popupInRight var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
+}
+
+.dark #navbar.mobile-nav .navbar-links.open,
+:root.dark #navbar.mobile-nav .navbar-links.open,
+html.dark #navbar.mobile-nav .navbar-links.open {
+  background: oklch(0.20 0.01 var(--hue) / 0.88) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Dropdown Menus
+   -------------------------------------------------------------------------- */
+
+.navbar-dropdown {
+  position: relative;
+}
+
+.navbar-dropdown .dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.navbar-dropdown .dropdown-arrow {
+  font-size: 1rem;
+  transition: transform var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+
+.navbar-dropdown:hover .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.navbar-dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 140px;
+  background: var(--card-bg);
+  border-radius: var(--md-shape-corner-medium);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  padding: 0.375rem;
+  z-index: 50;
+  animation: dropdownIn var(--md-motion-duration-medium) var(--md-motion-easing-emphasized);
+}
+
+.navbar-dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.navbar-dropdown .dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--md-shape-corner-full);
+  font-size: 0.875rem;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  transition: all var(--md-motion-duration-short) var(--md-motion-easing-standard);
+  text-decoration: none;
+}
+
+.navbar-dropdown .dropdown-item:hover {
+  background: var(--md-sys-color-surface-variant);
+  color: var(--text-primary);
+}
+
+.navbar-dropdown .dropdown-item .material-symbols-outlined {
+  font-size: 1.1rem;
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-0.5rem); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Mobile dropdown: show inline accordion */
+@media (max-width: 768px) {
+  .navbar-dropdown .dropdown-menu {
+    position: static;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    padding: 0.25rem 0 0.25rem 0.75rem;
+    margin-top: 0.125rem;
+    animation: none;
+    min-width: auto;
+  }
+  .navbar-dropdown:hover .dropdown-menu {
+    display: none;
+  }
+  .navbar-dropdown.open .dropdown-menu {
+    display: block !important;
+  }
+  .navbar-dropdown.open > .dropdown-toggle .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Search button in navbar
+   -------------------------------------------------------------------------- */
+
+.navbar-search-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--md-shape-corner-full);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  border: none;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  transition:
+    background-color var(--md-motion-duration-short) var(--md-motion-easing-standard),
+    color var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+
+.navbar-search-btn:hover {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.navbar-search-btn svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.navbar-search-btn kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  border-radius: var(--radius-small);
+  background: var(--card-bg);
+  color: var(--text-tertiary);
+}
+
+/* --------------------------------------------------------------------------
+   Wallpaper transparent navbar
+   -------------------------------------------------------------------------- */
+
+.wallpaper-transparent #navbar > div {
+  background: var(--card-bg-transparent) !important;
+}
+
+.wallpaper-transparent #navbar.scrolled > div {
+  backdrop-filter: blur(calc(var(--navbar-glass-blur) * 2));
+  -webkit-backdrop-filter: blur(calc(var(--navbar-glass-blur) * 2));
+}
+
+/* --------------------------------------------------------------------------
+   Navbar inner max-width constraint
+   -------------------------------------------------------------------------- */
+
+#navbar > div > .navbar-inner {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  max-width: var(--page-width);
+  margin: 0 auto;
+  height: 100%;
+}
+
+.navbar-brand {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.navbar-menu {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.navbar-actions {
+  grid-column: 3;
+  justify-self: end;
+}
+
+/* ---- Theme Popover ---- */
+.theme-popover {
+  position: absolute;
+  top: calc(var(--navbar-height) + 0.1rem);
+  right: 0;
+  width: 140px;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--md-shape-corner-medium, 12px);
+  box-shadow: var(--shadow-lg, 0 4px 20px rgba(0,0,0,0.15));
+  padding: 0.5rem;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border: 1px solid var(--line-divider);
+  transition: all var(--md-motion-duration-medium) var(--md-motion-easing-standard);
+}
+
+.theme-popover.closed {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.5rem) scale(0.95);
+  pointer-events: none;
+}
+
+.theme-popover-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-radius: var(--md-shape-corner-full, 9999px);
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all var(--duration-fast);
+}
+
+.theme-popover-item .material-symbols-outlined {
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.theme-popover-item:hover {
+  background: var(--btn-regular-bg-hover);
+  color: var(--text-primary);
+}
+
+.theme-popover-item.active {
+  background: var(--md-sys-color-primary-container) !important;
+  color: var(--md-sys-color-on-primary-container) !important;
+  font-weight: 600;
+}
+
+/* ---- Mobile Title Adaptations ---- */
+@media (max-width: 480px) {
+  .navbar-title {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 375px) {
+  .navbar-title {
+    display: none;
+  }
+}
+
