@@ -1,16 +1,19 @@
 (function() {
   var MusicPlayer = {
     init: function() {
-      // MetingJS auto-initializes via <meting-js> custom element
-      // Handle APlayer instance if present
-      this.waitForAPlayer();
+      var metingEl = document.querySelector('meting-js');
+      var localEl = document.getElementById('aplayer-local');
+      if (metingEl) {
+        // Meting mode: the <meting-js> element auto-creates APlayer
+        this.waitForMetingPlayer();
+      } else if (localEl && window.__LOCAL_PLAYLIST && window.__LOCAL_PLAYLIST.length) {
+        // Local (self-hosted) mode: initialize APlayer from the playlist
+        this.waitForAPlayerLib();
+      }
     },
 
-    waitForAPlayer: function() {
+    waitForMetingPlayer: function() {
       var self = this;
-
-      // APlayer is loaded via CDN and creates window.APlayer
-      // The <meting-js> element handles initialization
       var checkInterval = setInterval(function() {
         var metingEl = document.querySelector('meting-js');
         if (metingEl && metingEl.aplayer) {
@@ -18,11 +21,46 @@
           self.onAPlayerReady(metingEl.aplayer);
         }
       }, 500);
-
-      // Timeout after 10 seconds
       setTimeout(function() {
         clearInterval(checkInterval);
       }, 10000);
+    },
+
+    waitForAPlayerLib: function() {
+      var self = this;
+      var checkInterval = setInterval(function() {
+        if (window.APlayer) {
+          clearInterval(checkInterval);
+          self.initLocalPlayer();
+        }
+      }, 200);
+      setTimeout(function() {
+        clearInterval(checkInterval);
+      }, 10000);
+    },
+
+    initLocalPlayer: function() {
+      var div = document.getElementById('aplayer-local');
+      var list = window.__LOCAL_PLAYLIST;
+      if (!div || !list || !list.length || !window.APlayer) return;
+      var primary = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim() || '#0ea5e9';
+      try {
+        var ap = new APlayer({
+          container: div,
+          audio: list,
+          theme: primary,
+          loop: 'all',
+          order: 'list',
+          preload: 'none',
+          autoplay: false,
+          volume: 0.7,
+          mutex: true,
+          lrcType: 0
+        });
+        this.onAPlayerReady(ap);
+      } catch (e) {
+        console.error('[MusicPlayer] local init failed', e);
+      }
     },
 
     onAPlayerReady: function(ap) {
@@ -30,7 +68,6 @@
       window.__aplayer = ap;
 
       // Force playlist and lyrics to fold/close on startup
-      // Use a small delay to ensure APlayer has fully initialized DOM
       var self = this;
       setTimeout(function() {
         if (ap.lrc) {
