@@ -1,0 +1,157 @@
+<%
+const BANNER_HEIGHT_EXTEND = 6;
+const PAGE_WIDTH = theme.page_width || 100;
+const configHue = theme.theme_color.hue;
+const defaultMode = theme.theme_color.default_mode || 'system';
+const defaultWallpaperMode = theme.wallpaper.mode;
+const wallSwitchable = theme.wallpaper.switchable !== false;
+const cardTransparentOpacity = theme.wallpaper.overlay && theme.wallpaper.overlay.card_opacity ? theme.wallpaper.overlay.card_opacity : 0.6;
+%>
+<!DOCTYPE html>
+<html lang="<%= config.language %>" data-wallpaper-mode="<%= theme.wallpaper.mode %>" style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: <%= configHue %>; --page-width: <%= PAGE_WIDTH %>rem;">
+<head>
+  <%- partial('_partials/head') %>
+</head>
+<body class="min-h-screen <%- is_home() ? 'is-home' : '' %> <%- theme.nav && theme.nav.sticky !== false ? 'sticky-navbar' : '' %> <%- theme.cards && theme.cards.border !== false ? 'enable-card-border' : '' %> <%- theme.cards && theme.cards.follow_theme_hue ? 'card-follow-theme-hue' : '' %>" style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: <%= configHue %>; --page-width: <%= PAGE_WIDTH %>rem;">
+  <script>
+    (function() {
+      var BANNER_HEIGHT_EXTEND = <%- BANNER_HEIGHT_EXTEND %>;
+      var configHue = <%- configHue %>;
+      var defaultMode = '<%- defaultMode %>';
+      var defaultWallpaperMode = '<%- defaultWallpaperMode %>';
+      var wallSwitchable = <%- wallSwitchable %>;
+      var cardTransparentOpacity = <%- cardTransparentOpacity %>;
+
+      // 1. Set theme
+      var storedTheme = localStorage.getItem('theme');
+      var themeToApply = storedTheme || defaultMode;
+      if (themeToApply === 'system') {
+        themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      if (themeToApply === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      document.documentElement.setAttribute('data-theme', themeToApply);
+
+      // 2. Set hue
+      var storedHue = localStorage.getItem('hue');
+      var hueToApply = storedHue !== null ? storedHue : configHue;
+      document.documentElement.style.setProperty('--hue', hueToApply);
+
+      // 3. Set wallpaper mode from localStorage or default
+      var storedWallpaper = localStorage.getItem('wallpaperMode');
+      var validModes = ['banner', 'fullscreen', 'overlay', 'none'];
+      var wallpaperModeToApply = validModes.indexOf(storedWallpaper) !== -1 ? storedWallpaper : 'banner';
+      document.documentElement.setAttribute('data-wallpaper-mode', wallpaperModeToApply);
+
+      // 4. Calculate --banner-height-extend
+      var vh = window.innerHeight;
+      var extend = BANNER_HEIGHT_EXTEND * 4;
+      var bannerHeightExtend = extend > vh ? Math.floor(vh / 4) * 4 : extend;
+      if (bannerHeightExtend === 0) bannerHeightExtend = 4;
+      document.documentElement.style.setProperty('--banner-height-extend', bannerHeightExtend + 'px');
+
+      // 5. Apply wallpaper positioning immediately
+      (function applyPos() {
+        var body = document.body;
+        var wrapper = document.getElementById('wallpaper-wrapper');
+        var mainContentWrapper = document.getElementById('main-content-wrapper');
+        var overlayContainer = document.getElementById('banner-overlay-container');
+
+        body.classList.remove('enable-banner', 'no-banner-layout', 'wallpaper-transparent');
+        if (wrapper) wrapper.classList.remove('wallpaper-overlay', 'wallpaper-fullscreen');
+        if (mainContentWrapper) mainContentWrapper.classList.remove('mobile-main-no-banner');
+
+        switch (wallpaperModeToApply) {
+          case 'banner':
+            body.classList.add('enable-banner');
+            if (wrapper) wrapper.style.display = 'block';
+            if (overlayContainer) overlayContainer.style.display = '';
+            if (mainContentWrapper) mainContentWrapper.style.removeProperty('top');
+            break;
+          case 'fullscreen':
+            body.classList.add('enable-banner');
+            if (wrapper) { wrapper.style.display = 'block'; wrapper.classList.add('wallpaper-fullscreen'); }
+            if (overlayContainer) overlayContainer.style.display = '';
+            if (mainContentWrapper) mainContentWrapper.style.removeProperty('top');
+            break;
+          case 'overlay':
+            body.classList.add('wallpaper-transparent');
+            if (wrapper) { wrapper.style.display = 'block'; wrapper.classList.add('wallpaper-overlay'); }
+            if (overlayContainer) overlayContainer.style.display = 'none';
+            if (mainContentWrapper) {
+              mainContentWrapper.style.setProperty('top', '5.5rem', 'important');
+              mainContentWrapper.style.position = '';
+            }
+            break;
+          case 'none':
+            body.classList.add('no-banner-layout');
+            if (wrapper) wrapper.style.display = 'none';
+            if (overlayContainer) overlayContainer.style.display = 'none';
+            if (mainContentWrapper) {
+              mainContentWrapper.style.setProperty('top', '5.5rem', 'important');
+              mainContentWrapper.style.position = '';
+            }
+            break;
+        }
+        if (mainContentWrapper) mainContentWrapper.style.visibility = 'visible';
+      })();
+
+      // 7. Set additional data attributes from localStorage
+      if (localStorage.getItem('wavesEnabled') !== null) {
+        document.documentElement.setAttribute('data-waves-enabled', localStorage.getItem('wavesEnabled'));
+      }
+      if (localStorage.getItem('gradientEnabled') !== null) {
+        document.documentElement.setAttribute('data-gradient-enabled', localStorage.getItem('gradientEnabled'));
+      }
+      if (localStorage.getItem('bannerTitleEnabled') !== null) {
+        document.documentElement.setAttribute('data-banner-title-enabled', localStorage.getItem('bannerTitleEnabled'));
+      }
+      if (localStorage.getItem('sakuraEnabled') !== null) {
+        document.documentElement.setAttribute('data-sakura-enabled', localStorage.getItem('sakuraEnabled'));
+      }
+    })();
+  </script>
+
+  <!-- Navbar -->
+  <div id="top-row" class="z-50 pointer-events-none relative mx-auto w-full xl:w-[92vw] max-w-[var(--page-width)] px-3 md:px-4">
+    <div id="navbar-wrapper" class="pointer-events-auto">
+      <%- partial('_partials/header/navigation') %>
+    </div>
+  </div>
+
+  <!-- Wallpaper / Banner -->
+  <%- partial('_partials/header/banner') %>
+
+  <!-- Main Content Area with grid wrappers -->
+  <div id="main-content-wrapper" class="absolute w-full z-30 pointer-events-none <%- is_home() ? '' : 'mobile-main-no-banner' %>">
+    <div class="relative w-full xl:w-[92vw] max-w-[var(--page-width)] mx-auto pointer-events-auto">
+      <%- body %>
+    </div>
+  </div>
+
+  <!-- Search Modal -->
+  <div id="search-modal" class="search-modal" role="dialog" aria-label="<%= __('search') || 'Search' %>" aria-hidden="true">
+    <div class="search-modal-backdrop search-backdrop"></div>
+    <div class="search-modal-content">
+      <div class="search-input-wrapper">
+        <span class="material-symbols-outlined search-input-icon">search</span>
+        <input type="text" id="search-input" class="search-input" placeholder="<%= __('search_placeholder') || 'Search...' %>" autocomplete="off">
+        <button id="search-close" class="search-close-btn close-btn" aria-label="<%= __('close') || 'Close' %>">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div id="search-results" class="search-results">
+        <div class="search-hints">
+          <span><%= __('search_hint') || 'Type to search posts and pages...' %></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- partial('_partials/display-settings') %>
+  <%- partial('_partials/scripts') %>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<%
+var navConfig = theme.nav || {};
+var pagesEnabled = theme.pages || {};
+var isSticky = navConfig.sticky !== false;
+var isTransparent = navConfig.transparent !== false;
+var siteTitle = config.title || 'Firefly';
+var logoUrl = theme.logo ? theme.logo.url : null;
+var logoIcon = theme.logo ? theme.logo.icon : null;
+%>
+
+<nav id="navbar"
+     class="navbar<%= isSticky ? ' sticky' : '' %><%= isTransparent ? ' transparent' : '' %>"
+     data-transparent="<%= isTransparent %>"
+     role="navigation"
+     aria-label="<%= __('main_navigation') || 'Main navigation' %>">
+
+  <div>
+    <div class="navbar-inner">
+    <!-- Left: Logo + Site Title -->
+    <div class="navbar-brand">
+      <a href="<%= url_for('/') %>" class="navbar-logo-link" aria-label="<%= siteTitle %> - <%= __('home') %>">
+        <% if (logoIcon) { %>
+        <span class="navbar-logo-icon"><%= logoIcon %></span>
+        <% } else if (logoUrl) { %>
+        <img src="<%= url_for(logoUrl) %>" alt="<%= siteTitle %>" class="navbar-logo-img" width="32" height="32">
+        <% } %>
+        <span class="navbar-title"><%= siteTitle %></span>
+      </a>
+    </div>
+
+    <!-- Center: Menu Links -->
+    <div class="navbar-menu" id="navbar-menu" role="menubar">
+      <ul class="navbar-links">
+        <!-- Home (LinkPreset.Home) -->
+        <li class="navbar-link-item" role="none">
+          <a href="<%= url_for('/') %>" class="navbar-link<%= is_home() ? ' active' : '' %>" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">home</span>
+              <span><%= __('home') %></span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+
+        <!-- Archive (LinkPreset.Archive) -->
+        <li class="navbar-link-item" role="none">
+          <a href="<%= url_for('/archives') %>" class="navbar-link<%= page.layout === 'archive' ? ' active' : '' %>" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">archive</span>
+              <span><%= __('archive') %></span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+
+        <!-- Categories -->
+        <li class="navbar-link-item" role="none">
+          <a href="<%= url_for('/categories') %>" class="navbar-link<%= page.layout === 'categories' || page.layout === 'category' ? ' active' : '' %>" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">folder</span>
+              <span><%= __('categories') %></span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+
+        <!-- Tags -->
+        <li class="navbar-link-item" role="none">
+          <a href="<%= url_for('/tags') %>" class="navbar-link<%= page.layout === 'tags' || page.layout === 'tag' ? ' active' : '' %>" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">sell</span>
+              <span><%= __('tags') %></span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+
+        <!-- About -->
+        <% var aboutChildren = (navConfig.groups && navConfig.groups.about) || []; %>
+        <% if (aboutChildren.length > 0) { %>
+        <li class="navbar-link-item navbar-dropdown" role="none">
+          <a href="<%= url_for('/about') %>" class="navbar-link dropdown-toggle<%= page.path && page.path.indexOf('about') !== -1 ? ' active' : '' %>" role="menuitem" aria-haspopup="true" aria-expanded="false">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">person</span>
+              <span><%= __('about') %></span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow">expand_more</span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-label="<%= __('about') %> submenu">
+            <% aboutChildren.forEach(function(child) { %>
+            <li role="none">
+              <a href="<%= url_for(child.url) %>" class="dropdown-item" role="menuitem">
+                <% if (child.icon) { %><span class="material-symbols-outlined"><%= child.icon %></span><% } %>
+                <span><%= child.title || child.name %></span>
+              </a>
+            </li>
+            <% }); %>
+          </ul>
+        </li>
+        <% } else { %>
+        <li class="navbar-link-item" role="none">
+          <a href="<%= url_for('/about') %>" class="navbar-link<%= page.path && page.path.indexOf('about') !== -1 ? ' active' : '' %>" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">person</span>
+              <span><%= __('about') %></span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+        <% } %>
+
+        <!-- Friends -->
+        <% if (pagesEnabled.friends && pagesEnabled.friends.enable !== false) { %>
+        <li class="navbar-link-item" role="none">
+          <a href="<%= url_for('/friends') %>" class="navbar-link<%= page.path && page.path.indexOf('friends') !== -1 ? ' active' : '' %>" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">group</span>
+              <span><%= __('friends') || 'Friends' %></span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+        <% } %>
+
+        <!-- Custom Nav Links / Dropdown Groups -->
+        <% if (navConfig.links && navConfig.links.length > 0) { %>
+          <% navConfig.links.forEach(function(link) { %>
+            <% if (link.children && link.children.length > 0) { %>
+            <!-- Dropdown Group -->
+            <li class="navbar-link-item navbar-dropdown" role="none">
+              <a href="<%= link.url || '#' %>" class="navbar-link dropdown-toggle" role="menuitem" aria-haspopup="true" aria-expanded="false">
+                <span class="navbar-link-content">
+                  <% if (link.icon) { %><span class="material-symbols-outlined"><%= link.icon %></span><% } %>
+                  <span><%= link.label || link.name || '' %></span>
+                </span>
+                <span class="material-symbols-outlined dropdown-arrow">expand_more</span>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-label="<%= link.label || link.name || '' %> submenu">
+                <% link.children.forEach(function(child) { %>
+                <li role="none">
+                  <a href="<%= child.url %>" class="dropdown-item" role="menuitem"<%= child.external ? ' target="_blank" rel="noopener noreferrer"' : '' %>>
+                    <% if (child.icon) { %><span class="material-symbols-outlined"><%= child.icon %></span><% } %>
+                    <span><%= child.label || child.name || '' %></span>
+                  </a>
+                </li>
+                <% }); %>
+              </ul>
+            </li>
+            <% } else { %>
+            <!-- Single Link -->
+            <li class="navbar-link-item" role="none">
+              <a href="<%= link.url %>" class="navbar-link" role="menuitem"<%= link.external ? ' target="_blank" rel="noopener noreferrer"' : '' %>>
+                <span class="navbar-link-content">
+                  <% if (link.icon) { %><span class="material-symbols-outlined"><%= link.icon %></span><% } %>
+                  <span><%= link.label || link.name || '' %></span>
+                </span>
+                <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+              </a>
+            </li>
+            <% } %>
+          <% }); %>
+        <% } %>
+      </ul>
+    </div>
+
+    <!-- Right Side Buttons -->
+    <div class="navbar-actions" style="position: relative;">
+      <!-- Search Toggle -->
+      <button id="search-toggle" class="navbar-action-btn search-toggle-btn" aria-label="<%= __('search') || 'Search' %>" title="<%= __('search') || 'Search' %>">
+        <span class="material-symbols-outlined">search</span>
+      </button>
+
+      <!-- Music Toggle -->
+      <button id="nav-music-btn" class="navbar-action-btn music-toggle-btn" aria-label="<%= __('music') || 'Music' %>" title="<%= __('music') || 'Music' %>">
+        <span class="material-symbols-outlined">music_note</span>
+      </button>
+
+      <!-- Play / Wallpaper Toggle -->
+      <button id="nav-play-btn" class="navbar-action-btn play-toggle-btn" aria-label="<%= __('wallpaper') || 'Wallpaper' %>" title="<%= __('wallpaper') || 'Wallpaper' %>">
+        <span class="material-symbols-outlined">play_arrow</span>
+      </button>
+
+      <!-- Display Settings Toggle (Palette Icon) -->
+      <button id="display-settings-toggle" class="navbar-action-btn display-settings-toggle" aria-label="<%= __('display_settings') || 'Display settings' %>" title="<%= __('display_settings') || 'Display settings' %>">
+        <span class="material-symbols-outlined">palette</span>
+      </button>
+
+      <!-- Theme Toggle (Light/Dark/System) -->
+      <button id="theme-toggle" class="navbar-action-btn theme-switch-btn" aria-label="<%= __('toggle_theme') || 'Toggle theme' %>" title="<%= __('toggle_theme') || 'Toggle theme' %>">
+        <span class="material-symbols-outlined theme-icon-light sun-icon">light_mode</span>
+        <span class="material-symbols-outlined theme-icon-dark moon-icon">dark_mode</span>
+      </button>
+
+      <!-- Theme Popover Modal -->
+      <div id="theme-popover" class="theme-popover float-panel closed">
+        <button class="theme-popover-item" data-theme-mode="light">
+          <span class="material-symbols-outlined">light_mode</span>
+          <span><%= __('theme_light') || '亮色' %></span>
+        </button>
+        <button class="theme-popover-item" data-theme-mode="dark">
+          <span class="material-symbols-outlined">dark_mode</span>
+          <span><%= __('theme_dark') || '暗色' %></span>
+        </button>
+        <button class="theme-popover-item" data-theme-mode="system">
+          <span class="material-symbols-outlined">brightness_auto</span>
+          <span><%= __('theme_system') || '跟随系统' %></span>
+        </button>
+      </div>
+
+      <!-- Mobile Hamburger Menu -->
+      <button id="mobile-menu-toggle" class="navbar-action-btn mobile-menu-btn" aria-label="<%= __('toggle_menu') || 'Toggle menu' %>" aria-expanded="false" aria-controls="navbar-menu">
+        <span class="material-symbols-outlined hamburger-icon">menu</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+</nav>

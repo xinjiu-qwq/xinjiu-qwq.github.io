@@ -1,0 +1,348 @@
+/* ============================================================
+   Display Settings Panel Styles
+   ============================================================ */
+
+.display-settings-panel {
+  position: fixed;
+  top: calc(var(--navbar-height) + 0.5rem);
+  right: 0.75rem;
+  width: min(320px, calc(100vw - 1.5rem));
+  max-height: calc(100dvh - var(--navbar-height) - 1.5rem);
+  overflow-y: auto;
+  z-index: 60;
+  padding: 1.25rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: var(--md-shape-corner-large);
+  border: 1px solid var(--line-divider);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+  transition: all var(--md-motion-duration-medium) var(--md-motion-easing-standard);
+}
+
+.display-settings-panel.closed {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.5rem) scale(0.98);
+  pointer-events: none;
+}
+
+/* ---- Settings Section ---- */
+.settings-section {
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line-divider);
+}
+.settings-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.settings-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
+}
+
+/* ---- Settings Label Row ---- */
+.settings-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  font-weight: 400;
+  background: var(--md-sys-color-surface-variant);
+  border-radius: var(--md-shape-corner-full);
+  transition: background-color var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+.settings-label:hover {
+  background: var(--md-sys-color-primary-container);
+}
+
+/* ---- Hue Color Slider ---- */
+.hue-slider {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(to right,
+    oklch(0.65 0.18 0),
+    oklch(0.65 0.18 60),
+    oklch(0.65 0.18 120),
+    oklch(0.65 0.18 180),
+    oklch(0.65 0.18 240),
+    oklch(0.65 0.18 300),
+    oklch(0.65 0.18 360)
+  );
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+.hue-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--primary);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+.hue-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.hue-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--primary);
+  box-shadow: 0 1px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* ---- Transparency / general range sliders (rounded rectangle) ---- */
+.settings-section input[type="range"].rounded-range {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--md-sys-color-surface-variant);
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+}
+.settings-section input[type="range"].rounded-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.settings-section input[type="range"].rounded-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+/* Transparency section: hidden except in overlay wallpaper mode */
+html:not([data-wallpaper-mode="overlay"]) .transparency-section {
+  display: none;
+}
+.range-value {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--primary);
+}
+
+/* ---- Toggle Switch ---- */
+.settings-toggle {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.settings-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.settings-toggle .slider {
+  position: absolute;
+  inset: 0;
+  background: var(--btn-regular-bg);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.settings-toggle .slider::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+.settings-toggle input:checked + .slider {
+  background: var(--primary);
+}
+.settings-toggle input:checked + .slider::before {
+  transform: translateX(18px);
+}
+
+/* ---- Wallpaper Mode Buttons — M3 segmented buttons ---- */
+.wallpaper-mode-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+.wallpaper-mode-buttons button {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: var(--md-shape-corner-full);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition:
+    background-color var(--md-motion-duration-short) var(--md-motion-easing-standard),
+    color var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+.wallpaper-mode-buttons button.active {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+}
+.wallpaper-mode-buttons button:hover:not(.active) {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* ---- Layout Buttons — M3 toggle buttons ---- */
+.layout-buttons button {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--md-shape-corner-full);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition:
+    background-color var(--md-motion-duration-short) var(--md-motion-easing-standard),
+    color var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+.layout-buttons button.active {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+}
+.layout-buttons button:hover:not(.active) {
+  background: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* ---- Reset Button — M3 text button ---- */
+.settings-reset-btn {
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--md-shape-corner-full);
+  background: var(--md-sys-color-surface-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition:
+    background-color var(--md-motion-duration-short) var(--md-motion-easing-standard),
+    color var(--md-motion-duration-short) var(--md-motion-easing-standard);
+}
+.settings-reset-btn:hover {
+  background: oklch(0.65 0.15 20 / 0.15);
+  color: oklch(0.55 0.18 20);
+}
+
+/* ---- Display Settings Toggle (navbar button) ---- */
+.display-settings-toggle {
+  position: relative;
+}
+
+/* ---- Tabs Layout ---- */
+.settings-tabs {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+  border-bottom: 1px solid var(--line-divider);
+  margin-bottom: 1rem;
+  padding-bottom: 0.25rem;
+}
+
+.settings-tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem 0.25rem;
+  position: relative;
+  transition: color var(--duration-fast);
+  border-radius: var(--md-shape-corner-small);
+}
+
+.settings-tab-btn .material-symbols-outlined {
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+.settings-tab-btn:hover {
+  color: var(--primary);
+  background: var(--btn-plain-bg-hover);
+}
+
+.settings-tab-btn.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.settings-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.25rem;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+}
+
+.settings-tab-content {
+  display: none;
+}
+
+.settings-tab-content.active {
+  display: block;
+}
+
+/* Card Border & Shadow (Dark Mode Only) */
+.dark.enable-card-border .post-card-item,
+.dark.enable-card-border .widget,
+.dark.enable-card-border .post-content-card,
+.dark.enable-card-border .display-settings-panel,
+.dark.enable-card-border .post-footer-alert,
+.dark.enable-card-border .post-nav-card,
+.dark.enable-card-border .recommendations-column,
+.dark.enable-card-border .code-block-wrapper,
+.dark.enable-card-border .post-comments,
+.dark.enable-card-border .search-modal-content {
+  border: 1.5px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+}
+
