@@ -562,7 +562,7 @@ music:
     # 类型，可选：playlist（歌单）, album（专辑）, artist（歌手）, song（单曲）
     type: "playlist"
     # 对应歌单/专辑/歌手/单曲的 ID
-    id: "10046455237"
+    id: "18318942395"
   # 本地音乐设置
   local:
     # 本地播放列表，每项包含 name, artist, url, cover, lrc
