@@ -57,6 +57,9 @@ nav:
     - name: "友链"
       icon: "link"
       path: "/friends/"
+    - name: "动态"
+      icon: "auto_awesome"
+      path: "/dynamic/"
   # 导航栏是否跟随主题色变化
   follow_theme: false
 
