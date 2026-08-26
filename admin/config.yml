@@ -33,3 +33,20 @@ collections:
       - { label: 标签, name: tags, widget: list, default: [], required: false }
       - { label: 分类, name: categories, widget: list, default: [], required: false }
       - { label: 正文, name: body, widget: markdown }
+
+  - name: dynamics
+    label: 动态
+    label_singular: 动态
+    folder: source/_dynamics
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: md
+    format: frontmatter
+    sortable_fields: [title, date]
+    fields:
+      - { label: 标题, name: title, widget: string }
+      - { label: 日期, name: date, widget: datetime, format: "YYYY-MM-DD HH:mm:ss" }
+      - { label: 作者, name: author, widget: string, default: "歆九", required: false }
+      - { label: 地点, name: location, widget: string, required: false }
+      - { label: 置顶, name: sticky, widget: boolean, default: false, required: false }
+      - { label: 正文, name: body, widget: markdown }
