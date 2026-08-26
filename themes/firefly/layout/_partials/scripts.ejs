@@ -602,7 +602,7 @@ var busuanziEnable = themeConfig.analytics && themeConfig.analytics.busuanzi !==
   });
 </script>
 
-<!-- Site Preloader: reveal page once fonts/icons are ready (or after a safety delay) -->
+<!-- Site Preloader: reveal quickly once icons have been converted (avoids slow wait) -->
 <script>
   (function() {
     var pre = document.getElementById('site-preloader');
@@ -615,12 +615,17 @@ var busuanziEnable = themeConfig.analytics && themeConfig.analytics.busuanzi !==
       document.body.style.overflow = '';
     }
     document.body.style.overflow = 'hidden';
-    var safety = setTimeout(reveal, 6000);
-    function done() { clearTimeout(safety); setTimeout(reveal, 80); }
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(done);
+    var safety = setTimeout(reveal, 3000);
+    function done() { clearTimeout(safety); setTimeout(reveal, 150); }
+    // Icons convert on DOMContentLoaded; reveal right after that so the
+    // loader flashes only briefly instead of waiting for every asset.
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      done();
+    } else {
+      document.addEventListener('DOMContentLoaded', done);
+      // Fallback: also reveal on load if that comes first
+      window.addEventListener('load', done);
     }
-    window.addEventListener('load', done);
   })();
 </script>
 
