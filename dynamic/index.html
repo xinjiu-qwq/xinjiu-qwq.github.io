@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-wallpaper-mode="banner" style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: 165; --page-width: 100rem;">
+<html lang="zh-CN" data-wallpaper-mode="banner" style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: 340; --page-width: 100rem;">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
@@ -111,11 +111,78 @@
 
 
 <meta name="generator" content="Hexo 8.1.2"></head>
-<body class="min-h-screen  sticky-navbar enable-card-border " style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: 165; --page-width: 100rem;">
+<body class="min-h-screen  sticky-navbar enable-card-border " style="--bannerOffset: 15vh; --banner-height-home: 73vh; --banner-height: 67vh; --configHue: 340; --page-width: 100rem;">
+  <style>
+/* ===== Site preloader (Windows 10 style dots spinner) ===== */
+#site-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  background: var(--page-bg, #f5f5f5);
+  transition: opacity 0.45s ease, visibility 0.45s ease;
+}
+#site-preloader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.preloader-spinner {
+  position: relative;
+  width: 44px;
+  height: 44px;
+}
+.preloader-spinner .dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--preloader-color, var(--primary, #0ea5e9));
+  opacity: 0.15;
+  transform: rotate(calc(var(--i) * 45deg)) translateY(-17px);
+  animation: preloader-dot 1.2s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.15s);
+}
+@keyframes preloader-dot {
+  0%, 100% { opacity: 0.15; }
+  50%      { opacity: 1; }
+}
+.preloader-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary, #666);
+  letter-spacing: 0.12em;
+  animation: preloader-textPulse 1.6s ease-in-out infinite;
+}
+@keyframes preloader-textPulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+</style>
+<div id="site-preloader" role="status" aria-label="加载中" style="--preloader-color: var(--primary);">
+  <div class="preloader-spinner">
+    <span class="dot" style="--i:0"></span>
+    <span class="dot" style="--i:1"></span>
+    <span class="dot" style="--i:2"></span>
+    <span class="dot" style="--i:3"></span>
+    <span class="dot" style="--i:4"></span>
+    <span class="dot" style="--i:5"></span>
+    <span class="dot" style="--i:6"></span>
+    <span class="dot" style="--i:7"></span>
+  </div>
+  <div class="preloader-text">加载中…</div>
+</div>
+
   <script>
     (function() {
       var BANNER_HEIGHT_EXTEND = 6;
-      var configHue = 165;
+      var configHue = 340;
       var defaultMode = 'system';
       var defaultWallpaperMode = 'banner';
       var wallSwitchable = false;
@@ -1392,7 +1459,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/8/26 07:17:58</div>
+          <div class="site-info-card-value">2026/8/26 07:57:31</div>
         </div>
 
         <!-- System Info -->
@@ -1797,7 +1864,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/8/26 07:17:58</div>
+          <div class="site-info-card-value">2026/8/26 07:57:31</div>
         </div>
 
         <!-- System Info -->
@@ -2594,6 +2661,28 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }, 1500);
   });
+</script>
+
+<!-- Site Preloader: reveal page once fonts/icons are ready (or after a safety delay) -->
+<script>
+  (function() {
+    var pre = document.getElementById('site-preloader');
+    if (!pre) return;
+    var revealed = false;
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      pre.classList.add('hide');
+      document.body.style.overflow = '';
+    }
+    document.body.style.overflow = 'hidden';
+    var safety = setTimeout(reveal, 6000);
+    function done() { clearTimeout(safety); setTimeout(reveal, 80); }
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(done);
+    }
+    window.addEventListener('load', done);
+  })();
 </script>
 
 
