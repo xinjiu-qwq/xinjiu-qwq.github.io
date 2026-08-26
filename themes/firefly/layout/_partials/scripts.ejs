@@ -121,10 +121,10 @@ var busuanziEnable = themeConfig.analytics && themeConfig.analytics.busuanzi !==
 </script>
 <% } %>
 
-<!-- Fancybox - Image Lightbox -->
+<!-- Fancybox - Image Lightbox (本地化) -->
 <% if (fancyboxEnable) { %>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.min.css">
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.min.js"></script>
+<link rel="stylesheet" href="<%= url_for('/lib/fancybox/fancybox.css') %>">
+<script src="<%= url_for('/lib/fancybox/fancybox.umd.js') %>"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     Fancybox.bind('[data-fancybox]', {
@@ -207,11 +207,11 @@ var busuanziEnable = themeConfig.analytics && themeConfig.analytics.busuanzi !==
   <% } %>
 <% } %>
 
-<!-- APlayer / Meting - Music Player -->
+<!-- APlayer / Meting - Music Player (本地化) -->
 <% if (musicEnable || metingApi) { %>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1/dist/APlayer.min.css">
-<script src="https://cdn.jsdelivr.net/npm/aplayer@1/dist/APlayer.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+<link rel="stylesheet" href="<%= url_for('/lib/aplayer/APlayer.min.css') %>">
+<script src="<%= url_for('/lib/aplayer/APlayer.min.js') %>"></script>
+<script src="<%= url_for('/lib/aplayer/Meting.min.js') %>"></script>
 <% } %>
 
 <!-- Busuanzi - Visitor Counter -->

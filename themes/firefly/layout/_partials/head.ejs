@@ -82,8 +82,8 @@
 <link rel="stylesheet" href="<%= theme.iconfont %>">
 <% } %>
 
-<!-- Font Awesome 6 (Brand Icons for social media) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css">
+<!-- Font Awesome 6 (本地化字体，避免国内 CDN 无法访问) -->
+<link rel="stylesheet" href="<%= url_for('/css/fontawesome/all.min.css') %>">
 
 <!-- Analytics -->
 <% if (theme.analytics && theme.analytics.google_analytics_id) { %>
