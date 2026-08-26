@@ -13,6 +13,10 @@
     /* =========================================================================
      * Unicode fallback map — used only when the web font is unavailable.
      * ========================================================================= */
+    /* PUA codepoint map — Material Symbols glyphs kept in the subsetted font.
+     * The site ships a small subset (only the used icons), so each ligature
+     * name is converted to its PUA codepoint which the font renders directly. */
+    puaMap: { 'archive':'e149', 'arrow_right_alt':'e941', 'auto_awesome':'e65f', 'brightness_auto':'e1ab', 'calendar_month':'ebcc', 'calendar_today':'e935', 'check':'e5ca', 'chevron_left':'e5cb', 'chevron_right':'e5cc', 'close':'e5cd', 'cloud':'e2bd', 'code':'e86f', 'computer':'e30a', 'content_copy':'e14d', 'copyright':'e90c', 'dark_mode':'e51c', 'description':'e873', 'dns':'e875', 'edit':'e3c9', 'expand_less':'e5ce', 'expand_more':'e5cf', 'explore':'e87a', 'favorite':'e87d', 'filter_vintage':'e3e3', 'folder':'e2c7', 'forum':'e0bf', 'grid_view':'e9b0', 'group':'e7ef', 'home':'e88a', 'info':'e88e', 'library_music':'e030', 'light_mode':'e518', 'local_offer':'e54e', 'mail':'e158', 'menu':'e5d2', 'money_off':'e25c', 'monitor_heart':'eaa2', 'music_note':'e405', 'palette':'e40a', 'person':'e7fd', 'play_arrow':'e037', 'refresh':'e5d5', 'rss_feed':'e0e5', 'schedule':'e8b5', 'schema':'e4fd', 'search':'e8b6', 'sell':'f05b', 'share':'e80d', 'shield':'e9e0', 'trending_up':'e8e5', 'view_list':'e8ef', 'visibility':'e8f4', 'wallpaper':'e1bc' },
     fallbacks: {
       // Navigation
       'home':                     '\u{1F3E0}',
@@ -417,6 +421,12 @@
 
       var normalizedName = iconName;
 
+      var pua = this.puaMap[normalizedName];
+      if (pua) {
+        span.textContent = String.fromCodePoint(parseInt(pua, 16));
+        return;
+      }
+
       var fallback = this.fallbacks[normalizedName];
       if (fallback) {
         span.textContent = fallback;
@@ -452,24 +462,11 @@
      * ========================================================================= */
     init: function() {
       var self = this;
-
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(function() {
-          var loaded = document.fonts.check('16px "Material Symbols Outlined"');
-          if (!loaded) {
-            // Font failed to load — activate fallbacks
-            self.replaceAllMaterialIconsWithFallback();
-            self.renderDataIcons();
-          }
-          // Font loaded successfully — ligatures work natively, do nothing
-        });
-      } else {
-        // Older browsers without Font Loading API — assume font may not load
-        setTimeout(function() {
-          self.replaceAllMaterialIconsWithFallback();
-          self.renderDataIcons();
-        }, 2000);
-      }
+      // Populate [data-icon] spans first, then convert every icon name to its
+      // PUA codepoint (rendered by the subsetted Material Symbols font).
+      // Conversion runs unconditionally — the subset font has no ligatures.
+      self.renderDataIcons();
+      self.replaceAllMaterialIconsWithFallback();
     }
   };
 
