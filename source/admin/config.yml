@@ -1,13 +1,12 @@
 # Decap CMS 配置
-# 认证方式: GitHub OAuth 应用 + 本地认证服务 (netlify-cms-oauth-provider-node)
-# 如需切换为 Cloudflare Worker 认证，修改 base_url 为你的 Worker 地址即可
+# 认证方式: GitHub OAuth 应用 + Cloudflare Worker OAuth 代理 (decap-proxy)
 
 backend:
   name: github
   repo: xinjiu-qwq/xinjiu-qwq.github.io
   branch: source
-  # 本地认证服务地址 (运行 npm start 于 oauth-server 目录后生效)
-  base_url: http://localhost:8080
+  # Cloudflare Worker OAuth 代理地址
+  base_url: https://decap-proxy.xinjiu-qwq.workers.dev
   auth_endpoint: auth
 
 locale: zh_Hans
