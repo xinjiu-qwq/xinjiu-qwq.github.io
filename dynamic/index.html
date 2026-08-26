@@ -713,12 +713,12 @@
   <div class="widget-body">
     
     <div class="category-item">
-      <a href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+      <a href="/categories/Tech/">Tech</a>
       <span class="category-count">1</span>
     </div>
     
     <div class="category-item">
-      <a href="/categories/Tech/">Tech</a>
+      <a href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
       <span class="category-count">1</span>
     </div>
     
@@ -735,13 +735,13 @@
   <div class="widget-body">
     <div class="tag-list">
       
-      <a href="/tags/Hexo/" class="tag-item">Hexo</a>
-      
-      <a href="/tags/%E5%8D%9A%E5%AE%A2/" class="tag-item">博客</a>
-      
       <a href="/tags/%E8%BB%9F%E9%AB%94%E6%8E%A8%E8%96%A6/" class="tag-item">軟體推薦</a>
       
       <a href="/tags/%E6%8A%80%E8%A1%93/" class="tag-item">技術</a>
+      
+      <a href="/tags/Hexo/" class="tag-item">Hexo</a>
+      
+      <a href="/tags/%E5%8D%9A%E5%AE%A2/" class="tag-item">博客</a>
       
       
     </div>
@@ -782,13 +782,13 @@
 
   <!-- Dynamic Categories -->
   
-    <a href="/categories/%E9%9A%8F%E7%AC%94/" class="content-nav-item">
-      <span class="nav-item-label">随笔</span>
+    <a href="/categories/Tech/" class="content-nav-item">
+      <span class="nav-item-label">Tech</span>
       <span class="nav-item-count">1</span>
     </a>
   
-    <a href="/categories/Tech/" class="content-nav-item">
-      <span class="nav-item-label">Tech</span>
+    <a href="/categories/%E9%9A%8F%E7%AC%94/" class="content-nav-item">
+      <span class="nav-item-label">随笔</span>
       <span class="nav-item-count">1</span>
     </a>
   
@@ -1473,7 +1473,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/8/26 09:39:08</div>
+          <div class="site-info-card-value">2026/8/26 13:51:58</div>
         </div>
 
         <!-- System Info -->
@@ -1774,13 +1774,13 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="widget-body">
     <div class="tag-list">
       
-      <a href="/tags/Hexo/" class="tag-item">Hexo</a>
-      
-      <a href="/tags/%E5%8D%9A%E5%AE%A2/" class="tag-item">博客</a>
-      
       <a href="/tags/%E8%BB%9F%E9%AB%94%E6%8E%A8%E8%96%A6/" class="tag-item">軟體推薦</a>
       
       <a href="/tags/%E6%8A%80%E8%A1%93/" class="tag-item">技術</a>
+      
+      <a href="/tags/Hexo/" class="tag-item">Hexo</a>
+      
+      <a href="/tags/%E5%8D%9A%E5%AE%A2/" class="tag-item">博客</a>
       
       
     </div>
@@ -1882,7 +1882,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/8/26 09:39:08</div>
+          <div class="site-info-card-value">2026/8/26 13:51:58</div>
         </div>
 
         <!-- System Info -->
@@ -2640,7 +2640,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 </script>
 
-<!-- Site Preloader: reveal page once fonts/icons are ready (or after a safety delay) -->
+<!-- Site Preloader: reveal quickly once icons have been converted (avoids slow wait) -->
 <script>
   (function() {
     var pre = document.getElementById('site-preloader');
@@ -2653,12 +2653,17 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.style.overflow = '';
     }
     document.body.style.overflow = 'hidden';
-    var safety = setTimeout(reveal, 6000);
-    function done() { clearTimeout(safety); setTimeout(reveal, 80); }
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(done);
+    var safety = setTimeout(reveal, 3000);
+    function done() { clearTimeout(safety); setTimeout(reveal, 150); }
+    // Icons convert on DOMContentLoaded; reveal right after that so the
+    // loader flashes only briefly instead of waiting for every asset.
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      done();
+    } else {
+      document.addEventListener('DOMContentLoaded', done);
+      // Fallback: also reveal on load if that comes first
+      window.addEventListener('load', done);
     }
-    window.addEventListener('load', done);
   })();
 </script>
 

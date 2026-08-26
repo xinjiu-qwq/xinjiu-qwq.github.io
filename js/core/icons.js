@@ -467,6 +467,30 @@
       // Conversion runs unconditionally — the subset font has no ligatures.
       self.renderDataIcons();
       self.replaceAllMaterialIconsWithFallback();
+
+      // Re-convert icon names that scripts set dynamically (e.g. the mobile
+      // menu toggle toggles between 'menu' and 'close', the site-info toggle
+      // sets 'expand_more'/'expand_less'). Only observe the icon elements
+      // themselves so this stays cheap.
+      try {
+        var mo = new MutationObserver(function(mutations) {
+          var touched = {};
+          for (var i = 0; i < mutations.length; i++) {
+            var t = mutations[i].target;
+            if (t.nodeType === 1 && t.classList && t.classList.contains('material-symbols-outlined')) {
+              var key = '__icon' + ((t.__iconIndex = t.__iconIndex || Math.random().toString(36).slice(2)));
+              touched[key] = t;
+            }
+          }
+          for (var k in touched) {
+            self.patchUnknownIcons(touched[k]);
+          }
+        });
+        document.querySelectorAll('.material-symbols-outlined').forEach(function(el) {
+          mo.observe(el, { childList: true, characterData: true, subtree: true });
+        });
+        window.__iconMutationObserver = mo;
+      } catch (e) { /* MutationObserver unsupported — initial pass still works */ }
     }
   };
 
