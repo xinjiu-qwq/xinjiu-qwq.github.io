@@ -469,23 +469,37 @@
       self.replaceAllMaterialIconsWithFallback();
 
       // Re-convert icon names that scripts set dynamically (e.g. the mobile
-      // menu toggle toggles between 'menu' and 'close', the site-info toggle
-      // sets 'expand_more'/'expand_less'). Only observe the icon elements
-      // themselves so this stays cheap.
+      // menu toggle toggles 'menu'/'close', the site-info toggle sets
+      // 'expand_more'/'expand_less', and the dynamic page builds a year filter).
+      // Observe the whole document for added nodes so ANY dynamically created
+      // .material-symbols-outlined element gets patched too.
       try {
         var mo = new MutationObserver(function(mutations) {
           var touched = {};
           for (var i = 0; i < mutations.length; i++) {
-            var t = mutations[i].target;
-            if (t.nodeType === 1 && t.classList && t.classList.contains('material-symbols-outlined')) {
-              var key = '__icon' + ((t.__iconIndex = t.__iconIndex || Math.random().toString(36).slice(2)));
-              touched[key] = t;
+            var m = mutations[i];
+            (m.addedNodes || []).forEach(function(node) {
+              if (node.nodeType !== 1) return;
+              var spans = node.classList && node.classList.contains('material-symbols-outlined')
+                ? [node]
+                : (node.querySelectorAll ? node.querySelectorAll('.material-symbols-outlined') : []);
+              spans.forEach(function(el) {
+                var key = '__icon' + ((el.__iconIndex = el.__iconIndex || Math.random().toString(36).slice(2)));
+                touched[key] = el;
+              });
+            });
+            // Also re-check the target itself if its text changed (e.g. menu/close toggle)
+            var tt = m.target;
+            if (tt && tt.nodeType === 1 && tt.classList && tt.classList.contains('material-symbols-outlined')) {
+              touched['__icon' + ((tt.__iconIndex = tt.__iconIndex || Math.random().toString(36).slice(2)))] = tt;
             }
           }
           for (var k in touched) {
             self.patchUnknownIcons(touched[k]);
           }
         });
+        mo.observe(document.documentElement, { childList: true, subtree: true });
+        // Observe existing icons for text changes too (menu/close toggling)
         document.querySelectorAll('.material-symbols-outlined').forEach(function(el) {
           mo.observe(el, { childList: true, characterData: true, subtree: true });
         });
